@@ -1,7 +1,6 @@
-import React from "react";
 import BgGlassmorphism from "@/components/BgGlassmorphism";
 import { Stay } from "@/data/types";
-
+import React, {  useEffect} from 'react';
 import SectionGridHasMap from "./listing/SectionGridHasMap";
 import SectionHeroArchivePage from "./(server-components)/SectionHeroArchivePage";
 import CryptoBedSeo from "@/constants/seo";
@@ -10,6 +9,10 @@ import { gql } from "@apollo/client";
 import { getClient } from "@/utils/apollo";
 import { homeSettingsConst } from "@/constants/home";
 import { covertApolloResponseToStays } from "@/adapters/stay.adapters";
+import useSWR from "swr";
+import { fetcher } from '@/utils/fetcher';
+import {LoadingSpinner} from "@/components/AnyReactComponent/loadingSpinner";
+import { createClient } from '@/supabase/server';
 
 export const revalidate = 2;
 
@@ -69,9 +72,44 @@ export const metadata: Metadata = CryptoBedSeo;
 
 async function PageHome({ searchParams }: PageHomeProps) {
   let items: Stay[] = [];
+  const supabase = createClient();
+  const { data: properties } = await supabase.from( "properties" ).select();
 
+
+  console.log(properties)
+  // const [properties, setProperties] = useState<Stay[] | null>(null);
+
+
+  // useEffect( () => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await fetch( '/api/properties' );
+  //       if ( !response.ok ) {
+  //         throw new Error( 'Network response was not ok' );
+  //       }
+  //       const data = await response.json();
+  //       setProperties( data );
+  //     } catch ( error :any) {
+  //       setError( error );
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, [] );
   const settings = homeSettingsConst["DEFAULT"];
   const client = getClient();
+
+  // const { data: properties, error } = useSWR( '/api/properties', fetcher );
+
+console.log("properties", properties);
+
+
+  // if ( error ) return <h1 className="flex justify-center items-center h-screen p-5">Failed to load</h1>;
+  if ( !properties ) return (
+    <div className="flex justify-center items-center h-screen p-5">
+      <LoadingSpinner className="" />
+    </div>
+  );  
 
   try {
     const res = await client.query({
