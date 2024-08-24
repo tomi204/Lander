@@ -1,11 +1,22 @@
 "use client";
 
-import Label from "@/components/Label";
+import React, { useState } from 'react';
+import { Label } from "@/components/ui/label";
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Slider } from "@/components/ui/slider";
+import { useMutation } from 'react-query';
+// import { useWeb3ModalAccount } from '@web3modal/ethers/react';
+// import Label from "@/components/Label";
 import { User } from "@/data/types";
 import { useEditUserData } from "@/hooks/useUser";
 import ButtonPrimary from "@/shared/ButtonPrimary";
-import Input from "@/shared/Input";
-import Textarea from "@/shared/Textarea";
+// import Input from "@/shared/Input";
+// import Textarea from "@/shared/Textarea";
 import { FC } from "react";
 import { useForm } from "react-hook-form";
 
