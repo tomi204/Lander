@@ -17,12 +17,29 @@ interface ReservationComponentProps {
   stay: any ;
 }
 
+
+
+//client - propietario- propiedad 
+// endpoint the verificacion de usuario que va a recibir un true o false para sobreescribir la columna de worldID 
+// la tabla transaction  va a tener un tx id por chain , ese id se guarda en el backen para consultar el estado de una transaccion vinculada al usuario que lo generó , buyer , owner, y property , codigo de confirmación es el id de transaccion en p2p 
+// con ese id de transaccion renderizo el p2p ,  post con espacio para cada chain 
+
+
+
+
+
+
+
+
+
 const ReservationComponent: FC<ReservationComponentProps> = ({ stay }) => {
   const submitBtnReference = useRef<HTMLButtonElement>(null);
   const { isAuth, isAuthenticating } = useAuth();
   const [{ data, loading, error }, executeBookingPost] = useCreateBooking();
 
   const { address } = useAccount();
+
+  console.log(address)
 
   const router = useRouter();
 
