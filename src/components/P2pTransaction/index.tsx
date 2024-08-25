@@ -73,6 +73,7 @@ const ContractInteraction: FC<ContractInteractionProps> = ({
     }
   }, [ABI, amount]);
 
+  console.log(parseUnits(amount.toString(), 6));
   const createTransaction = useCallback(async () => {
     try {
       setLoading(true);
@@ -82,11 +83,11 @@ const ContractInteraction: FC<ContractInteractionProps> = ({
         throw new Error("Invalid Address");
       }
 
-      await approveTokens();
+      //await approveTokens();
 
       const dataEncoded = new Interface(ABI).encodeFunctionData("createTransaction", [
         sellerAddress,
-        parseUnits(amount.toString(), 18),
+        BigInt(amount * 1000 * 1000),
       ]) as `0x${string}`;
 
       const connections = getConnections(wagmiConfig);
