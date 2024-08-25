@@ -1,6 +1,6 @@
 import BgGlassmorphism from "@/components/BgGlassmorphism";
 import { Stay } from "@/data/types";
-import React, { useEffect } from "react";
+import React  from "react";
 import SectionGridHasMap from "./listing/SectionGridHasMap";
 import SectionHeroArchivePage from "./(server-components)/SectionHeroArchivePage";
 import CryptoBedSeo from "@/constants/seo";
@@ -13,7 +13,7 @@ import useSWR from "swr";
 import { fetcher } from "@/utils/fetcher";
 import { LoadingSpinner } from "@/components/AnyReactComponent/loadingSpinner";
 import { createClient } from "@/supabase/server";
-import Verify from "@/components/WorldCoin";
+// import Verify from "@/components/WorldCoin";
 
 export const revalidate = 2;
 
@@ -189,7 +189,7 @@ console.log(properties)
           <BackgroundSection />
           <SectionClientSay />
         </div> */}
-        <Verify />
+        {/* <Verify /> */}
       </div>
     </main>
   );
