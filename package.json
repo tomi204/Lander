@@ -13,13 +13,11 @@
     "@apollo/experimental-nextjs-app-support": "^0.4.2",
     "@headlessui/react": "^1.7.18",
     "@heroicons/react": "^2.0.17",
-
-    "@radix-ui/react-label": "^2.1.0",
-
+    "@radix-ui/react-accordion": "^1.2.0",
     "@radix-ui/react-avatar": "^1.1.0",
+    "@radix-ui/react-label": "^2.1.0",
     "@radix-ui/react-scroll-area": "^1.1.0",
     "@shadcn/ui": "^0.0.4",
-
     "@supabase/ssr": "^0.5.0",
     "@supabase/supabase-js": "^2.45.2",
     "@tailwindcss/aspect-ratio": "^0.4.2",
@@ -32,6 +30,8 @@
     "@types/react-datepicker": "^4.19.5",
     "@types/react-dom": "18.0.11",
     "@web3modal/wagmi": "4.0.0-alpha.3",
+    "@worldcoin/idkit": "^1.2.2",
+    "@worldcoin/idkit-core": "^1.2.2",
     "axios": "^1.4.0",
     "axios-hooks": "^4.0.0",
     "class-variance-authority": "^0.7.0",
@@ -39,8 +39,6 @@
     "clsx": "^2.1.1",
     "date-fns": "^2.30.0",
     "eslint": "8.38.0",
-    "@worldcoin/idkit": "^1.2.2",
-    "@worldcoin/idkit-core": "^1.2.2",
     "eslint-config-next": "^13.3.0",
     "ethers": "^6.10.0",
     "framer-motion": "^10.11.2",
