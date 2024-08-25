@@ -1,4 +1,4 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextResponse } from 'next/server';
 import { VerificationLevel } from "@worldcoin/idkit-core";
 import { verifyCloudProof } from "@worldcoin/idkit-core/backend";
 
@@ -22,7 +22,7 @@ interface IVerifyRequest {
 const app_id = process.env.NEXT_PUBLIC_WLD_APP_ID as `app_${string}`;
 const action = process.env.NEXT_PUBLIC_WLD_ACTION as string;
 
-export async function verify(
+async function verify(
   proof: IVerifyRequest["proof"],
   signal?: string
 ): Promise<VerifyReply> {
@@ -39,22 +39,18 @@ export async function verify(
   }
 }
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  if (req.method === 'POST') {
-    const { proof, signal } = req.body as IVerifyRequest;
+export async function POST(req: Request) {
+  try {
+    const body = await req.json();
+    const { proof, signal } = body as IVerifyRequest;
 
-    try {
-      const result = await verify(proof, signal);
-      res.status(200).json(result);
-    } catch (error) {
-      console.error('Error verifying proof:', error);
-      res.status(500).json({ success: false, detail: 'Internal Server Error' });
-    }
-  } else {
-    res.setHeader('Allow', ['POST']);
-    res.status(405).end(`Method ${req.method} Not Allowed`);
+    const result = await verify(proof, signal);
+    return NextResponse.json(result, { status: 200 });
+  } catch (error) {
+    console.error('Error verifying proof:', error);
+    return NextResponse.json(
+      { success: false, detail: 'Internal Server Error' },
+      { status: 500 }
+    );
   }
 }
