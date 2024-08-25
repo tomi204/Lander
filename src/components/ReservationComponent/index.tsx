@@ -14,7 +14,7 @@ import ReservationPrice from "./ReservationPrice";
 import ReservationMobileComponent from "../ReservationMobileComponent/ReservationMobileComponent";
 import { useAccount } from "wagmi";
 interface ReservationComponentProps {
-  stay: Stay;
+  stay: any ;
 }
 
 const ReservationComponent: FC<ReservationComponentProps> = ({ stay }) => {
@@ -36,8 +36,8 @@ const ReservationComponent: FC<ReservationComponentProps> = ({ stay }) => {
   const [endDate, setEndDate] = useState<Date | null>(null);
 
   const isSameOrigin = useMemo(
-    () => address === stay.author.data.attributes.username,
-    [address, stay.author.data.attributes.username]
+    () => address === stay.owner.name,
+    [address, stay.owner.name]
   );
 
   const disabled = useMemo(
@@ -60,7 +60,7 @@ const ReservationComponent: FC<ReservationComponentProps> = ({ stay }) => {
       required: { value: true, message: "The stay ID is required" },
     });
     register("host", {
-      value: stay.author.data.id,
+      value: stay.owner.id,
       required: { value: true, message: "The host ID is required" },
     });
     register("guestAddress", {
@@ -152,7 +152,7 @@ const ReservationComponent: FC<ReservationComponentProps> = ({ stay }) => {
         <div className="sticky top-28">
           <div className="listingSectionSidebar__wrap shadow-xl ">
             <ReservationPrice
-              price={stay.price}
+              price={stay?.price}
               nights={nights}
               depositAmount={stay.depositAmount}
               cleaningServiceFee={stay.cleaningServiceFee}
