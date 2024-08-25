@@ -1,6 +1,6 @@
 import BgGlassmorphism from "@/components/BgGlassmorphism";
 import { Stay } from "@/data/types";
-import React, {  useEffect} from 'react';
+import React, { useEffect } from "react";
 import SectionGridHasMap from "./listing/SectionGridHasMap";
 import SectionHeroArchivePage from "./(server-components)/SectionHeroArchivePage";
 import CryptoBedSeo from "@/constants/seo";
@@ -10,9 +10,10 @@ import { getClient } from "@/utils/apollo";
 import { homeSettingsConst } from "@/constants/home";
 import { covertApolloResponseToStays } from "@/adapters/stay.adapters";
 import useSWR from "swr";
-import { fetcher } from '@/utils/fetcher';
-import {LoadingSpinner} from "@/components/AnyReactComponent/loadingSpinner";
-import { createClient } from '@/supabase/server';
+import { fetcher } from "@/utils/fetcher";
+import { LoadingSpinner } from "@/components/AnyReactComponent/loadingSpinner";
+import { createClient } from "@/supabase/server";
+import Verify from "@/components/WorldCoin";
 
 export const revalidate = 2;
 
@@ -73,12 +74,10 @@ export const metadata: Metadata = CryptoBedSeo;
 async function PageHome({ searchParams }: PageHomeProps) {
   let items: Stay[] = [];
   const supabase = createClient();
-  const { data: properties } = await supabase.from( "properties" ).select();
+  const { data: properties } = await supabase.from("properties").select();
 
-
-  console.log(properties)
+  console.log(properties);
   // const [properties, setProperties] = useState<Stay[] | null>(null);
-
 
   // useEffect( () => {
   //   const fetchData = async () => {
@@ -101,15 +100,15 @@ async function PageHome({ searchParams }: PageHomeProps) {
 
   // const { data: properties, error } = useSWR( '/api/properties', fetcher );
 
-console.log("properties", properties);
-
+  console.log("properties", properties);
 
   // if ( error ) return <h1 className="flex justify-center items-center h-screen p-5">Failed to load</h1>;
-  if ( !properties ) return (
-    <div className="flex justify-center items-center h-screen p-5">
-      <LoadingSpinner className="" />
-    </div>
-  );  
+  if (!properties)
+    return (
+      <div className="flex justify-center items-center h-screen p-5">
+        <LoadingSpinner className="" />
+      </div>
+    );
 
   try {
     const res = await client.query({
@@ -189,6 +188,7 @@ console.log("properties", properties);
           <BackgroundSection />
           <SectionClientSay />
         </div> */}
+        <Verify />
       </div>
     </main>
   );
