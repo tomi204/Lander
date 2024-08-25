@@ -1,3 +1,4 @@
+import { NextApiRequest, NextApiResponse } from 'next';
 import { VerificationLevel } from "@worldcoin/idkit-core";
 import { verifyCloudProof } from "@worldcoin/idkit-core/backend";
 
@@ -35,5 +36,25 @@ export async function verify(
       attribute: verifyRes.attribute,
       detail: verifyRes.detail,
     };
+  }
+}
+
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
+  if (req.method === 'POST') {
+    const { proof, signal } = req.body as IVerifyRequest;
+
+    try {
+      const result = await verify(proof, signal);
+      res.status(200).json(result);
+    } catch (error) {
+      console.error('Error verifying proof:', error);
+      res.status(500).json({ success: false, detail: 'Internal Server Error' });
+    }
+  } else {
+    res.setHeader('Allow', ['POST']);
+    res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 }
