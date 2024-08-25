@@ -41,16 +41,16 @@ const CheckOutPagePageMain: FC<CheckOutPagePageMainProps> = ({
     }
 
     try {
-      setHashTx(hash);
-      await executeUpdatePayment({
-        data: {
-          data: {
-            status: PaymentStatus.inProcess,
-            txHash: hash,
-          },
-        },
-      });
-      router.push(`/my-bookings`);
+      // setHashTx(hash);
+      // await executeUpdatePayment({
+      //   data: {
+      //     data: {
+      //       status: PaymentStatus.inProcess,
+      //       txHash: hash,
+      //     },
+      //   },
+      // });
+      // router.push(`/my-bookings`);
     } catch (error) {
       console.log(error);
     }
@@ -163,7 +163,7 @@ const CheckOutPagePageMain: FC<CheckOutPagePageMainProps> = ({
 
           <div className="">
             <div className="pt-1">
-              <SentTransactionComponent
+              {/* <SentTransactionComponent
                 disabled={!isValidEmail}
                 paymentId={payment.data.id}
                 txHash={hashTx}
@@ -173,7 +173,7 @@ const CheckOutPagePageMain: FC<CheckOutPagePageMainProps> = ({
                 receiptAddress={payment.data.attributes.depositAddress as Address}
                 onTxSent={onTxSentHandler}
                 onTxError={onTxErrorHandler}
-              />
+              /> */}
               <TransactionDetails transactionId={1} />
               <ContractInteraction
                 disabled={!isValidEmail}
