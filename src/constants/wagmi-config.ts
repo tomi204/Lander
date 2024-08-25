@@ -2,7 +2,7 @@ import { defaultWagmiConfig } from "@web3modal/wagmi/react/config";
 
 import { createStorage } from "wagmi";
 import { cookieStorage, http } from "@wagmi/core";
-import { polygon } from "wagmi/chains";
+import { arbitrum, avalanche, polygon } from "wagmi/chains";
 
 if (!process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID) {
   throw new Error("You need to provide NEXT_PUBLIC_PROJECT_ID env variable");
@@ -19,7 +19,7 @@ const metadata = {
 
 // Create wagmiConfig
 export const wagmiConfig = defaultWagmiConfig({
-  chains: [polygon], // required
+  chains: [polygon, arbitrum, avalanche], // required
   projectId, // required
   metadata, // required
   ssr: true,

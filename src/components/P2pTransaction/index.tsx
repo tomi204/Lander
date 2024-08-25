@@ -18,8 +18,9 @@ interface ContractInteractionProps {
   sellerAddress: Address;
   onTxSent?: (hash: string) => void;
   onTxError?: (error: any) => void;
+  transactionId?: number;
 }
-
+////alerta dagger dex
 const ContractInteraction: FC<ContractInteractionProps> = ({
   onTxError,
   onTxSent,
