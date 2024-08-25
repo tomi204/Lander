@@ -16,7 +16,7 @@ export default async function handler(req, res) {
                     { user_id, token_amount, start_time, end_time },
                 ]);
 
-            if (error) throw error;
+    
 
             res.status(201).json(stake[0]);
         } catch (error) {
