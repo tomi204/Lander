@@ -5,6 +5,9 @@ import { StrapiData } from "@/interfaces/Strapi";
 import { extractData } from "@/utils/strapiParser";
 import { AxiosPromise } from "axios";
 import { covertToStays } from "@/adapters/stay.adapters";
+import supabase from '@/supabase/client';
+import { cache } from 'react';
+
 
 export const findListings = async (
   params: Record<string, any>
@@ -41,3 +44,27 @@ export const findStayById = async (id: string): Promise<Stay> => {
 
   return extractData(res) as Stay;
 };
+
+export const findPropertyById = cache(async (id: string): Promise<Stay> => {
+  const { data, error } = await supabase
+    .from('properties')
+    .select(`
+      *,
+      owner:owner_id (
+        id,
+        name,
+        email
+      )
+    `)
+    .eq('id', id)
+    .single();
+
+  if (error) {
+    throw new Error(error.message);
+  } else {
+    console.log(data)
+  }
+
+  return data;
+});
+

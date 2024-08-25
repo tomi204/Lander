@@ -6,7 +6,7 @@ import BtnLikeIcon from "@/components/BtnLikeIcon";
 import SaleOffBadge from "@/components/SaleOffBadge";
 import Badge from "@/shared/Badge";
 import Link from "next/link";
-import Image from "next/image";
+
 export interface StayCard2Props {
   className?: string;
   data: Stay;
@@ -19,45 +19,29 @@ const StayCard2: FC<StayCard2Props> = ({
   data,
 }) => {
   const {
-    main_image,
     galleryImgs,
     address,
     name,
     bedrooms,
     like,
-    title,
     saleOff,
     isAds,
     price,
     reviewStart,
     reviewCount,
     id,
-    type,
-    num_rooms,
-    location
-
   } = data;
-
   const listingCategory = data?.listingCategory?.data?.attributes;
   const renderSliderGallery = () => {
     return (
       <div className="relative w-full">
-        {/* <GallerySlider
+        <GallerySlider
           uniqueID={`StayCard2_${id}`}
           ratioClass="aspect-w-12 aspect-h-11"
           galleryImgs={galleryImgs}
           imageClass="rounded-lg"
           href={`/stay/detail/${data.id}`}
-        /> */}
-        <Image
-        width={500}
-        height={400}
-          alt={'Gallery Image'}
-          src= {main_image || 'Gallery Image'} // Assuming galleryImgs may have an 'alt' property
-          className="rounded-lg w-full"
         />
-
-
         {/* TODO: Implement later */}
         {/* <BtnLikeIcon isLiked={like} className="absolute right-3 top-3 z-[1]" /> */}
         {saleOff && <SaleOffBadge className="absolute left-3 top-3" />}
@@ -70,7 +54,7 @@ const StayCard2: FC<StayCard2Props> = ({
       <div className={size === "default" ? "mt-3 space-y-3" : "mt-2 space-y-2"}>
         <div className="space-y-2">
           <span className="text-sm text-neutral-500 dark:text-neutral-400">
-            {type} · {num_rooms} beds
+            {listingCategory.name} · {bedrooms} beds
           </span>
           <div className="flex items-center space-x-2">
             {isAds && <Badge name="ADS" color="green" />}
@@ -79,7 +63,7 @@ const StayCard2: FC<StayCard2Props> = ({
                 size === "default" ? "text-base" : "text-base"
               }`}
             >
-              <span className="line-clamp-1">{title}</span>
+              <span className="line-clamp-1">{name}</span>
             </h2>
           </div>
           <div className="flex items-center text-neutral-500 dark:text-neutral-400 text-sm space-x-1.5">
@@ -104,7 +88,7 @@ const StayCard2: FC<StayCard2Props> = ({
                 />
               </svg>
             )}
-            <span className="">{location}</span>
+            <span className="">{address}</span>
           </div>
         </div>
         <div className="w-14 border-b border-neutral-100 dark:border-neutral-800"></div>

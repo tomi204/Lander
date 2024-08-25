@@ -66,7 +66,18 @@ export type TwMainColor =
 //
 export interface Stay {
   id: string;
-  author: StrapiData<User>;
+  owner_id?: string;
+  title: string;
+  description?: string;
+  location?: string;
+  price?: number;
+  square_meters?: number;
+  num_rooms?: number;
+  num_bathrooms?: number;
+  main_image?: string;
+  reserve_amount?: number;
+  max_reservation_time?: string;
+  author?: StrapiData<User>;
   date: string;
   href: Route<string>;
   name: string;
@@ -78,18 +89,16 @@ export interface Stay {
   reviewCount: number;
   like: boolean;
   galleryImgs: MediaMultiple;
-  price: number;
   listingCategory: StrapiData<TaxonomyType>;
-  maxGuests: number;
+  maxGuests?: number;
   kitchens: number;
   beds: number;
   bedrooms: number;
   bathrooms: number;
   saleOff?: string | null;
   isAds: boolean | null;
-  lat: number;
-  lng: number;
-  description: string;
+  lat?: number;
+  lng?: number;
   acreage: number;
   excludeDates?: string[];
   reservedDates?: string[];
@@ -99,7 +108,15 @@ export interface Stay {
   availableFrom?: string;
   cleaningServiceFee?: number;
   depositAmount?: number;
+  type?: type;
 }
+enum type {
+  Cabin = 'Cabin',
+  Office = 'Office',
+  Apartment = 'Apartment',
+  House = 'House'
+}
+
 
 export interface Country {
   id: string;

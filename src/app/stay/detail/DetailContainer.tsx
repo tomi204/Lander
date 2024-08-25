@@ -25,9 +25,17 @@ export interface StayDetailContainerProps {
 }
 
 const StayDetailContainer: FC<StayDetailContainerProps> = ({ stay }) => {
-  const listingCategory = useMemo(() => {
-    return stay.listingCategory.data;
-  }, [stay.listingCategory.data]);
+  // const listingCategory = useMemo(() => {
+  //   return stay.listingCategory.data;
+  // }, [stay.listingCategory.data]);
+
+
+
+
+console.log(stay)
+
+
+
 
   const [isOpenModalAmenities, setIsOpenModalAmenities] = useState(false);
   const [showModalImageGallery, setShowModalImageGallery] = useState(false);
@@ -55,13 +63,13 @@ const StayDetailContainer: FC<StayDetailContainerProps> = ({ stay }) => {
       <div className="listingSection__wrap !space-y-6">
         {/* 1 */}
         <div className="flex justify-between items-center">
-          <Badge name={listingCategory.attributes.name} />
+          <Badge name={stay?.type} />
           {/* <LikeSaveBtns /> */}
         </div>
 
         {/* 2 */}
         <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold">
-          {stay.name}
+          {stay?.title}
         </h2>
 
         {/* 3 */}
@@ -70,7 +78,7 @@ const StayDetailContainer: FC<StayDetailContainerProps> = ({ stay }) => {
           <span>·</span> */}
           <span>
             <i className="las la-map-marker-alt"></i>
-            <span className="ml-1">{stay.address}</span>
+            <span className="ml-1">{stay?.location}</span>
           </span>
         </div>
 
@@ -93,28 +101,28 @@ const StayDetailContainer: FC<StayDetailContainerProps> = ({ stay }) => {
           <div className="flex items-center space-x-3 ">
             <i className="las la-user text-2xl"></i>
             <span className="">
-              {stay.maxGuests ?? 0}{" "}
+              {stay?.maxGuests ?? 0}{" "}
               <span className="hidden md:inline-block">guests</span>
             </span>
           </div>
           <div className="flex items-center space-x-3">
             <i className="las la-bed text-2xl"></i>
             <span className=" ">
-              {stay.bedrooms ?? 0}{" "}
+              {stay?.beds ?? 0}{" "}
               <span className="hidden md:inline-block">beds</span>
             </span>
           </div>
           <div className="flex items-center space-x-3">
             <i className="las la-bath text-2xl"></i>
             <span className=" ">
-              {stay.bathrooms ?? 0}{" "}
+              {stay?.num_bathrooms ?? 0}{" "}
               <span className="hidden md:inline-block">baths</span>
             </span>
           </div>
           <div className="flex items-center space-x-3">
             <i className="las la-door-open text-2xl"></i>
             <span className=" ">
-              {stay.bedrooms ?? 0}{" "}
+              {stay?.num_rooms ?? 0}{" "}
               <span className="hidden md:inline-block">bedrooms</span>
             </span>
           </div>
@@ -126,12 +134,13 @@ const StayDetailContainer: FC<StayDetailContainerProps> = ({ stay }) => {
   const renderSection2 = () => {
     return (
       <div className="listingSection__wrap">
-        <h2 className="text-2xl font-semibold">Stay information</h2>
+        <h2 className="text-2xl font-semibold"> Information</h2>
         <div className="w-14 border-b border-neutral-200 dark:border-neutral-700"></div>
         <div className="text-neutral-6000 dark:text-neutral-300">
-          <ReactMarkdown rehypePlugins={[rehypeHighlight]}>
+          <p>{stay?.description}</p>
+          {/* <ReactMarkdown rehypePlugins={[rehypeHighlight]}>
             {stay.description}
-          </ReactMarkdown>
+          </ReactMarkdown> */}
         </div>
       </div>
     );
@@ -435,7 +444,7 @@ const StayDetailContainer: FC<StayDetailContainerProps> = ({ stay }) => {
         <div>
           <h2 className="text-2xl font-semibold">Location</h2>
           <span className="block mt-2 text-neutral-500 dark:text-neutral-400">
-            {stay.address}
+            {stay?.address}
           </span>
         </div>
         <div className="w-14 border-b border-neutral-200 dark:border-neutral-700" />
@@ -449,7 +458,7 @@ const StayDetailContainer: FC<StayDetailContainerProps> = ({ stay }) => {
               loading="lazy"
               allowFullScreen
               referrerPolicy="no-referrer-when-downgrade"
-              src={`https://www.google.com/maps/embed/v1/place?key=${process.env.NEXT_PUBLIC_GOOGLE_API_KEY}&q=${stay.lat},${stay.lng}`}
+              src={`https://www.google.com/maps/embed/v1/place?key=${process.env.NEXT_PUBLIC_GOOGLE_API_KEY}&q=${stay?.lat},${stay?.lng}`}
             ></iframe>
           </div>
         </div>
@@ -517,7 +526,19 @@ const StayDetailContainer: FC<StayDetailContainerProps> = ({ stay }) => {
       {/*  HEADER */}
       <header className="rounded-md sm:rounded-xl">
         <div className="relative grid grid-cols-3 sm:grid-cols-4 gap-1 sm:gap-2">
-          {stay.galleryImgs.data?.length && (
+
+{ stay?.main_image &&(
+          	<div className="space-y-4">
+							<Image
+							alt="image"
+							className="w-full h-auto"
+							width="1000"
+							height="1000"
+							src={stay?.main_image}
+						/>
+            
+            </div>)}
+          {/* {stay.galleryImgs.data?.length && (
             <div
               className="col-span-2 row-span-3 sm:row-span-2 relative rounded-md sm:rounded-xl overflow-hidden cursor-pointer"
               onClick={() => handleOpenModalImageGallery()}
@@ -538,8 +559,8 @@ const StayDetailContainer: FC<StayDetailContainerProps> = ({ stay }) => {
               />
               <div className="absolute inset-0 bg-neutral-900 bg-opacity-20 opacity-0 hover:opacity-100 transition-opacity"></div>
             </div>
-          )}
-          {stay.galleryImgs.data
+          )} */}
+          {/* {stay.galleryImgs.data
             ?.filter((_, i) => i >= 1 && i < 5)
             .map((item, index) => (
               <div
@@ -560,37 +581,37 @@ const StayDetailContainer: FC<StayDetailContainerProps> = ({ stay }) => {
                     alt=""
                     sizes="400px"
                   />
-                </div>
+                </div> */}
 
                 {/* OVERLAY */}
-                <div
+                {/* <div
                   className="absolute inset-0 bg-neutral-900 bg-opacity-20 opacity-0 hover:opacity-100 transition-opacity cursor-pointer"
                   onClick={() => handleOpenModalImageGallery(item.id)}
                 />
-              </div>
-            ))}
+              </div>   ))}*/}
+      
 
-          <button
+          {/* <button
             className="absolute hidden md:flex md:items-center md:justify-center left-3 bottom-3 px-4 py-2 rounded-xl bg-neutral-100 text-neutral-500 hover:bg-neutral-200 z-10"
             onClick={() => handleOpenModalImageGallery()}
           >
-            <Squares2X2Icon className="w-5 h-5" />
+            <Squares2X2Icon className="w-5 h-5" /> */}
             {/* TODO: add gallery modal */}
-            <span className="ml-2 text-neutral-800 text-sm font-medium">
+            {/* <span className="ml-2 text-neutral-800 text-sm font-medium">
               Show all photos
             </span>
-          </button>
+          </button> */}
         </div>
       </header>
 
       {/* MAIN */}
       <main className="relative lg:z-10 mt-11 flex flex-col lg:flex-row ">
-        <ModalImageGallery
+        {/* <ModalImageGallery
           imageId={currentImageId}
           isShowModal={showModalImageGallery}
           onClose={handleCloseModalImageGallery}
           images={stay.galleryImgs}
-        />
+        /> */}
         {/* CONTENT */}
         <div className="w-full lg:w-3/5 xl:w-2/3 space-y-8 lg:space-y-10 lg:pr-10">
           {renderSection1()}
