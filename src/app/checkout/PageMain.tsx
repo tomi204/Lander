@@ -11,6 +11,8 @@ import CoinSymbolComponent from "@/components/CoinSymbolComponent";
 import { useRouter } from "next/navigation";
 import { Address } from "viem";
 import CheckOutEmailForm from "@/components/CheckOutEmailForm/CheckOutEmailForm";
+import ContractInteraction from "@/components/P2pTransaction";
+import TransactionDetails from "@/components/transactiondetails";
 
 export interface CheckOutPagePageMainProps {
   book: Book;
@@ -32,23 +34,23 @@ const CheckOutPagePageMain: FC<CheckOutPagePageMainProps> = ({
   const [isValidEmail, setIsValidEmail] = useState<boolean>(true);
 
   const [{}, executeUpdatePayment] = usePaymentUpdate(book.payment.data.id);
-
+  ////alerta dagger dex
   const onTxSentHandler = async (hash: string) => {
     if (!hash) {
       return;
     }
 
     try {
-      setHashTx(hash);
-      await executeUpdatePayment({
-        data: {
-          data: {
-            status: PaymentStatus.inProcess,
-            txHash: hash,
-          },
-        },
-      });
-      router.push(`/my-bookings`);
+      // setHashTx(hash);
+      // await executeUpdatePayment({
+      //   data: {
+      //     data: {
+      //       status: PaymentStatus.inProcess,
+      //       txHash: hash,
+      //     },
+      //   },
+      // });
+      // router.push(`/my-bookings`);
     } catch (error) {
       console.log(error);
     }
@@ -121,7 +123,6 @@ const CheckOutPagePageMain: FC<CheckOutPagePageMainProps> = ({
       </div>
     );
   };
-
   const renderMain = () => {
     return (
       <div className="w-full flex flex-col rounded-2xl border border-neutral-200 dark:border-neutral-700 space-y-8 px-0 sm:p-6 sm:mb-16 sm:mt-10 xl:p-8">
@@ -161,7 +162,7 @@ const CheckOutPagePageMain: FC<CheckOutPagePageMainProps> = ({
 
           <div className="">
             <div className="pt-1">
-              <SentTransactionComponent
+              {/* <SentTransactionComponent
                 disabled={!isValidEmail}
                 paymentId={payment.data.id}
                 txHash={hashTx}
@@ -171,6 +172,17 @@ const CheckOutPagePageMain: FC<CheckOutPagePageMainProps> = ({
                 receiptAddress={payment.data.attributes.depositAddress as Address}
                 onTxSent={onTxSentHandler}
                 onTxError={onTxErrorHandler}
+                ////alerta dagger dex aca abajo el componente de contract interaction
+
+              /> */}
+              <TransactionDetails transactionId={1} />
+              <ContractInteraction
+                disabled={!isValidEmail}
+                amount={payment.data.attributes.amount}
+                onTxSent={onTxSentHandler}
+                sellerAddress={payment.data.attributes.depositAddress as Address}
+                onTxError={onTxErrorHandler}
+                transactionId={1}
               />
             </div>
           </div>

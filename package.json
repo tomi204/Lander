@@ -39,6 +39,8 @@
     "clsx": "^2.1.1",
     "date-fns": "^2.30.0",
     "eslint": "8.38.0",
+    "@worldcoin/idkit": "^1.2.2",
+    "@worldcoin/idkit-core": "^1.2.2",
     "eslint-config-next": "^13.3.0",
     "ethers": "^6.10.0",
     "framer-motion": "^10.11.2",
