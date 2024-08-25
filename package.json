@@ -13,7 +13,13 @@
     "@apollo/experimental-nextjs-app-support": "^0.4.2",
     "@headlessui/react": "^1.7.18",
     "@heroicons/react": "^2.0.17",
+
     "@radix-ui/react-label": "^2.1.0",
+
+    "@radix-ui/react-avatar": "^1.1.0",
+    "@radix-ui/react-scroll-area": "^1.1.0",
+    "@shadcn/ui": "^0.0.4",
+
     "@supabase/ssr": "^0.5.0",
     "@supabase/supabase-js": "^2.45.2",
     "@tailwindcss/aspect-ratio": "^0.4.2",
@@ -42,6 +48,7 @@
     "latest": "^0.2.0",
     "lodash": "^4.17.21",
     "lokijs": "^1.5.12",
+    "lucide-react": "^0.435.0",
     "next": "^13.4.5",
     "pino-pretty": "^10.2.0",
     "rc-slider": "^10.1.1",
