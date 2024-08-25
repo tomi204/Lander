@@ -27,7 +27,7 @@ const SectionGridHasMap: FC<SectionGridHasMapProps> = ({ items , properties}) =>
         {/* CARDS */}
         <div className="min-h-screen w-full flex-shrink-0 xl:px-8 ">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-x-5 2xl:gap-x-6 gap-y-8">
-
+{/* 
 
             {properties.map((item:any) => (
               <div
@@ -37,9 +37,9 @@ const SectionGridHasMap: FC<SectionGridHasMapProps> = ({ items , properties}) =>
               >
                 <StayCard2 data={{ ...item, id: item.id }} />
               </div>
-            ))}
+            ))} */}
             
-            {/* {items.map((item) => (
+            {items.map((item) => (
               <div
                 key={item.id}
                 onMouseEnter={() => setCurrentHoverID((_) => item.id)}
@@ -47,7 +47,7 @@ const SectionGridHasMap: FC<SectionGridHasMapProps> = ({ items , properties}) =>
               >
                 <StayCard2 data={{ ...item, id: item.id }} />
               </div>
-            ))} */}
+            ))}
           </div>
           {/* TODO: add pagination */}
           {/* <div className="flex mt-16 justify-center items-center">

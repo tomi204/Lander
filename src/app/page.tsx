@@ -13,7 +13,7 @@ import useSWR from "swr";
 import { fetcher } from "@/utils/fetcher";
 import { LoadingSpinner } from "@/components/AnyReactComponent/loadingSpinner";
 import { createClient } from "@/supabase/server";
-// import Verify from "@/components/WorldCoin";
+
 
 export const revalidate = 2;
 

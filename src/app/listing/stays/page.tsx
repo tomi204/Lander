@@ -16,7 +16,7 @@ export default async function ListingStayMapPage({
   searchParams,
 }: ListingStayMapPageProps) {
   // TODO: Add paginated results
-  let items: Stay[] = [];
+  let items: any;
   try {
     // TODO: change this implementation to recibe paginated results
     items = await findListings({
@@ -36,10 +36,10 @@ export default async function ListingStayMapPage({
     console.log("error", error);
     notFound();
   }
-
+const properties = items.map((item:any) => item.attributes);
   return (
     <div className="container pb-6 2xl:pl-10 xl:pr-0 xl:max-w-none">
-      <SectionGridHasMap items={items} />
+      <SectionGridHasMap properties={properties}  items={items} />
     </div>
   );
 }
