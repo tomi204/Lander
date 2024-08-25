@@ -100,7 +100,7 @@ const ModalReservationMobile: FC<ModalReservationMobileProps> = ({
                         </span>
                       </div>
                       <ReservationPrice
-                        price={stay.price}
+                        price={stay?.price ?? 0}
                         nights={nights}
                         depositAmount={stay.depositAmount}
                         cleaningServiceFee={stay.cleaningServiceFee}
