@@ -118,13 +118,11 @@ export default function Component() {
               <Star className="h-5 w-5 mr-2" /> No hay evaluaciones todavía
             </li>
           </ul>
-          {/* Reservation Details Accordion */}
+          {/* Phone Number Button */}
           <div className="p-4">
-            <div className="space-y-4 relative before:absolute before:left-1.5 before:top-1 before:bottom-1 before:w-[1px] before:bg-muted-foreground/20">
-              <button className="w-full flex justify-between items-center p-2 border rounded">
-                <span>CONTACT ME</span>
+              <button variant="outline" className="w-full p-2 border rounded">
+                <span>Phone Number</span>
               </button>
-            </div>
           </div>
         </div>
         {/* Reservation Details Accordion */}
