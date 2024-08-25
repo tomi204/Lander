@@ -19,7 +19,7 @@ interface ContractInteractionProps {
   onTxSent?: (hash: string) => void;
   onTxError?: (error: any) => void;
 }
-
+////alerta dagger dex
 const ContractInteraction: FC<ContractInteractionProps> = ({
   onTxError,
   onTxSent,

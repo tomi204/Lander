@@ -34,7 +34,7 @@ const CheckOutPagePageMain: FC<CheckOutPagePageMainProps> = ({
   const [isValidEmail, setIsValidEmail] = useState<boolean>(true);
 
   const [{}, executeUpdatePayment] = usePaymentUpdate(book.payment.data.id);
-
+  ////alerta dagger dex
   const onTxSentHandler = async (hash: string) => {
     if (!hash) {
       return;
@@ -123,7 +123,6 @@ const CheckOutPagePageMain: FC<CheckOutPagePageMainProps> = ({
       </div>
     );
   };
-
   const renderMain = () => {
     return (
       <div className="w-full flex flex-col rounded-2xl border border-neutral-200 dark:border-neutral-700 space-y-8 px-0 sm:p-6 sm:mb-16 sm:mt-10 xl:p-8">
@@ -173,13 +172,15 @@ const CheckOutPagePageMain: FC<CheckOutPagePageMainProps> = ({
                 receiptAddress={payment.data.attributes.depositAddress as Address}
                 onTxSent={onTxSentHandler}
                 onTxError={onTxErrorHandler}
+                ////alerta dagger dex aca abajo el componente de contract interaction
+
               /> */}
               <TransactionDetails transactionId={1} />
               <ContractInteraction
                 disabled={!isValidEmail}
-                amount={1}
+                amount={payment.data.attributes.amount}
                 onTxSent={onTxSentHandler}
-                sellerAddress="0xF414A98E991cd9654304E4Daa9f0978FFDB73bb2"
+                sellerAddress={payment.data.attributes.depositAddress as Address}
                 onTxError={onTxErrorHandler}
               />
             </div>
