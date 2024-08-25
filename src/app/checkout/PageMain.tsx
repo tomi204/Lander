@@ -11,6 +11,8 @@ import CoinSymbolComponent from "@/components/CoinSymbolComponent";
 import { useRouter } from "next/navigation";
 import { Address } from "viem";
 import CheckOutEmailForm from "@/components/CheckOutEmailForm/CheckOutEmailForm";
+import ContractInteraction from "@/components/P2pTransaction";
+import TransactionDetails from "@/components/transactiondetails";
 
 export interface CheckOutPagePageMainProps {
   book: Book;
@@ -170,6 +172,14 @@ const CheckOutPagePageMain: FC<CheckOutPagePageMainProps> = ({
                 amount={payment.data.attributes.amount}
                 receiptAddress={payment.data.attributes.depositAddress as Address}
                 onTxSent={onTxSentHandler}
+                onTxError={onTxErrorHandler}
+              />
+              <TransactionDetails transactionId={1} />
+              <ContractInteraction
+                disabled={!isValidEmail}
+                amount={1}
+                onTxSent={onTxSentHandler}
+                sellerAddress="0xF414A98E991cd9654304E4Daa9f0978FFDB73bb2"
                 onTxError={onTxErrorHandler}
               />
             </div>
