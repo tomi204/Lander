@@ -14,9 +14,10 @@ import TabFilters from "./TabFilters";
 
 export interface SectionGridHasMapProps {
   items: Stay[];
+  properties:any;
 }
 
-const SectionGridHasMap: FC<SectionGridHasMapProps> = ({ items }) => {
+const SectionGridHasMap: FC<SectionGridHasMapProps> = ({ items , properties}) => {
   const [currentHoverID, setCurrentHoverID] = useState<string | number>(-1);
   const [showFullMapFixed, setShowFullMapFixed] = useState(false);
 
@@ -26,7 +27,9 @@ const SectionGridHasMap: FC<SectionGridHasMapProps> = ({ items }) => {
         {/* CARDS */}
         <div className="min-h-screen w-full flex-shrink-0 xl:px-8 ">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-x-5 2xl:gap-x-6 gap-y-8">
-            {items.map((item) => (
+
+
+            {properties.map((item:any) => (
               <div
                 key={item.id}
                 onMouseEnter={() => setCurrentHoverID((_) => item.id)}
@@ -35,6 +38,16 @@ const SectionGridHasMap: FC<SectionGridHasMapProps> = ({ items }) => {
                 <StayCard2 data={{ ...item, id: item.id }} />
               </div>
             ))}
+            
+            {/* {items.map((item) => (
+              <div
+                key={item.id}
+                onMouseEnter={() => setCurrentHoverID((_) => item.id)}
+                onMouseLeave={() => setCurrentHoverID((_) => -1)}
+              >
+                <StayCard2 data={{ ...item, id: item.id }} />
+              </div>
+            ))} */}
           </div>
           {/* TODO: add pagination */}
           {/* <div className="flex mt-16 justify-center items-center">

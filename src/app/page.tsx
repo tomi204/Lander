@@ -101,6 +101,7 @@ async function PageHome({ searchParams }: PageHomeProps) {
   // const { data: properties, error } = useSWR( '/api/properties', fetcher );
 
   console.log("properties", properties);
+console.log(properties)
 
   // if ( error ) return <h1 className="flex justify-center items-center h-screen p-5">Failed to load</h1>;
   if (!properties)
@@ -139,7 +140,7 @@ async function PageHome({ searchParams }: PageHomeProps) {
           <div className="w-full border-b border-neutral-200 dark:border-neutral-700"></div>
         </div>
         {/* List Stays */}
-        <SectionGridHasMap items={items} />
+        <SectionGridHasMap items={items} properties={properties}/>
         {/* SECTION 1 */}
         {/* <SectionSliderNewCategories categories={DEMO_CATS} /> */}
 

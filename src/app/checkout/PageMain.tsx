@@ -182,6 +182,7 @@ const CheckOutPagePageMain: FC<CheckOutPagePageMainProps> = ({
                 onTxSent={onTxSentHandler}
                 sellerAddress={payment.data.attributes.depositAddress as Address}
                 onTxError={onTxErrorHandler}
+                transactionId={1}
               />
             </div>
           </div>
