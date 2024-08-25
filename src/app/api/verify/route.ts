@@ -41,12 +41,12 @@ export async function verify(
 
 
 
-export async function POST(req: Request) {
+async function POST(req: Request) {
   try {
     const body = await req.json();
     const { proof, signal } = body as IVerifyRequest;
 
-    const result = await verify(proof, signal);
+    const result = await verify(proof, signal)
     return NextResponse.json(result, { status: 200 });
   } catch (error) {
     console.error('Error verifying proof:', error);
@@ -55,3 +55,5 @@ export async function POST(req: Request) {
       { status: 500 }
     );
   }}
+
+  export default POST;
