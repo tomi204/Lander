@@ -1,10 +1,17 @@
+"use client"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Search, Video, Phone, LayoutGrid, CheckCircle, HourglassIcon, FileCheck, Rocket, ChevronUp } from "lucide-react"
+import { Search, Video, Phone, LayoutGrid, CheckCircle, HourglassIcon, FileCheck, Rocket, X, Briefcase, Star, Airbnb, DollarSign, Calendar, Users, LogIn, LogOut,  ChevronUp, ChevronDown } from "lucide-react"
+import { useState } from "react"
 
 export default function Component() {
+  const [isOpen, setIsOpen] = useState(false)
+  // Función para alternar el acordeón
+  const toggleAccordion = () => {
+    setIsOpen(!isOpen)
+  }
   return (
     <div className="flex h-screen bg-background text-foreground">
       {/* Sidebar */}
@@ -21,11 +28,11 @@ export default function Component() {
         <ScrollArea className="flex-1">
           {/* Conversation list items */}
           {[
-            { name: "Micha Shalev", role: "Junior web analyst | Google ...", initials: "MS" },
-            { name: "Brycen C. EC I...", role: "Creative Writing and Data G...", initials: "BC" },
-            { name: "Leandro Conti", role: "You: nice, de una broo!!", initials: "LC" },
-            { name: "Joel Kraus", role: "Google analytics report setup", initials: "JK" },
-            { name: "Jimmy Jun", role: "Website Revamp Week One ...", initials: "JJ" },
+            { name: "Micha Shalev", role: "Apt. address - city", initials: "MS" },
+            { name: "Brycen C. EC I...", role: "Apt. address - city", initials: "BC" },
+            { name: "Leandro Conti", role: "Apt. address - city", initials: "LC" },
+            { name: "Joel Kraus", role: "Apt. address - city", initials: "JK" },
+            { name: "Jimmy Jun", role: "Apt. address - city", initials: "JJ" },
           ].map((item, i) => (
             <div key={i} className="flex items-center p-4 hover:bg-muted cursor-pointer">
               <Avatar className="h-10 w-10">
@@ -52,7 +59,7 @@ export default function Component() {
             </Avatar>
             <div className="ml-4">
               <h2 className="text-lg font-semibold">Joel Kraus</h2>
-              <p className="text-sm text-muted-foreground">Google analytics report setup</p>
+              <p className="text-sm text-muted-foreground">Apt. address - city</p>
             </div>
           </div>
           <div className="flex space-x-2">
@@ -99,9 +106,59 @@ export default function Component() {
         <div className="p-4 border-b">
           <h3 className="font-semibold">Joel Kraus</h3>
           <p className="text-sm text-muted-foreground">9:34 AM EDT (1 h behind)</p>
+          {/* Información adicional */}
+          <ul className="space-y-2 mt-4">
+            <li className="flex items-center">
+              <CheckCircle className="h-5 w-5 mr-2" /> Identidad verificada
+            </li>
+            <li className="flex items-center">
+              <Briefcase className="h-5 w-5 mr-2" /> 1 viaje
+            </li>
+            <li className="flex items-center">
+              <Star className="h-5 w-5 mr-2" /> No hay evaluaciones todavía
+            </li>
+          </ul>
+          {/* Phone Number Button */}
+          <div className="p-4">
+              <button variant="outline" className="w-full p-2 border rounded">
+                <span>Phone Number</span>
+              </button>
+          </div>
         </div>
+        {/* Reservation Details Accordion */}
         <div className="p-4">
-          <Button variant="outline" className="w-full">View proposal</Button>
+          <div className="space-y-4 relative before:absolute before:left-1.5 before:top-1 before:bottom-1 before:w-[1px] before:bg-muted-foreground/20">
+            <button onClick={toggleAccordion} className="w-full flex justify-between items-center p-2 border rounded">
+              <span>Reservation Details</span>
+              {isOpen ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+            </button>
+            {isOpen && (
+              <ul className="mt-2 space-y-1">
+                <li><strong>Huéspedes:</strong> 2 adultos</li>
+                <li><strong>Check-in:</strong> Mañana</li>
+                <li><strong>Check-out:</strong> lun, 26 ago. 2024</li>
+                <li><strong>Fecha de la reserva:</strong> lun, 1 jul. 2024</li>
+                <li><strong>Código de confirmación:</strong> HMZKSFSQT8</li>
+              </ul>
+            )}
+          </div>  
+        </div>
+        {/* Payment Details Accordion */}
+        <div className="p-4">
+          <div className="space-y-4 relative before:absolute before:left-1.5 before:top-1 before:bottom-1 before:w-[1px] before:bg-muted-foreground/20">
+            <button onClick={toggleAccordion} className="w-full flex justify-between items-center p-2 border rounded">
+              <span>Payment Details</span>
+              {isOpen ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+            </button>
+            {isOpen && (
+              <ul className="mt-2 space-y-1">
+                <li><strong>El viajero pagó:</strong> $16,80 por 2 noches $33,60</li>
+                <li><strong>Tarifa por servicio para huéspedes:</strong> $4,74</li>
+                <li><strong>Total USDT:</strong> $38,34</li>
+              </ul>
+            )}
+          </div>  
+
         </div>
         <div className="p-4">
           <div className="flex items-center justify-between mb-4">
@@ -114,7 +171,7 @@ export default function Component() {
             <div className="flex items-start">
               <CheckCircle className="w-4 h-4 mr-3 text-primary shrink-0" />
               <div>
-                <p className="text-sm font-medium">Proposal submitted</p>
+                <p className="text-sm font-medium">Reserved for</p>
                 <p className="text-xs text-muted-foreground">June 24</p>
               </div>
             </div>
