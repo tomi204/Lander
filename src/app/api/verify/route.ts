@@ -38,6 +38,9 @@ async function verify(
     };
   }
 }
+
+
+
 export async function POST(req: Request) {
   try {
     const body = await req.json();
@@ -51,4 +54,4 @@ export async function POST(req: Request) {
       { success: false, detail: 'Internal Server Error' },
       { status: 500 }
     );
-  }
+  }}
