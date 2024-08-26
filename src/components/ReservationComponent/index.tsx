@@ -14,7 +14,7 @@ import ReservationPrice from "./ReservationPrice";
 import ReservationMobileComponent from "../ReservationMobileComponent/ReservationMobileComponent";
 import { useAccount } from "wagmi";
 import supabase from "@/supabase/client";
-import { TicketX } from "lucide-react";
+import { DatabaseBackup, TicketX } from "lucide-react";
 
 
 interface ReservationPriceProps {
@@ -41,6 +41,7 @@ interface ReservationComponentProps {
 
 interface Transaction {
   id: string;
+  book_id: string;
   amount: number;
   entrance_date: string;
   departure_date: string;
@@ -60,10 +61,10 @@ const ReservationComponent: any = ( { stay }: ReservationComponentProps ) => {
   const { isAuth, isAuthenticating } = useAuth();
   const [{ data, loading, error }, executeBookingPost] = useCreateBooking();
   const { address } = useAccount();
-  const [transactions, setTransactions] = useState<Transaction[]>( [] );
+  const [transactions, setTransactions] = useState<Transaction>( {} as Transaction );
   const [startDate, setStartDate] = useState<Date | null>( null );
   const [endDate, setEndDate] = useState<Date | null>( null );
-  
+
   const price = stay?.price;
   const depositAmount = stay?.depositAmount;
   const cleaningServiceFee = stay?.cleaningServiceFee;
@@ -71,31 +72,38 @@ const ReservationComponent: any = ( { stay }: ReservationComponentProps ) => {
     price * nights + ( cleaningServiceFee ?? 0 ) + ( depositAmount ?? 0 )
   );
 
-  const [newTransaction, setNewTransaction] = useState<Partial<Transaction>>( {
-    amount: totalPrice,
-    entrance_date: startDate ? startDate.toISOString() : undefined,
-  departure_date: endDate ? endDate.toISOString() : undefined,
-    buyer_wallet: address,
-    owner_id: stay.owner.id,
-    property_id: stay.id,
-
-  } );
+  const [newTransaction, setNewTransaction] = useState<Partial<Transaction>>();
 
   const [isModalOpen, setIsModalOpen] = useState( false );
   const [selectedNetwork, setSelectedNetwork] = useState<'polygon' | 'arbitrum' | 'avalanche' | null>( null );
 
-  useEffect( () => {
-    fetchTransactions();
-  }, [] );
+  // useEffect( () => {
+  //   fetchTransactions();
+  // }, [] );
 
-  const fetchTransactions = async () => {
-    const { data, error } = await supabase
-      .from( 'transactions' )
-      .select( '*' );
-
-    if ( error ) console.error( 'Error fetching transactions:', error );
-    else setTransactions( data || [] );
-  };
+  // const fetchTransactions = async () => {
+  //   const { data, error } = await supabase
+  //     .from( 'transactions' )
+  //     .select( `
+  //     *,
+  //     owner:owner_id (
+  //       id,
+  //       name,
+  //       email
+  //     )
+  //     property:property_id (
+      
+  //       *    
+      
+  //     )  
+  //   ` );
+  //   console.log( data );
+  //   if ( error ) {
+  //     console.error( 'Error fetching transactions:', error );
+  //   } else {
+  //     setTransactions( data);
+  //   }
+  // };
 
   const handleInputChange = ( e: React.ChangeEvent<HTMLInputElement> ) => {
     const { name, value } = e.target;
@@ -115,33 +123,44 @@ const ReservationComponent: any = ( { stay }: ReservationComponentProps ) => {
     setIsModalOpen( true );
   };
 
-  const handlePaymentChoice = async ( network: 'polygon' | 'arbitrum' | 'avalanche' ) => {
-    setSelectedNetwork( network );
-    setIsModalOpen( false );
-
-
-    //if network 
-
+  const handlePayment = async () => {
     const transaction = {
-      ...newTransaction,
+      amount: totalPrice,
+      entrance_date: startDate ? startDate.toISOString() : undefined,
+      departure_date: endDate ? endDate.toISOString() : undefined,
+      buyer_wallet: address,
+      owner_id: stay.owner.id,
+      property_id: stay.id,
       tx_id_polygon: "",
-      tx_id_arbitrum: "",
-      tx_id_avalanche: "",
     };
 
-    const { data, error } = await supabase
-      .from( 'transactions' )
-      .insert( [transaction] );
+    try {
+      const response = await fetch( '/api/transaction', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify( transaction ),
+      } );
 
-    if ( error ) console.error( 'Error creating transaction:', error );
-    else {
-      console.log( 'Transaction created:', data );
-      fetchTransactions();
-      setNewTransaction( {} );
+      if ( !response.ok ) {
+        throw new Error( `Error creating transaction: ${response.statusText}` );
+      }else {
+        const data = await response.json();
+        setTransactions(data)
+         router.push( `/checkout/${data?.id}` );
+      }
+       console.log(transactions)
+      // const data = await response.json();
+      // console.log( 'Transaction created', data );
+
+    
+      // setTransactions( data );
+      // // fetchTransactions();
+      // setNewTransaction( {} );
+    } catch ( error ) {
+      console.error( 'Error creating transaction:', error );
     }
-
-    // Simulate checking transaction status
-    setTimeout( () => updateTransactionStatus( transaction.id!, network ), 5000 );
   };
 
   const updateTransactionStatus = async ( txId: string, network: string ) => {
@@ -156,7 +175,7 @@ const ReservationComponent: any = ( { stay }: ReservationComponentProps ) => {
     if ( error ) console.error( 'Error updating transaction status:', error );
     else {
       console.log( `Transaction ${txId} status updated to ${status}` );
-      fetchTransactions();
+      // fetchTransactions();
     }
   };
 
@@ -169,7 +188,7 @@ const ReservationComponent: any = ( { stay }: ReservationComponentProps ) => {
     if ( error ) console.error( 'Error deleting transaction:', error );
     else {
       console.log( 'Transaction deleted' );
-      fetchTransactions();
+      // fetchTransactions();
     }
   };
 
@@ -212,7 +231,7 @@ const ReservationComponent: any = ( { stay }: ReservationComponentProps ) => {
     [isAuthenticating, isSameOrigin, isAuth]
   );
 
-  
+
 
   const excludeDates = useMemo( () => {
     const excludeDates = stay?.excludeDates ?? [];
@@ -250,15 +269,16 @@ const ReservationComponent: any = ( { stay }: ReservationComponentProps ) => {
     } );
   }, [address, register, stay.owner.name, stay.id] );
 
-  const onSubmit = ( data: BookingPayload ) => {
+  const onSubmit = ( data: any ) => {
     executeBookingPost( { data } );
   };
 
-  // useEffect(() => {
-  //   if (data?.data.id) {
-  //     router.push(`/checkout/${data?.data.id}`);
-  //   }
-  // }, [data, router]);
+  useEffect( () => {
+    if ( transactions?.id ) {
+      router.push( `/checkout/${transactions?.id}` );
+    }
+  }, [ router, transactions] );
+
 
   // Handlers
   const onChangeGuests = ( guests: GuestsObject ) => {
@@ -296,7 +316,7 @@ const ReservationComponent: any = ( { stay }: ReservationComponentProps ) => {
   }, [errors.guestAdults, errors.guestChildren, errors.guestInfants] );
 
 
-  
+
   return (
     <>
       <div className="hidden lg:block flex-grow mt-14 lg:mt-0">
@@ -370,7 +390,7 @@ const ReservationComponent: any = ( { stay }: ReservationComponentProps ) => {
 
 
             {/* FORM */}
-            <form onSubmit={handleSubmit( onSubmit )}>
+            <form onSubmit={handlePayment}>
               <div className="flex flex-col border border-neutral-200 dark:border-neutral-700 rounded-3xl ">
                 <StayDatesRangeInput
                   error={!!dateRangeError}
@@ -388,14 +408,14 @@ const ReservationComponent: any = ( { stay }: ReservationComponentProps ) => {
                   type="submit"
                   loading={loading}
                   // ref={submitBtnReference}
-                  onClick={() => setIsModalOpen( true )}
+                  onClick={handlePayment}
                 >
                   Reserve
                 </ButtonPrimary>
               </div>
 
 
-              {isModalOpen && (
+              {/* {isModalOpen && (
                 <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full" id="my-modal">
                   <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
                     <div className="mt-3 text-center">
@@ -409,7 +429,7 @@ const ReservationComponent: any = ( { stay }: ReservationComponentProps ) => {
                     </div>
                   </div>
                 </div>
-              )}
+              )} */}
 
 
 

@@ -7,7 +7,7 @@ import { getUserDataSSR } from "@/services/users";
 
 export interface CheckoutPageProps {
   params: {
-    bookId: string;
+    id: string;
   };
 }
 
@@ -19,13 +19,9 @@ export default async function CheckoutPage({ params }: CheckoutPageProps) {
     if (!jwt) {
       redirect("/", RedirectType.replace);
     }
+    const book = await findBookById( params.id );
 
-    const [{ data }, book] = await Promise.all([
-      getUserDataSSR(jwt.value),
-      findBookById(params.bookId, jwt.value),
-    ]);
-
-    const { email, phoneNumber } = data;
+    const { email, phoneNumber } = book;
     return <CheckOutPagePageMain book={book} email={email} phoneNumber={phoneNumber} />;
   } catch (error) {
     notFound();
