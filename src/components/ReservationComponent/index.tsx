@@ -56,6 +56,8 @@ interface Transaction {
 
 
 const ReservationComponent: any = ( { stay }: ReservationComponentProps ) => {
+
+  const router = useRouter();
   const [nights, setNights] = useState<number>( 0 );
   const submitBtnReference = useRef<HTMLButtonElement>( null );
   const { isAuth, isAuthenticating } = useAuth();
@@ -92,9 +94,9 @@ const ReservationComponent: any = ( { stay }: ReservationComponentProps ) => {
   //       email
   //     )
   //     property:property_id (
-      
+
   //       *    
-      
+
   //     )  
   //   ` );
   //   console.log( data );
@@ -145,19 +147,21 @@ const ReservationComponent: any = ( { stay }: ReservationComponentProps ) => {
 
       if ( !response.ok ) {
         throw new Error( `Error creating transaction: ${response.statusText}` );
-      }else {
-        const data = await response.json();
-        setTransactions(data)
-         router.push( `/checkout/${data?.id}` );
       }
-       console.log(transactions)
-      // const data = await response.json();
-      // console.log( 'Transaction created', data );
 
-    
-      // setTransactions( data );
-      // // fetchTransactions();
-      // setNewTransaction( {} );
+
+      const tx = await response.json();
+
+      console.log( tx );
+      if ( tx?.id ) {
+        router.push( `/checkout/${tx?.id}` );
+      }
+
+      // setTransactions( tx )
+      //  router.push( `/checkout/${data?.id}` );
+
+
+
     } catch ( error ) {
       console.error( 'Error creating transaction:', error );
     }
@@ -211,7 +215,7 @@ const ReservationComponent: any = ( { stay }: ReservationComponentProps ) => {
     setStartDate( from );
     setEndDate( to );
   };
-  const router = useRouter();
+
 
   const {
     register,
@@ -240,44 +244,44 @@ const ReservationComponent: any = ( { stay }: ReservationComponentProps ) => {
     return [...excludeDates, ...reservedDates];
   }, [stay?.excludeDates, stay?.reservedDates] );
 
-  useEffect( () => {
-    register( "stay", {
-      value: stay.id,
-      required: { value: true, message: "The stay ID is required" },
-    } );
-    register( "host", {
-      value: stay.owner.id,
-      required: { value: true, message: "The host ID is required" },
-    } );
-    register( "guestAddress", {
-      value: stay?.location,
-      required: { value: true, message: "Wallet not connected" },
-    } );
-    register( "guestAdults", {
-      required: {
-        value: true,
-        message: "The number of adult guests is required",
-      },
-    } );
-    register( "guestChildren" );
-    register( "guestInfants" );
-    register( "from", {
-      required: { value: true, message: "The starting date is required" },
-    } );
-    register( "to", {
-      required: { value: true, message: "The ending date is required" },
-    } );
-  }, [address, register, stay.owner.name, stay.id] );
+  // useEffect( () => {
+  //   register( "stay", {
+  //     value: stay.id,
+  //     required: { value: true, message: "The stay ID is required" },
+  //   } );
+  //   register( "host", {
+  //     value: stay.owner.id,
+  //     required: { value: true, message: "The host ID is required" },
+  //   } );
+  //   register( "guestAddress", {
+  //     value: stay?.location,
+  //     required: { value: true, message: "Wallet not connected" },
+  //   } );
+  //   register( "guestAdults", {
+  //     required: {
+  //       value: true,
+  //       message: "The number of adult guests is required",
+  //     },
+  //   } );
+  //   register( "guestChildren" );
+  //   register( "guestInfants" );
+  //   register( "from", {
+  //     required: { value: true, message: "The starting date is required" },
+  //   } );
+  //   register( "to", {
+  //     required: { value: true, message: "The ending date is required" },
+  //   } );
+  // }, [address, register, stay.owner.name, stay.id] );
 
   const onSubmit = ( data: any ) => {
     executeBookingPost( { data } );
   };
 
-  useEffect( () => {
-    if ( transactions?.id ) {
-      router.push( `/checkout/${transactions?.id}` );
-    }
-  }, [ router, transactions] );
+  // useEffect( () => {
+  //   if ( transactions?.id ) {
+  //     router.push( `/checkout/${transactions?.id}` );
+  //   }
+  // }, [ router, transactions] );
 
 
   // Handlers
@@ -409,6 +413,8 @@ const ReservationComponent: any = ( { stay }: ReservationComponentProps ) => {
                   loading={loading}
                   // ref={submitBtnReference}
                   onClick={handlePayment}
+
+
                 >
                   Reserve
                 </ButtonPrimary>

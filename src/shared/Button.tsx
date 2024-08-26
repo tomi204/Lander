@@ -15,7 +15,7 @@ export interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
   loading?: boolean;
   disabled?: boolean;
   type?: ButtonHTMLAttributes<HTMLButtonElement>["type"];
-  href?: Route<string>;
+  href?: string;
   targetBlank?: boolean;
   onClick?: (event: any) => void;
   children?: React.ReactNode;
@@ -67,7 +67,7 @@ const Button: ForwardRefRenderFunction<HTMLButtonElement, ButtonProps> = (
   if (!!href) {
     return (
       <Link
-        href={href}
+        href={typeof href === 'string' ? { pathname: href } : href}
         target={targetBlank ? "_blank" : undefined}
         className={`${CLASSES} `}
         onClick={onClick}
