@@ -63,6 +63,7 @@ const ReservationComponent: any = ( { stay }: ReservationComponentProps ) => {
   const { isAuth, isAuthenticating } = useAuth();
   const [{ data, loading, error }, executeBookingPost] = useCreateBooking();
   const { address } = useAccount();
+  const [txId,setTxId] = useState("")
   const [transactions, setTransactions] = useState<Transaction>( {} as Transaction );
   const [startDate, setStartDate] = useState<Date | null>( null );
   const [endDate, setEndDate] = useState<Date | null>( null );
@@ -151,11 +152,9 @@ const ReservationComponent: any = ( { stay }: ReservationComponentProps ) => {
 
 
       const tx = await response.json();
-
-      console.log( tx );
-      if ( tx?.id ) {
-        router.push( `/checkout/${tx?.id}` );
-      }
+        let id = tx.data[0]?.id 
+       setTxId(id)
+      
 
       // setTransactions( tx )
       //  router.push( `/checkout/${data?.id}` );
@@ -277,11 +276,13 @@ const ReservationComponent: any = ( { stay }: ReservationComponentProps ) => {
     executeBookingPost( { data } );
   };
 
-  // useEffect( () => {
-  //   if ( transactions?.id ) {
-  //     router.push( `/checkout/${transactions?.id}` );
-  //   }
-  // }, [ router, transactions] );
+
+  
+  useEffect( () => {
+    if ( txId.length > 3 ) {
+      router.push( `/checkout/${txId}` );
+    }
+  }, [router, txId] );
 
 
   // Handlers

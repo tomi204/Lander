@@ -8,7 +8,7 @@ export async function POST(req, res) {
     const supabase = createClient();
     const tx = await req.json();
 
-    const { data, error } = await supabase.from("transactions").insert([tx]).select();
+    const { data, error } = await supabase.from("transactions").insert(tx).select();
 
     if (error) {
       return NextResponse.json({
@@ -21,8 +21,6 @@ export async function POST(req, res) {
 
     return NextResponse.json({ data }, { status: 200 });
   } catch (error) {
-    // Handle any errors that occur during the request
-
-    return NextResponse.json({ error: error.message }, { status: 500 });
+      return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
