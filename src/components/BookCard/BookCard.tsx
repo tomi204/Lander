@@ -7,7 +7,7 @@ import { TwMainColor } from "@/data/types";
 import { PaymentStatus, PaymentStatusMessages } from "@/interfaces/Payment";
 import CoinSymbolComponent from "../CoinSymbolComponent";
 import { usePaymentMediation } from "@/hooks/usePayment";
-import ConfirmDialog from "../ConfirmDialog/ComfirmDialog";
+import ConfirmDialog from "../listing-image-gallery/ConfirmDialog/ComfirmDialog";
 import { useRouter } from "next/navigation";
 import HostInfo from "./HostInfo";
 import BookDetails from "./BookDetails";

@@ -154,10 +154,34 @@ const ReservationComponent: any = ( { stay }: ReservationComponentProps ) => {
       const tx = await response.json();
         let id = tx.data[0]?.id 
        setTxId(id)
+       console.log(tx)
       
+     
+// devulve este objeto 
 
-      // setTransactions( tx )
-      //  router.push( `/checkout/${data?.id}` );
+//create context with tx 
+
+
+  // {
+  //   data: [
+  //     {
+  //       id: '92e76315-8ac9-4bc5-aee4-32f366053773',
+  //       tx_id_polygon: '',
+  //       tx_id_arbitrum: null,
+  //       tx_id_avalanche: null,
+  //       amount: 0.1,
+  //       entrance_date: '2024-08-27',
+  //       departure_date: '2024-08-28',
+  //       owner_id: 'dba96033-6e02-4751-a5db-e1f00dd7db6e',
+  //       property_id: 'ba53c728-427b-4b6f-909d-bc0ccf65a847',
+  //       created_at: '2024-08-26T20:14:55.74528+00:00',
+  //       updated_at: '2024-08-26T20:14:55.74528+00:00',
+  //       buyer_wallet: '0x9a93bc7e9718b3fc18D75dd58B47808d3f9Cb282',
+  //       book_id: null
+  //     }
+  //   ]
+    
+    //  router.push( `/checkout/${id}` );
 
 
 
@@ -278,11 +302,11 @@ const ReservationComponent: any = ( { stay }: ReservationComponentProps ) => {
 
 
   
-  useEffect( () => {
-    if ( txId.length > 3 ) {
-      router.push( `/checkout/${txId}` );
-    }
-  }, [router, txId] );
+  // useEffect( () => {
+  //   if ( txId.length > 3 ) {
+  //     router.push( `/checkout/${txId}` );
+  //   }
+  // }, [router, txId] );
 
 
   // Handlers
