@@ -100,8 +100,7 @@ async function PageHome({ searchParams }: PageHomeProps) {
 
   // const { data: properties, error } = useSWR( '/api/properties', fetcher );
 
-  console.log("properties", properties);
-console.log(properties)
+
 
   // if ( error ) return <h1 className="flex justify-center items-center h-screen p-5">Failed to load</h1>;
   if (!properties)
