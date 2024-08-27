@@ -39,9 +39,6 @@ const CheckOutPagePageMain: FC<CheckOutPagePageMainProps> = ({ params,
   const [book, setBook] = useState<Book | null>();
   const [loading, setLoading] = useState<boolean>(true);
 
-
-
-
   useEffect(() => {
     const fetchBook = async () => {
       try {
@@ -56,7 +53,6 @@ const CheckOutPagePageMain: FC<CheckOutPagePageMainProps> = ({ params,
 
     fetchBook();
   }, [params.id]);
-
 
   // const payment: StrapiData<Payment> = useMemo(() => book.payment, [book.payment]);
   const router = useRouter();

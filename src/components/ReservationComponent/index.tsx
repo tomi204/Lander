@@ -308,8 +308,6 @@ const ReservationComponent: any = ( { stay }: ReservationComponentProps ) => {
   //   }
   // }, [router, txId] );
 
-
-  // Handlers
   const onChangeGuests = ( guests: GuestsObject ) => {
     setValue( "guestAdults", guests.guestAdults );
     setValue( "guestChildren", guests.guestChildren );
