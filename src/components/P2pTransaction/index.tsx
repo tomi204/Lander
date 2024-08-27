@@ -1,17 +1,22 @@
-"use client";
+'use client';
 
-import { FC, useCallback, useEffect, useState } from "react";
-import ButtonPrimary from "@/shared/ButtonPrimary";
-import { ethers, Interface } from "ethers";
+import { FC, useCallback, useEffect, useState } from 'react';
+import ButtonPrimary from '@/shared/ButtonPrimary';
+import { ethers, Interface } from 'ethers';
 
-import { useAuth } from "@/contexts/AuthContext";
-import { sendTransaction, getConnections, getBalance, writeContract } from "@wagmi/core";
-import { Address, formatUnits, parseUnits } from "viem";
-import { wagmiConfig } from "@/constants/wagmi-config";
-import { useAccount, useBalance } from "wagmi";
-import { polygon } from "viem/chains";
-import { polygonAddresses } from "@/constants/addresses";
-import { ABI } from "../../utils/ABI";
+import { useAuth } from '@/contexts/AuthContext';
+import {
+  sendTransaction,
+  getConnections,
+  getBalance,
+  writeContract,
+} from '@wagmi/core';
+import { Address, formatUnits, parseUnits } from 'viem';
+import { wagmiConfig } from '@/constants/wagmi-config';
+import { useAccount, useBalance } from 'wagmi';
+import { polygon } from 'viem/chains';
+import { bscAddresses, polygonAddresses } from '@/constants/addresses';
+import { ABI } from '../../utils/ABI';
 interface ContractInteractionProps {
   disabled: boolean;
   amount: number;
@@ -28,9 +33,9 @@ const ContractInteraction: FC<ContractInteractionProps> = ({
   amount,
   sellerAddress,
 }) => {
-  const [symbol, setSymbol] = useState("--");
+  const [symbol, setSymbol] = useState('--');
   const [noFunds, setNoFunds] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const { address, isConnected } = useAccount();
   const { isAuth } = useAuth();
@@ -42,7 +47,7 @@ const ContractInteraction: FC<ContractInteractionProps> = ({
 
     const balance = await getBalance(wagmiConfig, {
       address,
-      token: polygonAddresses.USDT,
+      token: bscAddresses.USDC,
     });
 
     setSymbol(balance.symbol);
@@ -57,19 +62,19 @@ const ContractInteraction: FC<ContractInteractionProps> = ({
   const approveTokens = useCallback(async () => {
     try {
       const connections = getConnections(wagmiConfig);
-      const dataEncoded = new Interface(ABI).encodeFunctionData("approve", [
-        polygonAddresses.P2P,
+      const dataEncoded = new Interface(ABI).encodeFunctionData('approve', [
+        bscAddresses.P2P,
         parseUnits(amount.toString(), 18),
       ]) as `0x${string}`;
 
       await sendTransaction(wagmiConfig, {
         connector: connections[0]?.connector,
         data: dataEncoded,
-        to: polygonAddresses.USDT,
+        to: bscAddresses.USDC,
         value: BigInt(0),
       });
     } catch (error) {
-      console.error("Error approving tokens:", error);
+      console.error('Error approving tokens:', error);
       throw error;
     }
   }, [ABI, amount]);
@@ -78,25 +83,25 @@ const ContractInteraction: FC<ContractInteractionProps> = ({
   const createTransaction = useCallback(async () => {
     try {
       setLoading(true);
-      setErrorMessage("");
+      setErrorMessage('');
 
       if (!address) {
-        throw new Error("Invalid Address");
+        throw new Error('Invalid Address');
       }
 
       //await approveTokens();
 
-      const dataEncoded = new Interface(ABI).encodeFunctionData("createTransaction", [
-        sellerAddress,
-        BigInt(amount * 1000 * 1000),
-      ]) as `0x${string}`;
+      const dataEncoded = new Interface(ABI).encodeFunctionData(
+        'createTransaction',
+        [sellerAddress, BigInt(amount * 1000 * 1000)]
+      ) as `0x${string}`;
 
       const connections = getConnections(wagmiConfig);
 
       const hash = await sendTransaction(wagmiConfig, {
         connector: connections[0]?.connector,
         data: dataEncoded,
-        to: polygonAddresses.P2P,
+        to: bscAddresses.P2P,
         value: BigInt(0),
       });
 
@@ -105,7 +110,7 @@ const ContractInteraction: FC<ContractInteractionProps> = ({
       }
     } catch (error) {
       console.error(error);
-      setErrorMessage("Transaction failed");
+      setErrorMessage('Transaction failed');
       if (onTxError) {
         onTxError(error);
       }
@@ -118,18 +123,19 @@ const ContractInteraction: FC<ContractInteractionProps> = ({
     async (transactionId: number) => {
       try {
         setLoading(true);
-        setErrorMessage("");
+        setErrorMessage('');
 
-        const dataEncoded = new Interface(ABI).encodeFunctionData("approveTransaction", [
-          transactionId,
-        ]) as `0x${string}`;
+        const dataEncoded = new Interface(ABI).encodeFunctionData(
+          'approveTransaction',
+          [transactionId]
+        ) as `0x${string}`;
 
         const connections = getConnections(wagmiConfig);
 
         const hash = await sendTransaction(wagmiConfig, {
           connector: connections[0]?.connector,
           data: dataEncoded,
-          to: polygonAddresses.P2P,
+          to: bscAddresses.P2P,
           value: BigInt(0),
         });
 
@@ -138,7 +144,7 @@ const ContractInteraction: FC<ContractInteractionProps> = ({
         }
       } catch (error) {
         console.error(error);
-        setErrorMessage("Transaction approval failed");
+        setErrorMessage('Transaction approval failed');
         if (onTxError) {
           onTxError(error);
         }
@@ -153,18 +159,19 @@ const ContractInteraction: FC<ContractInteractionProps> = ({
     async (transactionId: number) => {
       try {
         setLoading(true);
-        setErrorMessage("");
+        setErrorMessage('');
 
-        const dataEncoded = new Interface(ABI).encodeFunctionData("cancelTransaction", [
-          transactionId,
-        ]) as `0x${string}`;
+        const dataEncoded = new Interface(ABI).encodeFunctionData(
+          'cancelTransaction',
+          [transactionId]
+        ) as `0x${string}`;
 
         const connections = getConnections(wagmiConfig);
 
         const hash = await sendTransaction(wagmiConfig, {
           connector: connections[0]?.connector,
           data: dataEncoded,
-          to: polygonAddresses.P2P,
+          to: bscAddresses.P2P,
           value: BigInt(0),
         });
 
@@ -173,7 +180,7 @@ const ContractInteraction: FC<ContractInteractionProps> = ({
         }
       } catch (error) {
         console.error(error);
-        setErrorMessage("Transaction cancellation failed");
+        setErrorMessage('Transaction cancellation failed');
         if (onTxError) {
           onTxError(error);
         }
@@ -215,8 +222,8 @@ const ContractInteraction: FC<ContractInteractionProps> = ({
 
       {noFunds && (
         <h3 className="flex-grow text-left text-sm font-medium text-red-700 mt-1 sm:w-full sm:text-center sm:text-sm">
-          Oops! It looks like you need more tokens, around {formatUnits(BigInt(amount), 18)}{" "}
-          {symbol}.
+          Oops! It looks like you need more tokens, around{' '}
+          {formatUnits(BigInt(amount), 18)} {symbol}.
         </h3>
       )}
 
