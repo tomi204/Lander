@@ -8,10 +8,12 @@ import convertSelectedDateToString from "@/utils/converSelectedDateToString"
 import { Book } from "@/interfaces/Booking"
 import SentTransactionComponent from "@/components/SendTransactionComponent"
 //import { StrapiData } from "@/interfaces/Strapi"
-import { notFound, useRouter } from "next/navigation"
+import { notFound  } from "next/navigation"
+import { useRouter } from 'next/router';
 //import { useRouter } from 'next/router'
 import { findStayById , findPropertyById} from "@/services/listings";
 import { useStay } from "@/contexts/StayProvider";
+import { useTransaction } from "@/contexts/CheckoutProvider";
 
 export interface StayDetailPageProps {
   params: {
@@ -45,8 +47,21 @@ export interface StayDetailPageProps {
 
     export default async function StayDetailPage({ params }: StayDetailPageProps) {
       try {
-        const stay = await findPropertyById(params.id);
-        console.log(stay)
+
+
+        const router = useRouter();
+        const { propertyId, tx } = router.query;
+
+        
+        console.log("Received propertyId:", propertyId);
+        console.log("Received tx:", tx);
+
+
+        let stay;
+         if (propertyId) {
+         stay = await findPropertyById(propertyId as string);
+  }
+       
         
         //const { stayData, setStayData } = useStay();
         //console.log(stayData)

@@ -47,7 +47,7 @@ export const findUsersBookingsSSR = async (
 //   const supabase = createServerComponentClient({ cookies });
   
 //   const { data, error, count } = await supabase
-//     .from('bookings')
+//     .from('transctions')
 //     .select(`
 //       *,
 //       guest:guest_id (
@@ -72,30 +72,32 @@ export const findUsersBookingsSSR = async (
 //     throw new Error(error.message);
 //   }
 
-//   const formattedData: Book[] = data?.map(booking => ({
+//   const formattedData: any = data?.map(booking => ({
 //     id: booking.id,
 //     attributes: {
 //       startDate: booking.start_date,
 //       endDate: booking.end_date,
+//       guest_number: booking.guest_number,
 //       totalPrice: booking.total_price,
 //       status: booking.status,
-//       guest: {
-//         data: {
+//       renter: {
 //           id: booking.guest.id,
 //           attributes: {
 //             name: booking.guest.name,
-//             email: booking.guest.email
-//           }
+//             // añadir calificacion 
+      
 //         }
 //       },
 //       stay: {
-//         data: {
 //           id: booking.stay.id,
 //           attributes: {
 //             title: booking.stay.title,
-//             description: booking.stay.description
+//             location: booking.stay.location,
+//             description: booking.stay.description,
+//             image: booking.stay.image
+
 //           }
-//         }
+     
 //       }
 //     }
 //   })) || [];
