@@ -31,3 +31,6 @@ const TransactionDetails: React.FC<{ transactionId: number }> = ({ transactionId
 };
 
 export default TransactionDetails;
+
+
+// CUANDO SE CREA EL ID 

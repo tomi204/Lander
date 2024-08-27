@@ -2,7 +2,7 @@
 
 
 import { findBookById } from "@/services/books";
-import React, { FC, useMemo, useState , useEffect} from "react";
+import React, { FC, useMemo, useState, useEffect } from "react";
 import convertSelectedDateToString from "@/utils/converSelectedDateToString";
 import { Book } from "@/interfaces/Booking";
 import SentTransactionComponent from "@/components/SendTransactionComponent";
@@ -29,30 +29,33 @@ export interface CheckOutPagePageMainProps {
   className?: string;
 }
 
-const CheckOutPagePageMain: FC<CheckOutPagePageMainProps> =  ({params,
+const CheckOutPagePageMain: FC<CheckOutPagePageMainProps> = ({ params,
   className = "",
- 
+
   email,
   phoneNumber,
 }) => {
 
-  const [book, setBook] = useState<Book | null>(  );
-  const [loading, setLoading] = useState<boolean>( true );
+  const [book, setBook] = useState<Book | null>();
+  const [loading, setLoading] = useState<boolean>(true);
 
-  useEffect( () => {
+
+
+
+  useEffect(() => {
     const fetchBook = async () => {
       try {
-        const fetchedBook = await findBookById( params.id );
-        setBook( fetchedBook );
-      } catch ( error ) {
-        console.error( 'Error fetching book:', error );
+        const fetchedBook = await findBookById(params.id);
+        setBook(fetchedBook);
+      } catch (error) {
+        console.error('Error fetching book:', error);
       } finally {
-        setLoading( false );
+        setLoading(false);
       }
     };
 
     fetchBook();
-  }, [params.id] );
+  }, [params.id]);
 
 
   // const payment: StrapiData<Payment> = useMemo(() => book.payment, [book.payment]);

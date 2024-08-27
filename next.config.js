@@ -5,12 +5,12 @@ const nextConfig = {
   //   NEXT_PUBLIC_MAPS_API_KEY: process.env.NEXT_PUBLIC_MAPS_API_KEY,
   // },
   webpack: config => {
-    config.externals.push('pino-pretty', 'lokijs', 'encoding')
-    return config
+    config.externals.push('pino-pretty', 'lokijs', 'encoding');
+    return config;
   },
   reactStrictMode: false,
   experimental: {
-    appDir: true,
+    // appDir: true, // Removed due to being unrecognized
     typedRoutes: true,
   },
   async headers() {
@@ -43,14 +43,12 @@ const nextConfig = {
         port: "",
         pathname: "/**",
       },
-
-{
+      {
         protocol: "https",
         hostname: "plus.unsplash.com",
         port: "",
         pathname: "/**",
       },
-      
       {
         protocol: "https",
         hostname: "res.cloudinary.com",
