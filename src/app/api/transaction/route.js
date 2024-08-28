@@ -3,6 +3,10 @@ import supabase from '@/supabase/client';
 import { createClient } from "@/supabase/server";
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
+
+
+// http://localhost:3000/api/transaction?wallet=0xd7ed1a1FC1295A0e7Ac16b5834F152F7B6306C0e
+
 // import { useAccount } from 'wagmi';
 
 
