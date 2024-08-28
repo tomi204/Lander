@@ -2,30 +2,35 @@
 
 import { FC, useCallback, useEffect, useState } from 'react';
 import ButtonPrimary from '@/shared/ButtonPrimary';
-import { ethers, Interface } from 'ethers';
+import { Interface } from 'ethers';
 
 import { useAuth } from '@/contexts/AuthContext';
 import {
   sendTransaction,
   getConnections,
   getBalance,
-  writeContract,
+  readContract,
 } from '@wagmi/core';
-import { Address, formatUnits, parseUnits } from 'viem';
+import { Address, parseUnits } from 'viem';
 import { wagmiConfig } from '@/constants/wagmi-config';
-import { useAccount, useBalance } from 'wagmi';
-import { polygon } from 'viem/chains';
-import { bscAddresses, polygonAddresses } from '@/constants/addresses';
+import {
+  useAccount,
+  useReadContract,
+  useWaitForTransactionReceipt,
+} from 'wagmi';
+import { bscAddresses } from '@/constants/addresses';
 import { ABI } from '../../utils/ABI';
+import { waitForTransactionReceipt } from '@wagmi/core';
+
 interface ContractInteractionProps {
-  disabled: boolean;
+  disabled?: boolean;
   amount: number;
   sellerAddress: Address;
   onTxSent?: (hash: string) => void;
   onTxError?: (error: any) => void;
   transactionId?: number;
 }
-////alerta dagger dex
+
 const ContractInteraction: FC<ContractInteractionProps> = ({
   onTxError,
   onTxSent,
@@ -59,6 +64,9 @@ const ContractInteraction: FC<ContractInteractionProps> = ({
     getWalletBalance();
   }, [getWalletBalance]);
 
+  const [approvedHash, setApprovedHash] = useState(
+    '0x${string}' as `0x${string}`
+  );
   const approveTokens = useCallback(async () => {
     try {
       const connections = getConnections(wagmiConfig);
@@ -67,20 +75,32 @@ const ContractInteraction: FC<ContractInteractionProps> = ({
         parseUnits(amount.toString(), 18),
       ]) as `0x${string}`;
 
-      await sendTransaction(wagmiConfig, {
+      const hash = await sendTransaction(wagmiConfig, {
         connector: connections[0]?.connector,
         data: dataEncoded,
         to: bscAddresses.USDC,
         value: BigInt(0),
       });
+
+      const data = await waitForTransactionReceipt(wagmiConfig, {
+        hash: hash,
+      });
+
+      setApprovedHash(hash);
+
+      if (data.status === 'success') {
+        return hash;
+      }
     } catch (error) {
       console.error('Error approving tokens:', error);
       throw error;
     }
   }, [ABI, amount]);
 
-  console.log(parseUnits(amount.toString(), 6));
-  const createTransaction = useCallback(async () => {
+  const [step, setStep] = useState('');
+
+  const [actualId, setActualId] = useState(0);
+  const CreateTransaction = useCallback(async () => {
     try {
       setLoading(true);
       setErrorMessage('');
@@ -88,8 +108,38 @@ const ContractInteraction: FC<ContractInteractionProps> = ({
       if (!address) {
         throw new Error('Invalid Address');
       }
+      const tokensApproved = await readContract(wagmiConfig, {
+        address: bscAddresses.USDC,
+        abi: [
+          {
+            constant: true,
+            inputs: [
+              { name: 'owner', type: 'address' },
+              { name: 'spender', type: 'address' },
+            ],
+            name: 'allowance',
+            outputs: [{ name: '', type: 'uint256' }],
+            type: 'function',
+          },
+        ],
+        functionName: 'allowance',
+        args: [address, bscAddresses.P2P],
+      });
 
-      //await approveTokens();
+      if (Number(tokensApproved as number) < Number(amount)) {
+        setStep('Approving tokens');
+        await approveTokens();
+      }
+
+      if (step === 'Approving tokens') {
+        setTimeout(() => {
+          setStep('Creating transaction');
+        }, 15000);
+      }
+
+      if (step === '') {
+        setStep('Creating transaction');
+      }
 
       const dataEncoded = new Interface(ABI).encodeFunctionData(
         'createTransaction',
@@ -98,15 +148,30 @@ const ContractInteraction: FC<ContractInteractionProps> = ({
 
       const connections = getConnections(wagmiConfig);
 
-      const hash = await sendTransaction(wagmiConfig, {
+      const result = await sendTransaction(wagmiConfig, {
         connector: connections[0]?.connector,
         data: dataEncoded,
         to: bscAddresses.P2P,
         value: BigInt(0),
       });
 
-      if (onTxSent) {
-        onTxSent(hash);
+      const data = await waitForTransactionReceipt(wagmiConfig, {
+        hash: result,
+      });
+
+      if (data.status === 'success') {
+        const {
+          data: transactionCount,
+          isError,
+          error: fetchError,
+          isLoading,
+        } = useReadContract({
+          address: bscAddresses.P2P,
+          abi: ABI,
+          functionName: 'transactionCount',
+        });
+
+        setActualId(Number(transactionCount));
       }
     } catch (error) {
       console.error(error);
@@ -196,16 +261,18 @@ const ContractInteraction: FC<ContractInteractionProps> = ({
       <ButtonPrimary
         className="sm:w-full"
         loading={loading}
-        disabled={!isAuth || noFunds || disabled}
-        onClick={createTransaction}
+        onClick={CreateTransaction}
       >
-        Create Transaction
+        {step === ''
+          ? 'Create Transaction'
+          : step === 'Approving tokens'
+          ? 'Approving tokens'
+          : 'Creating transaction'}
       </ButtonPrimary>
 
       <ButtonPrimary
         className="sm:w-full mt-2"
         loading={loading}
-        disabled={!isAuth || noFunds || disabled}
         onClick={() => approveTransaction(1)} // Ejemplo para aprobar transacción con ID 1
       >
         Approve Transaction
@@ -220,12 +287,12 @@ const ContractInteraction: FC<ContractInteractionProps> = ({
         Cancel Transaction
       </ButtonPrimary>
 
-      {noFunds && (
+      {/* {noFunds && (
         <h3 className="flex-grow text-left text-sm font-medium text-red-700 mt-1 sm:w-full sm:text-center sm:text-sm">
           Oops! It looks like you need more tokens, around{' '}
           {formatUnits(BigInt(amount), 18)} {symbol}.
         </h3>
-      )}
+      )} */}
 
       {!isConnected && (
         <h3 className="flex-grow text-left text-sm font-medium text-red-700 mt-1 sm:w-full sm:text-center sm:text-sm">

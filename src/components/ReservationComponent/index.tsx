@@ -77,7 +77,6 @@ const ReservationComponent: any = ({ stay }: ReservationComponentProps) => {
         setTransaction?.(tx?.data[0]);
       }
       router.push('/checkout');
-      // window.location.href = '/checkout';
     } catch (error) {
       console.error('Error creating transaction:', error);
     }

@@ -3,10 +3,11 @@ import Image from 'next/image';
 import { CreditCard } from 'lucide-react';
 import React from 'react';
 import { useTransaction } from '@/contexts/CheckoutProvider';
+import ContractInteraction from '@/components/P2pTransaction';
 
 export default function StayDetailPage() {
   const { transaction, setTransaction } = useTransaction() || {};
-  const stay = transaction?.stay;
+  const stay = transaction;
   console.log(transaction, 'transaction');
 
   return (
@@ -30,7 +31,7 @@ export default function StayDetailPage() {
             Back to Property Details
           </button>
 
-          <div className="space-y-4">
+          {/* <div className="space-y-4">
             <h2 className="text-2xl font-bold">Payment Method</h2>
             <div className="space-y-2">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -83,7 +84,12 @@ export default function StayDetailPage() {
                 Add New Payment
               </button>
             </div>
-          </div>
+          </div> */}
+
+          <ContractInteraction
+            amount={stay?.amount}
+            sellerAddress={stay?.buyer_wallet}
+          />
 
           <div className="space-y-4">
             <h2 className="text-2xl font-bold">Cancellation policy</h2>
@@ -141,16 +147,16 @@ export default function StayDetailPage() {
             <div className="space-y-2">
               <div className="flex justify-between">
                 <p>Check-In</p>
-                <p className="font-semibold">Fri, Dec 01</p>
+                <p className="font-semibold">{stay?.entrance_date}</p>
               </div>
               <div className="flex justify-between">
                 <p>Check-Out</p>
-                <p className="font-semibold">Tue, Dec 05</p>
+                <p className="font-semibold">{stay?.departure_date}</p>
               </div>
-              <div className="flex justify-between">
+              {/* <div className="flex justify-between">
                 <p>Guests</p>
                 <p className="font-semibold">04</p>
-              </div>
+              </div> */}
             </div>
           </div>
 
@@ -158,20 +164,20 @@ export default function StayDetailPage() {
             <h2 className="text-2xl font-bold">Pricing Breakdown</h2>
             <div className="space-y-2">
               <div className="flex justify-between">
-                <p>$30 X 1 night</p>
-                <p className="font-semibold">$30</p>
+                <p>Nights</p>
+                <p className="font-semibold">{stay?.nights}</p>
               </div>
-              <div className="flex justify-between">
+              {/* <div className="flex justify-between">
                 <p>Cleaning Fee</p>
                 <p className="font-semibold">$10</p>
               </div>
               <div className="flex justify-between">
                 <p>Lander Service Fee</p>
                 <p className="font-semibold">$5</p>
-              </div>
+              </div> */}
               <div className="flex justify-between font-bold">
                 <p>Total</p>
-                <p>$45</p>
+                <p>{stay?.amount}</p>
               </div>
             </div>
           </div>
