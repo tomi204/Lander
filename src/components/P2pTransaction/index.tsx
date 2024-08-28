@@ -21,6 +21,8 @@ import {
 import { bscAddresses } from '@/constants/addresses';
 import { ABI } from '../../utils/ABI';
 import { waitForTransactionReceipt } from '@wagmi/core';
+import { updateBookingStatus } from '@/services/books';
+import { useTransaction } from '@/contexts/CheckoutProvider';
 
 interface ContractInteractionProps {
   disabled?: boolean;
@@ -44,6 +46,7 @@ const ContractInteraction: FC<ContractInteractionProps> = ({
   const [loading, setLoading] = useState(false);
   const { address, isConnected } = useAccount();
   const { isAuth } = useAuth();
+  const { transaction, setTransaction } = useTransaction() || {};
 
   const getWalletBalance = useCallback(async () => {
     if (!address) {
@@ -173,6 +176,13 @@ const ContractInteraction: FC<ContractInteractionProps> = ({
 
         setActualId(Number(transactionCount));
       }
+
+      await updateBookingStatus(
+        transaction?.id,
+        'pending',
+        actualId.toString(),
+        transaction?.renter.id
+      );
     } catch (error) {
       console.error(error);
       setErrorMessage('Transaction failed');
