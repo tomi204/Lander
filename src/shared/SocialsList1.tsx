@@ -9,12 +9,12 @@ const socials: SocialType[] = [
   {
     name: "X",
     icon: "lab la-twitter",
-    href: "https://twitter.com/YourCryptoBed?s=20",
+    href: "https://www.google.com/",
   },
   {
     name: "White Paper",
     icon: "lab ",
-    href: "https://cryptobed.gitbook.io/cryptobed/",
+    href: "https://www.google.com/",
   },
   // { name: "Youtube", icon: "lab la-youtube", href: "#" },
   // { name: "Instagram", icon: "lab la-instagram", href: "#" },
