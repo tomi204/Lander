@@ -10,8 +10,16 @@ const nextConfig = {
   },
   reactStrictMode: false,
   experimental: {
-    // appDir: true, // Removed due to being unrecognized
+    // appDir: true,
     typedRoutes: true,
+  },
+  async rewrites() {
+    return [
+      {
+        source: '/api/:path*',
+        destination: '/src/app/api/:path*',
+      },
+    ];
   },
   async headers() {
     return [
