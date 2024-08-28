@@ -53,6 +53,7 @@ const ReservationComponent: any = ({ stay }: ReservationComponentProps) => {
       entrance_date: startDate ? startDate.toISOString() : undefined,
       departure_date: endDate ? endDate.toISOString() : undefined,
       buyer_wallet: address,
+      //check this shit 
       owner_id: stay.owner.id,
       property_id: stay.id,
       nights: nights,

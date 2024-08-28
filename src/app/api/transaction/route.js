@@ -157,6 +157,7 @@ export async function GET(request) {
         nights: booking.nights,
         totalPrice: booking.amount,
         status: booking.status,
+        tx_id: booking.tx_id,
         stay: {
           id: booking.stay.id,
           attributes: {
