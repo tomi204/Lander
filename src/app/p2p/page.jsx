@@ -3,17 +3,17 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Search, Video, Phone, LayoutGrid, CheckCircle, HourglassIcon, FileCheck, Rocket, X, Briefcase, Star, Airbnb, DollarSign, Calendar, Users, LogIn, LogOut,  ChevronUp, ChevronDown } from "lucide-react"
+import { Search, Video, Phone, LayoutGrid, CheckCircle, HourglassIcon, FileCheck, Rocket, X, Briefcase, Star, Airbnb, DollarSign, Calendar, Users, LogIn, LogOut, ChevronUp, ChevronDown } from "lucide-react"
 import { pusherClient } from '@/lib/pusher'
 import { FC, useEffect, useState } from 'react'
 import axios from 'axios'
 
 
 
-export default function Component({params}) {
+export default function Component({ params }) {
   const { txId } = params
   const [isOpen, setIsOpen] = useState(false)
-  const [incomingMessages, setIncomingMessages] = useState  ([])
+  const [incomingMessages, setIncomingMessages] = useState([])
 
   // const serializedMessages = existingMessages.map((message) => ({
   //   text: message.text,
@@ -45,15 +45,15 @@ export default function Component({params}) {
 
   useEffect(() => {
 
-    if (txId !== undefined){
-      
-    pusherClient.subscribe(txId)
+    if (txId !== undefined) {
 
-    pusherClient.bind('incoming-message', (text) => {
-      setIncomingMessages((prev) => [...prev, text])
-    })
-  
-  }
+      pusherClient.subscribe(txId)
+
+      pusherClient.bind('incoming-message', (text) => {
+        setIncomingMessages((prev) => [...prev, text])
+      })
+
+    }
 
     return () => {
       pusherClient.unsubscribe(txId)
@@ -127,8 +127,8 @@ export default function Component({params}) {
         {/* Chat messages */}
         <ScrollArea className="flex-1 p-4">
           <div className="space-y-4">
-          
-              {/* <Avatar className="h-8 w-8 mr-2">
+
+            {/* <Avatar className="h-8 w-8 mr-2">
                 <AvatarImage src={`/placeholder.svg?text=JK`} />
                 <AvatarFallback>JK</AvatarFallback>
               </Avatar>
@@ -137,7 +137,7 @@ export default function Component({params}) {
               </div> */}
 
 
-           <div className="flex items-start">
+            <div className="flex items-start">
               {/* {serializedMessages.map((message) => (
                   <div className="bg-primary text-primary-foreground rounded-lg p-2 max-w-[80%]">
                     <p key={message.id}>{message.text}</p>
@@ -145,17 +145,17 @@ export default function Component({params}) {
 
                 ))} */}
 
-            <div className="flex items-start justify-end">
-              <div className="bg-muted rounded-lg p-2 max-w-[80%]">
+              <div className="flex items-start justify-end">
+                <div className="bg-muted rounded-lg p-2 max-w-[80%]">
                   {incomingMessages.map((text, i) => (
                     <p key={i}>{text}</p>
                   ))}
+                </div>
               </div>
+
+
             </div>
-              
-              
-            </div>
-            
+
           </div>
         </ScrollArea>
 
@@ -187,9 +187,9 @@ export default function Component({params}) {
           </ul>
           {/* Phone Number Button */}
           <div className="p-4">
-              <button variant="outline" className="w-full p-2 border rounded">
-                <span>Phone Number</span>
-              </button>
+            <button variant="outline" className="w-full p-2 border rounded">
+              <span>Phone Number</span>
+            </button>
           </div>
         </div>
         {/* Reservation Details Accordion */}
@@ -208,7 +208,7 @@ export default function Component({params}) {
                 <li><strong>Código de confirmación:</strong> HMZKSFSQT8</li>
               </ul>
             )}
-          </div>  
+          </div>
         </div>
         {/* Payment Details Accordion */}
         <div className="p-4">
@@ -224,7 +224,7 @@ export default function Component({params}) {
                 <li><strong>Total USDT:</strong> $38,34</li>
               </ul>
             )}
-          </div>  
+          </div>
 
         </div>
         <div className="p-4">
