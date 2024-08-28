@@ -168,8 +168,16 @@ export const findBookById = cache(async (id: string): Promise<any> => {
         id,
         name,
         email,
-        phone
+        phone,
+        wallet
       ),
+      property:property_id (
+        id,
+        title,
+        location,
+        description,
+        image
+      )
     
       )
     `)

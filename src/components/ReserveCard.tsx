@@ -49,8 +49,12 @@ const ReserveCard: FC<ReserveCardProps> = ({ reservation }) => {
           {new Date(startDate).toLocaleDateString()} - {new Date(endDate).toLocaleDateString()}
         </p>
         <p>Total: ${totalPrice.toFixed(2)}</p>
-        <button className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold">
-          P2P
+        
+        <button className=" w-full  px-8 py-2 rounded-full relative bg-purple-900 text-white text-sm hover:shadow-2xl hover:shadow-white/[0.1] transition duration-200 border border-purple-600">
+    
+          <span className="relative z-20">
+          Contact
+          </span>
         </button>
       </div>
     </div>

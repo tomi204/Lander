@@ -1,14 +1,39 @@
 'use client';
 import Image from 'next/image';
 import { CreditCard } from 'lucide-react';
-import React from 'react';
+import React ,{useState, useEffect}from 'react';
 import { useTransaction } from '@/contexts/CheckoutProvider';
 import ContractInteraction from '@/components/P2pTransaction';
+import { fetchUserByTxAndWallet } from '@/services/account';
+import { useAccount } from 'wagmi';
+
+
 
 export default function StayDetailPage() {
   const { transaction, setTransaction } = useTransaction() || {};
   const stay = transaction;
   console.log(transaction, 'transaction');
+  const { address } = useAccount();
+
+  const [buyerData, setBuyerData] = useState( null ); 
+  console.log(buyerData, 'buyerData');
+
+
+
+useEffect( () => {
+      const fetchUserData = async () => {
+        if ( transaction && address ) {
+          try {
+            const user = await fetchUserByTxAndWallet( transaction.id, address );
+            setBuyerData( user );
+          } catch ( error ) {
+            console.error( 'Error fetching user data:', error );
+          }
+        }
+      };
+
+      fetchUserData();
+    }, [transaction, address] );
 
   return (
     <div className="container mx-auto p-4 md:p-6 lg:p-8">
@@ -93,7 +118,7 @@ export default function StayDetailPage() {
 
           <div className="space-y-4">
             <h2 className="text-2xl font-bold">Cancellation policy</h2>
-            <p>Free cancellation before Nov 30.</p>
+            <p>Cancellation before your check-in date</p>
             <p className="text-gray-600">
               After that, the reservation is non-refundable.{' '}
               <a href="#" className="text-blue-600 underline">
@@ -118,7 +143,7 @@ export default function StayDetailPage() {
             <h2 className="text-2xl font-bold">Contact Information</h2>
             <p className="text-gray-600">
               The Host will contact you soon. Don’t worry if the Host has some
-              delay, your funds are blocked until check-in.
+              delay, your funds are blocked on staking until check-in.
             </p>
           </div>
         </div>
@@ -186,15 +211,15 @@ export default function StayDetailPage() {
             <h2 className="text-2xl font-bold">Transaction Details</h2>
             <div className="space-y-2">
               <div className="flex justify-between">
-                <p>Buyer</p>
+                <p>Buyer </p>
                 <p className="font-semibold">
-                  0x6867949921fCDdfA14EC3d3Db8456415F0122Ab9
+                  { address}
                 </p>
               </div>
               <div className="flex justify-between">
                 <p>Seller</p>
                 <p className="font-semibold">
-                  0x6867949921fCDdfA14EC3d3Db8456415F0122Ab9
+                  {stay?.seller_wallet}
                 </p>
               </div>
             </div>

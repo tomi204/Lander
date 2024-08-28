@@ -1,7 +1,7 @@
 "use client";
 import { FC, useEffect, useState } from 'react';
 import ReserveCard from '@/components/ReserveCard';
-
+import { useAccount } from 'wagmi';
 interface StayAttributes {
   title: string;
   location: string;
@@ -28,11 +28,14 @@ const ReservationsPage: FC = () => {
   const [reservations, setReservations] = useState<ReservationAttributes[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { address } = useAccount();
+  
 
+  
   useEffect(() => {
     const fetchReservations = async () => {
       try {
-        const response = await fetch('/api/transaction?wallet=0xd7ed1a1FC1295A0e7Ac16b5834F152F7B6306C0e');
+        const response = await fetch( `/api/transaction?wallet=${address}` );
         const result = await response.json();
 
         if (response.ok) {
