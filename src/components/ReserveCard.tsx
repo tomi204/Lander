@@ -32,8 +32,9 @@ interface ReserveCardProps {
 const ReserveCard: FC<ReserveCardProps> = ({ reservation }) => {
   const { startDate, endDate, nights, totalPrice, stay } = reservation.attributes;
   const { title, location, description, main_image } = stay.attributes;
+
   const router = useRouter()
-  console.log(reservation.id, reservation.attributes.tx_id, 'reservation');
+  console.log(reservation, 'reservation');
 
   const joinRoom = async ( txId: string ) => {
     router.push( `/p2p/${txId}` );

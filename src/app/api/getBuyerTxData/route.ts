@@ -49,12 +49,12 @@ export async function GET(request: Request) {
 
     if (userError || !user) {
       throw new Error('User not found or error occurred.');
-      console.log( userError )
+    
     }
 
      console.log({user,transaction })
 
-    return NextResponse.json({ data: user, transaction }, { status: 200 });
+    return NextResponse.json(transaction, { status: 200 });
   } catch (error: any) {
     console.error('Error:', error);
     return NextResponse.json({ error: error.message }, { status: 500 });
