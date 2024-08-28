@@ -37,7 +37,7 @@ export async function GET(request: Request) {
         main_image
       )
     
-      )
+      
     `)
       .eq('buyer_wallet', wallet)
       .single();
