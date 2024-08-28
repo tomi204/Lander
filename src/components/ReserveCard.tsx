@@ -36,9 +36,10 @@ const ReserveCard: FC<ReserveCardProps> = ({ reservation }) => {
   const router = useRouter();
   console.log(reservation.id, reservation.attributes.tx_id, 'reservation');
 
-  const joinRoom = async (txId: string) => {
-    router.push(`/p2p/${txId}`);
-  };
+  const joinRoom = async ( txId: string ) => {
+    router.push( `/p2p/${txId}` );
+  }
+  
   return (
     <div className="border rounded-lg overflow-hidden shadow-md">
       <Image

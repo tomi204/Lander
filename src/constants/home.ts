@@ -19,7 +19,7 @@ export const homeSettingsConst: Record<string, HomeSettings> = {
   DEFAULT: {
     title: "The Web3 travel community",
     description:
-      "We are a decentralized and anonymous short-term rental protocol, over the Polygon chain.",
+      "We are a decentralized and anonymous short-term rental protocol, over the BNB chain.",
     image: argImg,
   },
   AR: {

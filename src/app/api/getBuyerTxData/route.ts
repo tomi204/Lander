@@ -45,7 +45,7 @@ export async function GET(request: Request) {
 
     console.log({ transaction });
 
-    return NextResponse.json(transaction, { status: 200 });
+    return NextResponse.json(transaction || [], { status: 200 });
   } catch (error: any) {
     console.error('Error:', error);
     return NextResponse.json({ error: error.message }, { status: 500 });
