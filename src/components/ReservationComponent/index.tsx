@@ -1,95 +1,51 @@
-import GuestsInput from "@/components/ReservationComponent/GuestsInput";
-import StayDatesRangeInput from "@/app/stay/detail/StayDatesRangeInput";
-import { Stay } from "@/data/types";
-import ButtonPrimary from "@/shared/ButtonPrimary";
-import { FC, useEffect, useMemo, useRef, useState } from "react";
-import { useAuth } from "@/contexts/AuthContext";
-import { useRouter } from "next/navigation";
-import { GuestsObject } from "@/interfaces/guest.interface";
-import { useForm } from "react-hook-form";
-import { BookingPayload } from "@/interfaces/Booking";
-import { useCreateBooking } from "@/hooks/useBooking";
-import { formatDateWithoutTime } from "@/utils/date";
-import ReservationPrice from "./ReservationPrice";
-import ReservationMobileComponent from "../ReservationMobileComponent/ReservationMobileComponent";
-import { useAccount } from "wagmi";
-import supabase from "@/supabase/client";
-import { DatabaseBackup, TicketX } from "lucide-react";
-import { useTransaction } from "@/contexts/CheckoutProvider";
-
-
-interface ReservationPriceProps {
-  price: number;
-  depositAmount?: number;
-  cleaningServiceFee?: number;
-  nights: number;
-}
-
-
+import GuestsInput from '@/components/ReservationComponent/GuestsInput';
+import StayDatesRangeInput from '@/app/stay/detail/StayDatesRangeInput';
+import { Stay } from '@/data/types';
+import ButtonPrimary from '@/shared/ButtonPrimary';
+import { FC, useEffect, useMemo, useRef, useState } from 'react';
+import { useAuth } from '@/contexts/AuthContext';
+import { GuestsObject } from '@/interfaces/guest.interface';
+import { useForm } from 'react-hook-form';
+import { BookingPayload } from '@/interfaces/Booking';
+import { useCreateBooking } from '@/hooks/useBooking';
+import { formatDateWithoutTime } from '@/utils/date';
+import ReservationPrice from './ReservationPrice';
+import ReservationMobileComponent from '../ReservationMobileComponent/ReservationMobileComponent';
+import { useAccount } from 'wagmi';
+import supabase from '@/supabase/client';
+import { DatabaseBackup, TicketX } from 'lucide-react';
+import { useTransaction } from '@/contexts/CheckoutProvider';
+import { useRouter } from 'next/navigation';
 interface ReservationComponentProps {
   stay: any;
 }
 
-
-
-//client - propietario- propiedad 
-// endpoint the verificacion de usuario que va a recibir un true o false para sobreescribir la columna de worldID 
-// la tabla transaction  va a tener un tx id por chain , ese id se guarda en el backen para consultar el estado de una transaccion vinculada al usuario que lo generó , buyer , owner, y property , codigo de confirmación es el id de transaccion en p2p 
-// con ese id de transaccion renderizo el p2p ,  post con espacio para cada chain 
-
-
-interface Transaction {
-  id: string;
-  book_id: string;
-  amount: number;
-  entrance_date: string;
-  departure_date: string;
-  buyer_wallet: string;
-  owner_id: string;
-  property_id: string;
-  nights: number;
-  payment_network: 'polygon' | 'arbitrum' | 'avalanche';
-  status: 'pending' | 'completed' | 'failed';
-}
-
-
-
-
-const ReservationComponent: any = ( { stay }: ReservationComponentProps ) => {
+const ReservationComponent: any = ({ stay }: ReservationComponentProps) => {
   const {
     register,
-    handleSubmit,
     setValue,
     formState: { errors },
   } = useForm<BookingPayload>();
-  const { transaction ,setTransaction } = useTransaction() || {};
+  const { setTransaction } = useTransaction() || {};
 
   const router = useRouter();
-  const [nights, setNights] = useState<number>( 0 );
-  const submitBtnReference = useRef<HTMLButtonElement>( null );
+
+  const [nights, setNights] = useState<number>(0);
+  const submitBtnReference = useRef<HTMLButtonElement>(null);
   const { isAuth, isAuthenticating } = useAuth();
-  const [{ data, loading, error }, executeBookingPost] = useCreateBooking();
+  const [{ loading, error }] = useCreateBooking();
   const { address } = useAccount();
-  const [txId,setTxId] = useState("")
-  const [transactions, setTransactions] = useState<Transaction>( {} as Transaction );
-  const [startDate, setStartDate] = useState<Date | null>( null );
-  const [endDate, setEndDate] = useState<Date | null>( null );
+
+  const [startDate, setStartDate] = useState<Date | null>(null);
+  const [endDate, setEndDate] = useState<Date | null>(null);
 
   const price = stay?.price;
   const depositAmount = stay?.depositAmount;
   const cleaningServiceFee = stay?.cleaningServiceFee;
 
-
   const totalPrice = Number(
-    price * nights + ( cleaningServiceFee ?? 0 ) + ( depositAmount ?? 0 )
+    price * nights + (cleaningServiceFee ?? 0) + (depositAmount ?? 0)
   );
-
-  const [newTransaction, setNewTransaction] = useState<Partial<Transaction>>();
-
-  const [isModalOpen, setIsModalOpen] = useState( false );
-  const [selectedNetwork, setSelectedNetwork] = useState<'polygon' | 'arbitrum' | 'avalanche' | null>( null );
-
-
 
   const handleCheckout = async () => {
     const transaction = {
@@ -101,86 +57,33 @@ const ReservationComponent: any = ( { stay }: ReservationComponentProps ) => {
       property_id: stay.id,
       nights: nights,
     };
-
+    console.log('enter');
     try {
-      const response = await fetch( '/api/transaction', {
+      const response = await fetch('/api/transaction', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify( transaction ),
-      } );
+        body: JSON.stringify(transaction),
+      });
 
-      if ( !response.ok ) {
-        throw new Error( `Error creating transaction: ${response.statusText}` );
+      if (!response.ok) {
+        throw new Error(`Error creating transaction: ${response.statusText}`);
       }
 
-
       const tx = await response.json();
-        let id = tx?.data[0]?.id 
-        let prop_id = tx?.data[0]?.property_id
-       if( id){
-        setTransaction?.( tx?.data[0] );
-       }
-
-
-      
-     
-// devulve este objeto 
-
-//create context with tx 
-
-
-  // {
-  //   data: [
-  //     {
-  //       id: '92e76315-8ac9-4bc5-aee4-32f366053773',
-  //       tx_id_polygon: '',
-  //       tx_id_arbitrum: null,
-  //       tx_id_avalanche: null,
-  //       amount: 0.1,
-  //       entrance_date: '2024-08-27',
-  //       departure_date: '2024-08-28',
-  //       owner_id: 'dba96033-6e02-4751-a5db-e1f00dd7db6e',
-  //       property_id: 'ba53c728-427b-4b6f-909d-bc0ccf65a847',
-  //       created_at: '2024-08-26T20:14:55.74528+00:00',
-  //       updated_at: '2024-08-26T20:14:55.74528+00:00',
-  //       buyer_wallet: '0x9a93bc7e9718b3fc18D75dd58B47808d3f9Cb282',
-  //       book_id: null
-  //     }
-  //   ]
-    
-    //  router.push( `/checkout/${id}` );
-
-
-
-    } catch ( error ) {
-      console.error( 'Error creating transaction:', error );
+      let id = tx?.data[0]?.id;
+      if (id) {
+        setTransaction?.(tx?.data[0]);
+      }
+      router.push('/checkout');
+      // window.location.href = '/checkout';
+    } catch (error) {
+      console.error('Error creating transaction:', error);
     }
   };
 
-
-  console.log(transaction)
-
-  const updateTransactionStatus = async ( txId: string, network: string ) => {
-    // In a real-world scenario, you'd check the actual transaction status on the blockchain here
-    const status = Math.random() > 0.5 ? 'completed' : 'failed';
-
-    const { error } = await supabase
-      .from( 'transactions' )
-      .update( { status } )
-      .eq( 'id', txId );
-
-    if ( error ) console.error( 'Error updating transaction status:', error );
-    else {
-      console.log( `Transaction ${txId} status updated to ${status}` );
-      // fetchTransactions();
-    }
-  };
-
-
-
-  const onChangeDate = ( {
+  const onChangeDate = ({
     from,
     to,
     nights,
@@ -188,18 +91,17 @@ const ReservationComponent: any = ( { stay }: ReservationComponentProps ) => {
     from?: Date | null;
     to?: Date | null;
     nights: number;
-  } ) => {
-    if ( !from || !to ) {
+  }) => {
+    if (!from || !to) {
       return;
     }
 
-    setNights( nights );
-    setValue( "from", formatDateWithoutTime( from ) );
-    setValue( "to", formatDateWithoutTime( to ) );
-    setStartDate( from );
-    setEndDate( to );
+    setNights(nights);
+    setValue('from', formatDateWithoutTime(from));
+    setValue('to', formatDateWithoutTime(to));
+    setStartDate(from);
+    setEndDate(to);
   };
-
 
   const isSameOrigin = useMemo(
     () => address === stay.owner.name,
@@ -211,90 +113,73 @@ const ReservationComponent: any = ( { stay }: ReservationComponentProps ) => {
     [isAuthenticating, isSameOrigin, isAuth]
   );
 
-
-  const excludeDates = useMemo( () => {
+  const excludeDates = useMemo(() => {
     const excludeDates = stay?.excludeDates ?? [];
     const reservedDates = stay?.reservedDates ?? [];
 
     return [...excludeDates, ...reservedDates];
-  }, [stay?.excludeDates, stay?.reservedDates] );
+  }, [stay?.excludeDates, stay?.reservedDates]);
 
-  useEffect( () => {
-    register( "stay", {
+  useEffect(() => {
+    register('stay', {
       value: stay.id,
-      required: { value: true, message: "The stay ID is required" },
-    } );
-    register( "host", {
+      required: { value: true, message: 'The stay ID is required' },
+    });
+    register('host', {
       value: stay.owner.id,
-      required: { value: true, message: "The host ID is required" },
-    } );
-    register( "guestAddress", {
+      required: { value: true, message: 'The host ID is required' },
+    });
+    register('guestAddress', {
       value: stay?.location,
-      required: { value: true, message: "Wallet not connected" },
-    } );
-    register( "guestAdults", {
+      required: { value: true, message: 'Wallet not connected' },
+    });
+    register('guestAdults', {
       required: {
         value: true,
-        message: "The number of adult guests is required",
+        message: 'The number of adult guests is required',
       },
-    } );
-    register( "guestChildren" );
-    register( "guestInfants" );
-    register( "from", {
-      required: { value: true, message: "The starting date is required" },
-    } );
-    register( "to", {
-      required: { value: true, message: "The ending date is required" },
-    } );
-  }, [address, register, stay.owner.name, stay.id] );
+    });
+    register('guestChildren');
+    register('guestInfants');
+    register('from', {
+      required: { value: true, message: 'The starting date is required' },
+    });
+    register('to', {
+      required: { value: true, message: 'The ending date is required' },
+    });
+  }, [address, register, stay.owner.name, stay.id]);
 
-  // const onSubmit = ( data: any ) => {
-  //   executeBookingPost( { data } );
-  // };
-
-
-  
-  useEffect( () => {
-    if ( transaction ) {
-      router.push(`/checkout?id=${transaction.property_id}&tx=${transaction.id}`);
-    }
-  }, [router, transaction] );
-
-  const onChangeGuests = ( guests: GuestsObject ) => {
-    setValue( "guestAdults", guests.guestAdults );
-    setValue( "guestChildren", guests.guestChildren );
-    setValue( "guestInfants", guests.guestInfants );
+  const onChangeGuests = (guests: GuestsObject) => {
+    setValue('guestAdults', guests.guestAdults);
+    setValue('guestChildren', guests.guestChildren);
+    setValue('guestInfants', guests.guestInfants);
   };
 
-  const errorMessage = useMemo( () => {
-    if ( !isAuth ) {
-      return "Please connect to wallet first.";
+  const errorMessage = useMemo(() => {
+    if (!isAuth) {
+      return 'Please connect to wallet first.';
     }
 
-    if ( error?.status === 409 ) {
-      return "Your selected dates are not available.";
+    if (error?.status === 409) {
+      return 'Your selected dates are not available.';
     }
 
-    if ( error?.status === 405 ) {
-      return "You need connect to wallet first.";
+    if (error?.status === 405) {
+      return 'You need connect to wallet first.';
     }
 
-    if ( error ) {
-      return "Ops! Something went wrong. Try again later.";
+    if (error) {
+      return 'Ops! Something went wrong. Try again later.';
     }
-  }, [error, isAuth] );
+  }, [error, isAuth]);
 
-
-
-  const dateRangeError = useMemo( () => {
+  const dateRangeError = useMemo(() => {
     return errors.from || errors.to;
-  }, [errors.from, errors.to] );
+  }, [errors.from, errors.to]);
 
-  const guestsError = useMemo( () => {
+  const guestsError = useMemo(() => {
     return errors.guestAdults || errors.guestChildren || errors.guestInfants;
-  }, [errors.guestAdults, errors.guestChildren, errors.guestInfants] );
-
-
+  }, [errors.guestAdults, errors.guestChildren, errors.guestInfants]);
 
   return (
     <>
@@ -354,49 +239,34 @@ const ReservationComponent: any = ( { stay }: ReservationComponentProps ) => {
                 <span className="text-3s font-semibold">
                   Total:
                   <span className="ml-1 text-base font-normal text-neutral-500 dark:text-neutral-400">
-                    USDT{" "}
-                    {totalPrice}
+                    USDT {totalPrice}
                   </span>
                 </span>
-                {/* <StartRating /> */}
               </div>
             </div>
 
+            <div className="flex flex-col border border-neutral-200 dark:border-neutral-700 rounded-3xl ">
+              <StayDatesRangeInput
+                error={!!dateRangeError}
+                minDate={stay.availableFrom}
+                maxDate={stay.availableTo}
+                excludeDates={excludeDates}
+                className="flex-1 z-[11]"
+                onChangeDate={onChangeDate}
+              />
+              <GuestsInput onChange={onChangeGuests} error={!!guestsError} />
+            </div>
+            <div className="flex flex-col rounded-3xl pt-2 pb-2">
+              <ButtonPrimary
+                disabled={disabled}
+                loading={loading}
+                onClick={handleCheckout}
+              >
+                Reserve
+              </ButtonPrimary>
+            </div>
 
-
-
-
-
-
-            {/* FORM */}
-            <form onSubmit={handleCheckout}>
-              <div className="flex flex-col border border-neutral-200 dark:border-neutral-700 rounded-3xl ">
-                <StayDatesRangeInput
-                  error={!!dateRangeError}
-                  minDate={stay.availableFrom}
-                  maxDate={stay.availableTo}
-                  excludeDates={excludeDates}
-                  className="flex-1 z-[11]"
-                  onChangeDate={onChangeDate}
-                />
-                <GuestsInput onChange={onChangeGuests} error={!!guestsError} />
-              </div>
-              <div className="flex flex-col rounded-3xl pt-2 pb-2">
-                <ButtonPrimary
-                  disabled={disabled}
-                  type="submit"
-                  loading={loading}
-                  // ref={submitBtnReference}
-                  onClick={handleCheckout}
-
-
-                >
-                  Reserve
-                </ButtonPrimary>
-              </div>
-
-
-              {/* {isModalOpen && (
+            {/* {isModalOpen && (
                 <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full" id="my-modal">
                   <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
                     <div className="mt-3 text-center">
@@ -412,24 +282,21 @@ const ReservationComponent: any = ( { stay }: ReservationComponentProps ) => {
                 </div>
               )} */}
 
-
-
-              {errorMessage && (
-                <div className="flex flex-col rounded-3xl pt-2 pb-2">
-                  <h3 className="flex-grow text-center text-sm font-medium text-neutral-700 dark:text-neutral-300 sm:text-sm">
-                    {errorMessage}
-                  </h3>
-                </div>
-              )}
-              {isSameOrigin && (
-                <div className="flex flex-col rounded-3xl pt-2 pb-2">
-                  <h3 className="flex-grow text-center text-sm font-medium text-red-700 dark:text-neutral-300 sm:text-sm">
-                    The host address is the same as the guest&apos;s. Please check your connected
-                    address.
-                  </h3>
-                </div>
-              )}
-            </form>
+            {errorMessage && (
+              <div className="flex flex-col rounded-3xl pt-2 pb-2">
+                <h3 className="flex-grow text-center text-sm font-medium text-neutral-700 dark:text-neutral-300 sm:text-sm">
+                  {errorMessage}
+                </h3>
+              </div>
+            )}
+            {isSameOrigin && (
+              <div className="flex flex-col rounded-3xl pt-2 pb-2">
+                <h3 className="flex-grow text-center text-sm font-medium text-red-700 dark:text-neutral-300 sm:text-sm">
+                  The host address is the same as the guest&apos;s. Please check
+                  your connected address.
+                </h3>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -444,7 +311,7 @@ const ReservationComponent: any = ( { stay }: ReservationComponentProps ) => {
         maxDate={stay.availableTo}
         excludeDates={excludeDates}
         onChangeDate={onChangeDate}
-        onReserve={( event: any ) => {
+        onReserve={(event: any) => {
           event.preventDefault();
           submitBtnReference.current?.click();
         }}

@@ -1,42 +1,30 @@
-"use client";
+'use client';
 
-import React, { FC, Fragment, useMemo, useState } from "react";
-import { Dialog, Transition } from "@headlessui/react";
-import { ArrowRightIcon, Squares2X2Icon } from "@heroicons/react/24/outline";
-import CommentListing from "@/components/CommentListing";
-import FiveStartIconForRate from "@/components/FiveStartIconForRate";
-import StartRating from "@/components/StartRating";
-import Avatar from "@/shared/Avatar";
-import Badge from "@/shared/Badge";
-import ButtonCircle from "@/shared/ButtonCircle";
-import ButtonSecondary from "@/shared/ButtonSecondary";
-import ButtonClose from "@/shared/ButtonClose";
-import Input from "@/shared/Input";
-import Image from "next/image";
-import { Amenities_demos, PHOTOS } from "./constant";
-import { Stay } from "@/data/types";
-import ReactMarkdown from "react-markdown";
-import rehypeHighlight from "rehype-highlight";
-import ModalImageGallery from "@/components/listing-image-gallery/ListingImageGallery";
-import ReservationComponent from "@/components/ReservationComponent";
+import React, { FC, Fragment, useMemo, useState } from 'react';
+import { Dialog, Transition } from '@headlessui/react';
+import { ArrowRightIcon, Squares2X2Icon } from '@heroicons/react/24/outline';
+import CommentListing from '@/components/CommentListing';
+import FiveStartIconForRate from '@/components/FiveStartIconForRate';
+import StartRating from '@/components/StartRating';
+import Avatar from '@/shared/Avatar';
+import Badge from '@/shared/Badge';
+import ButtonCircle from '@/shared/ButtonCircle';
+import ButtonSecondary from '@/shared/ButtonSecondary';
+import ButtonClose from '@/shared/ButtonClose';
+import Input from '@/shared/Input';
+import Image from 'next/image';
+import { Amenities_demos, PHOTOS } from './constant';
+import { Stay } from '@/data/types';
+import ReactMarkdown from 'react-markdown';
+import rehypeHighlight from 'rehype-highlight';
+import ModalImageGallery from '@/components/listing-image-gallery/ListingImageGallery';
+import ReservationComponent from '@/components/ReservationComponent';
 
 export interface StayDetailContainerProps {
   stay: Stay;
 }
 
 const StayDetailContainer: FC<StayDetailContainerProps> = ({ stay }) => {
-  // const listingCategory = useMemo(() => {
-  //   return stay.listingCategory.data;
-  // }, [stay.listingCategory.data]);
-
-
-
-
-console.log(stay)
-
-
-
-
   const [isOpenModalAmenities, setIsOpenModalAmenities] = useState(false);
   const [showModalImageGallery, setShowModalImageGallery] = useState(false);
   const [currentImageId, setCurrentImageId] = useState<string>();
@@ -81,48 +69,33 @@ console.log(stay)
             <span className="ml-1">{stay?.location}</span>
           </span>
         </div>
-
-        {/* 4 */}
-        {/* <div className="flex items-center">
-          <Avatar hasChecked sizeClass="h-10 w-10" radius="rounded-full" />
-          <span className="ml-2.5 text-neutral-500 dark:text-neutral-400">
-            Hosted by {""}
-            <span className="text-neutral-900 dark:text-neutral-200 font-medium">
-              {stay.author.username} {stay.author.addressWallet}
-            </span>
-          </span>
-        </div> */}
-
-        {/* 5 */}
         <div className="w-full border-b border-neutral-100 dark:border-neutral-700" />
-
-        {/* 6 */}
         <div className="flex items-center justify-between xl:justify-start space-x-8 xl:space-x-12 text-sm text-neutral-700 dark:text-neutral-300">
           <div className="flex items-center space-x-3 ">
             <i className="las la-user text-2xl"></i>
             <span className="">
-              {stay?.maxGuests ?? 0}{" "}
+              {stay?.maxGuests ?? 0}{' '}
               <span className="hidden md:inline-block">guests</span>
             </span>
           </div>
           <div className="flex items-center space-x-3">
             <i className="las la-bed text-2xl"></i>
             <span className=" ">
-              {stay?.beds ?? 0}{" "}
+              {stay?.beds ?? 0}{' '}
               <span className="hidden md:inline-block">beds</span>
             </span>
           </div>
           <div className="flex items-center space-x-3">
             <i className="las la-bath text-2xl"></i>
             <span className=" ">
-              {stay?.num_bathrooms ?? 0}{" "}
+              {stay?.num_bathrooms ?? 0}{' '}
               <span className="hidden md:inline-block">baths</span>
             </span>
           </div>
           <div className="flex items-center space-x-3">
             <i className="las la-door-open text-2xl"></i>
             <span className=" ">
-              {stay?.num_rooms ?? 0}{" "}
+              {stay?.num_rooms ?? 0}{' '}
               <span className="hidden md:inline-block">bedrooms</span>
             </span>
           </div>
@@ -526,18 +499,17 @@ console.log(stay)
       {/*  HEADER */}
       <header className="rounded-md sm:rounded-xl">
         <div className="relative grid grid-cols-3 sm:grid-cols-4 gap-1 sm:gap-2">
-
-{ stay?.main_image &&(
-          	<div className="space-y-4">
-							<Image
-							alt="image"
-							className="w-full h-auto"
-							width="1000"
-							height="1000"
-							src={stay?.main_image}
-						/>
-            
-            </div>)}
+          {stay?.main_image && (
+            <div className="space-y-4">
+              <Image
+                alt="image"
+                className="w-full h-auto"
+                width="1000"
+                height="1000"
+                src={stay?.main_image}
+              />
+            </div>
+          )}
           {/* {stay.galleryImgs.data?.length && (
             <div
               className="col-span-2 row-span-3 sm:row-span-2 relative rounded-md sm:rounded-xl overflow-hidden cursor-pointer"
@@ -583,21 +555,20 @@ console.log(stay)
                   />
                 </div> */}
 
-                {/* OVERLAY */}
-                {/* <div
+          {/* OVERLAY */}
+          {/* <div
                   className="absolute inset-0 bg-neutral-900 bg-opacity-20 opacity-0 hover:opacity-100 transition-opacity cursor-pointer"
                   onClick={() => handleOpenModalImageGallery(item.id)}
                 />
               </div>   ))}*/}
-      
 
           {/* <button
             className="absolute hidden md:flex md:items-center md:justify-center left-3 bottom-3 px-4 py-2 rounded-xl bg-neutral-100 text-neutral-500 hover:bg-neutral-200 z-10"
             onClick={() => handleOpenModalImageGallery()}
           >
             <Squares2X2Icon className="w-5 h-5" /> */}
-            {/* TODO: add gallery modal */}
-            {/* <span className="ml-2 text-neutral-800 text-sm font-medium">
+          {/* TODO: add gallery modal */}
+          {/* <span className="ml-2 text-neutral-800 text-sm font-medium">
               Show all photos
             </span>
           </button> */}

@@ -1,10 +1,10 @@
-import React, { useState, FC } from "react";
-import ButtonPrimary from "@/shared/ButtonPrimary";
-import ModalReservationMobile from "./ModalReservationMobile";
-import { Stay } from "@/data/types";
-import { GuestsObject } from "@/interfaces/guest.interface";
-import ModalSelectDate from "./ModalSelectDate";
-import { useAuth } from "@/contexts/AuthContext";
+import React, { useState, FC } from 'react';
+import ButtonPrimary from '@/shared/ButtonPrimary';
+import ModalReservationMobile from './ModalReservationMobile';
+import { Stay } from '@/data/types';
+import { GuestsObject } from '@/interfaces/guest.interface';
+import ModalSelectDate from './ModalSelectDate';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface ReservationMobileComponentProps {
   stay: Stay;
