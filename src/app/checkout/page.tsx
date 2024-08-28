@@ -35,6 +35,8 @@ useEffect( () => {
       fetchUserData();
     }, [transaction, address] );
 
+
+
   return (
     <div className="container mx-auto p-4 md:p-6 lg:p-8">
       <div className="flex flex-col lg:flex-row gap-8">
@@ -152,18 +154,19 @@ useEffect( () => {
         <div className="w-full lg:w-1/3 space-y-6">
           <div className="border rounded-lg overflow-hidden">
             <Image
-              src={stay?.main_image || ''}
-              alt={stay?.title || ''}
+              src={stay?.attributes?.image || ''}
+              alt={stay?.attributes?.title || ''}
               width={400}
               height={200}
               className="w-full h-48 object-cover"
             />
             <div className="p-4 space-y-2">
-              <p className="font-semibold">{stay?.title || ''}</p>
-              <p className="text-sm text-gray-500">
+              <p className="font-semibold">{stay?.attributes?.title || ''}</p>
+              <p className="font-semibold">{stay?.attributes?.location || ''}</p>
+              {/* <p className="text-sm text-gray-500">
                 {stay?.num_rooms || ''} bedrooms • {stay?.num_bathrooms || ''}{' '}
                 bathrooms{' '}
-              </p>
+              </p> */}
             </div>
           </div>
 
