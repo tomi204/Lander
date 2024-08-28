@@ -12,7 +12,7 @@ import { useAccount } from 'wagmi';
 
 export default function StayDetailPage() {
   const { transaction, setTransaction } = useTransaction() || {};
-  const stay = transaction;
+  const tx = transaction;
   console.log(transaction, 'transaction');
   const { address } = useAccount();
 
@@ -115,8 +115,8 @@ useEffect( () => {
           </div> */}
 
           <ContractInteraction
-            amount={stay?.amount}
-            sellerAddress={stay?.buyer_wallet}
+            amount={tx?.amount}
+            sellerAddress={tx?.owner_wallet}
           />
 
           <div className="space-y-4">
@@ -155,15 +155,15 @@ useEffect( () => {
         <div className="w-full lg:w-1/3 space-y-6">
           <div className="border rounded-lg overflow-hidden">
             <Image
-              src={stay?.attributes?.image || ''}
-              alt={stay?.attributes?.title || ''}
+              src={tx?.attributes?.image || ''}
+              alt={tx?.attributes?.title || ''}
               width={400}
               height={200}
               className="w-full h-48 object-cover"
             />
             <div className="p-4 space-y-2">
-              <p className="font-semibold">{stay?.attributes?.title || ''}</p>
-              <p className="font-semibold">{stay?.attributes?.location || ''}</p>
+              <p className="font-semibold">{tx?.attributes || ''}</p>
+              <p className="font-semibold">{tx?.attributes?.location || ''}</p>
               {/* <p className="text-sm text-gray-500">
                 {stay?.num_rooms || ''} bedrooms • {stay?.num_bathrooms || ''}{' '}
                 bathrooms{' '}
@@ -176,11 +176,11 @@ useEffect( () => {
             <div className="space-y-2">
               <div className="flex justify-between">
                 <p>Check-In</p>
-                <p className="font-semibold">{stay?.attributes?.startDate}</p>
+                <p className="font-semibold">{tx?.entrance_date}</p>
               </div>
               <div className="flex justify-between">
                 <p>Check-Out</p>
-                <p className="font-semibold">{stay?.attributes?.endDate}</p>
+                <p className="font-semibold">{tx?.departure_date}</p>
               </div>
               {/* <div className="flex justify-between">
                 <p>Guests</p>
@@ -194,7 +194,7 @@ useEffect( () => {
             <div className="space-y-2">
               <div className="flex justify-between">
                 <p>Nights</p>
-                <p className="font-semibold">{stay?.attributes.nights}</p>
+                <p className="font-semibold">{tx?.nights}</p>
               </div>
               {/* <div className="flex justify-between">
                 <p>Cleaning Fee</p>
@@ -206,7 +206,7 @@ useEffect( () => {
               </div> */}
               <div className="flex justify-between font-bold">
                 <p>Total</p>
-                <p>{stay?.amount}</p>
+                <p>{tx?.amount}</p>
               </div>
             </div>
           </div>
@@ -223,7 +223,7 @@ useEffect( () => {
               <div className="flex justify-between">
                 <p>Seller</p>
                 <p className="font-semibold">
-                  {stay?.seller_wallet}
+                  {tx?.owner_wallet}
                 </p>
               </div>
             </div>

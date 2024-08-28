@@ -60,6 +60,8 @@ console.log(stay, 'stay');
       owner_wallet: stay.owner.wallet,
       owner_id: stay.owner.id,
     };
+
+    console.log(transaction, 'transaction');
     
     try {
       const response = await fetch('/api/transaction', {

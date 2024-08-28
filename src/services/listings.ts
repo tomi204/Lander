@@ -53,7 +53,8 @@ export const findPropertyById = cache(async (id: string): Promise<Stay> => {
       owner:owner_id (
         id,
         name,
-        email
+        email,
+        wallet
       )
     `)
     .eq('id', id)
