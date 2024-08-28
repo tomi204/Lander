@@ -1,71 +1,71 @@
 "use client";
+import { FC, useEffect, useState } from 'react';
+import ReserveCard from '@/components/ReserveCard';
 
-import CommentListing from "@/components/CommentListing";
-import StartRating from "@/components/StartRating";
-import React, { FC, Fragment, useState } from "react";
-import Avatar from "@/shared/Avatar";
-import ButtonSecondary from "@/shared/ButtonSecondary";
-import SocialsList from "@/shared/SocialsList";
-import { Book } from "@/interfaces/Booking";
-import { StrapiPaginatedResult } from "@/interfaces/StrapiPaginatedResults";
-import BookCard from "@/components/BookCard/BookCard";
-import { Tab } from "@headlessui/react";
-
-
-
-export interface MyBookingsProps {
-  books: StrapiPaginatedResult<Book>;
-  booksHost: StrapiPaginatedResult<Book>;
+interface StayAttributes {
+  title: string;
+  location: string;
+  description: string;
+  image: string;
 }
 
-const MyBookingsPage: FC<MyBookingsProps> = ({  }) => {
-
-
-
-
-
-
-  const renderSection1 = () => {
-    return (
-      <div className="listingSection__wrap">
-        <div className="sm:hidden">
-          <h2 className="text-2xl font-semibold">Bookings</h2>
-        </div>
-        <div className="w-28 border-b border-neutral-200 dark:border-neutral-700 sm:hidden"></div>
-
-
-      </div>
-    );
+interface ReservationAttributes {
+  id: string;
+  attributes: {
+    startDate: string;
+    endDate: string;
+    nights: number;
+    totalPrice: number;
+    status: string | null;
+    stay: {
+      id: string;
+      attributes: StayAttributes;
+    };
   };
+}
 
-  const renderSection2 = () => {
-    return (
-      <div className="listingSection__wrap">
-        {/* HEADING */}
-        <h2 className="text-2xl font-semibold">Reviews (23 reviews)</h2>
-        <div className="w-14 border-b border-neutral-200 dark:border-neutral-700"></div>
+const ReservationsPage: FC = () => {
+  const [reservations, setReservations] = useState<ReservationAttributes[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-        {/* comment */}
-        <div className="divide-y divide-neutral-100 dark:divide-neutral-800">
-          <CommentListing hasListingTitle className="pb-8" />
-          <CommentListing hasListingTitle className="py-8" />
-          <CommentListing hasListingTitle className="py-8" />
-          <CommentListing hasListingTitle className="py-8" />
-          <div className="pt-8">
-            <ButtonSecondary>View more 20 reviews</ButtonSecondary>
-          </div>
-        </div>
-      </div>
-    );
-  };
+  useEffect(() => {
+    const fetchReservations = async () => {
+      try {
+        const response = await fetch('/api/transaction?wallet=0xd7ed1a1FC1295A0e7Ac16b5834F152F7B6306C0e');
+        const result = await response.json();
+
+        if (response.ok) {
+          setReservations(result.data);
+          setError(null);
+        } else {
+          setError(result.error);
+          setReservations([]);
+        }
+      } catch (err) {
+        setError('An unexpected error occurred');
+        setReservations([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchReservations();
+  }, []);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error}</p>;
 
   return (
-    // <div className="w-full lg:w-3/5 xl:w-2/3 space-y-8 lg:space-y-10 lg:pl-10 flex-shrink-0">
-    <div className="w-full space-y-8 lg:space-y-10 lg:pl-10 flex-shrink-0">
-      {renderSection1()}
-      {/* {renderSection2()} */}
+    <div className="container mx-auto p-4 md:p-6 lg:p-8">
+      <h2 className="text-2xl font-bold mb-4">Your Reservations</h2>
+      <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 gap-6">
+        {reservations.map((reservation) => (
+          <ReserveCard key={reservation.id} reservation={reservation} />
+        ))}
+      </div>
     </div>
   );
 };
 
-export default MyBookingsPage;
+export default ReservationsPage;
