@@ -77,8 +77,10 @@ console.log(stay, 'stay');
       }
 
       const tx = await response.json();
+      console.log(tx, 'tx');
       let id = tx?.data[0]?.id;
       if (id) {
+
         setTransaction?.(tx?.data[0]);
       }
       router.push('/checkout');

@@ -25,7 +25,7 @@ export const updateBookingStatus = async (
       updated_at: new Date().toISOString()
     })
     .eq('id', bookingId).select();
-
+console.log(tx, 'tx');
   if (error) {
     throw new Error(`Failed to update booking status: ${error.message}`)
   }
