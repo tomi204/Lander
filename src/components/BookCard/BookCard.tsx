@@ -1,25 +1,25 @@
-"use client";
-import React, { FC, useCallback, useMemo, useState } from "react";
-import Badge from "@/shared/Badge";
-import Link from "next/link";
-import { Book } from "@/interfaces/Booking";
-import { TwMainColor } from "@/data/types";
-import { PaymentStatus, PaymentStatusMessages } from "@/interfaces/Payment";
-import CoinSymbolComponent from "../CoinSymbolComponent";
-import { usePaymentMediation } from "@/hooks/usePayment";
-import ConfirmDialog from "../listing-image-gallery/ConfirmDialog/ComfirmDialog";
-import { useRouter } from "next/navigation";
-import HostInfo from "./HostInfo";
-import BookDetails from "./BookDetails";
-import Conditions from "./Conditions";
-import { useAccount } from "wagmi";
+'use client';
+import React, { FC, useCallback, useMemo, useState } from 'react';
+import Badge from '@/shared/Badge';
+import Link from 'next/link';
+import { Book } from '@/interfaces/Booking';
+import { TwMainColor } from '@/data/types';
+import { PaymentStatus, PaymentStatusMessages } from '@/interfaces/Payment';
+import CoinSymbolComponent from '../CoinSymbolComponent';
+import { usePaymentMediation } from '@/hooks/usePayment';
+import ConfirmDialog from '../listing-image-gallery/ConfirmDialog/ComfirmDialog';
+import { useRouter } from 'next/navigation';
+import HostInfo from './HostInfo';
+import BookDetails from './BookDetails';
+import Conditions from './Conditions';
+import { useAccount } from 'wagmi';
 
 export interface BookCardProps {
   className?: string;
   book: Book;
 }
 
-const BookCard: FC<BookCardProps> = ({ className = "", book }) => {
+const BookCard: FC<BookCardProps> = ({ className = '', book }) => {
   const router = useRouter();
 
   const { address } = useAccount();
@@ -33,18 +33,19 @@ const BookCard: FC<BookCardProps> = ({ className = "", book }) => {
   const [{ data, loading, error }, execute] = usePaymentMediation(payment.id);
 
   const guests = useMemo(
-    () => book.guestAdults ?? 0 + book.guestChildren ?? 0 + book.guestInfants ?? 0,
+    () =>
+      book.guestAdults ?? 0 + book.guestChildren ?? 0 + book.guestInfants ?? 0,
     [book.guestAdults, book.guestChildren, book.guestInfants]
   );
 
   const statusColor = useMemo(() => {
     const bookStatusColorMap: Record<PaymentStatus, TwMainColor> = {
-      [PaymentStatus.waitingForPayment]: "indigo",
-      [PaymentStatus.success]: "green",
-      [PaymentStatus.rejected]: "red",
-      [PaymentStatus.inProcess]: "purple",
-      [PaymentStatus.claimedByGuest]: "red",
-      [PaymentStatus.claimedByHost]: "red",
+      [PaymentStatus.waitingForPayment]: 'indigo',
+      [PaymentStatus.success]: 'green',
+      [PaymentStatus.rejected]: 'red',
+      [PaymentStatus.inProcess]: 'purple',
+      [PaymentStatus.claimedByGuest]: 'red',
+      [PaymentStatus.claimedByHost]: 'red',
     };
 
     return bookStatusColorMap[payment.status];
@@ -83,7 +84,9 @@ const BookCard: FC<BookCardProps> = ({ className = "", book }) => {
           className="absolute md:flex md:items-center md:justify-center right-3 top-3 px-4 py-2 rounded-xl bg-neutral-100 text-neutral-500 hover:bg-neutral-200"
           onClick={handleOnClaim}
         >
-          <span className="ml-2 text-neutral-800 text-sm font-medium">Claim</span>
+          <span className="ml-2 text-neutral-800 text-sm font-medium">
+            Claim
+          </span>
         </button>
         <HostInfo
           name={stay.name}
@@ -91,7 +94,12 @@ const BookCard: FC<BookCardProps> = ({ className = "", book }) => {
           email={book.host.data.attributes.email}
           isReady={payment.status === PaymentStatus.success}
         />
-        <BookDetails nights={book.nights} from={book.from} to={book.to} guests={guests} />
+        <BookDetails
+          nights={book.nights}
+          from={book.from}
+          to={book.to}
+          guests={guests}
+        />
         <div className="w-14 border-b border-neutral-100 dark:border-neutral-800 my-4"></div>
         <Conditions
           releaseHostTime={payment.releaseHostTime}
@@ -107,7 +115,10 @@ const BookCard: FC<BookCardProps> = ({ className = "", book }) => {
         )}
         <div className="w-100 border-b border-neutral-300 dark:border-neutral-300 my-6"></div>
         <div className="flex justify-between items-end">
-          <Badge color={statusColor} name={PaymentStatusMessages[payment.status]} />
+          <Badge
+            color={statusColor}
+            name={PaymentStatusMessages[payment.status]}
+          />
           <span className="text-sm text-neutral-500 dark:text-neutral-400 font-normal">
             Total: {payment.bookTotalAmount}
             <CoinSymbolComponent contractAddress={payment.contractAddress} />
@@ -121,9 +132,11 @@ const BookCard: FC<BookCardProps> = ({ className = "", book }) => {
     <div
       className={`group relative bg-white dark:bg-neutral-900 border border-neutral-100 dark:border-neutral-800 rounded-2xl overflow-hidden transition-shadow ${className}`}
     >
-      <Link href={`/checkout/${book.id}`} className="absolute` inset-0">
-        <div className="grid md:grid-cols-1 sm:flex sm:flex-row ">{renderContent()}</div>
-      </Link>
+      {/* <Link className="absolute` inset-0">
+        <div className="grid md:grid-cols-1 sm:flex sm:flex-row ">
+          {renderContent()}
+        </div>
+      </Link> */}
 
       <ConfirmDialog
         isShow={showDialogClaim}
