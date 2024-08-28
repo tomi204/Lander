@@ -1,36 +1,71 @@
-import React from "react";
-import { notFound, redirect } from "next/navigation";
-import MyBookingsContainer from "./MyBookingsContainer";
-import { cookies } from "next/headers";
-import { findHostBookingsSSR, findUsersBookingsSSR } from "@/services/books";
-import { RedirectType } from "next/dist/client/components/redirect";
-import CryptoBedSeo from "@/constants/seo";
-import { Metadata } from "next";
+"use client";
+import { FC, useEffect, useState } from 'react';
+import ReserveCard from '@/components/ReserveCard';
 
-export interface MyBookingsProps {}
+interface StayAttributes {
+  title: string;
+  location: string;
+  description: string;
+  image: string;
+}
 
-export const metadata: Metadata = {
-  ...CryptoBedSeo,
-  title: "CryptoBed - Your Bookings",
-  description: "Check your bookings here. And start a claim if you need to.",
+interface ReservationAttributes {
+  id: string;
+  attributes: {
+    startDate: string;
+    endDate: string;
+    nights: number;
+    totalPrice: number;
+    status: string | null;
+    stay: {
+      id: string;
+      attributes: StayAttributes;
+    };
+  };
+}
+
+const ReservationsPage: FC = () => {
+  const [reservations, setReservations] = useState<ReservationAttributes[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchReservations = async () => {
+      try {
+        const response = await fetch('/api/transaction?wallet=0xd7ed1a1FC1295A0e7Ac16b5834F152F7B6306C0e');
+        const result = await response.json();
+
+        if (response.ok) {
+          setReservations(result.data);
+          setError(null);
+        } else {
+          setError(result.error);
+          setReservations([]);
+        }
+      } catch (err) {
+        setError('An unexpected error occurred');
+        setReservations([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchReservations();
+  }, []);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error}</p>;
+
+  return (
+    <div className="container mx-auto p-4 md:p-6 lg:p-8">
+      <h2 className="text-2xl font-bold mb-4">Your Trips</h2>
+      <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 gap-6">
+        {reservations.map((reservation) => (
+          <ReserveCard key={reservation.id} reservation={reservation} />
+        ))}
+      </div>
+    </div>
+  );
 };
 
-export default async function MyBookings({}: MyBookingsProps) {
-  try {
-    const cookieStore = cookies();
-    const jwt = cookieStore.get("jwt");
-
-    if (!jwt) {
-      redirect("/", RedirectType.replace);
-    }
-
-    const [books, booksHost] = await Promise.all([
-      findUsersBookingsSSR(jwt.value, { populate: "*" }),
-      findHostBookingsSSR(jwt.value, { populate: "*" }),
-    ]);
-    return <MyBookingsContainer books={books.data} booksHost={booksHost.data} />;
-  } catch (error) {
-    console.log(error);
-    notFound();
-  }
-}
+export default ReservationsPage;

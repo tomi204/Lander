@@ -58,7 +58,7 @@ const ReservationsPage: FC = () => {
 
   return (
     <div className="container mx-auto p-4 md:p-6 lg:p-8">
-      <h2 className="text-2xl font-bold mb-4">Your Reservations</h2>
+      <h2 className="text-2xl font-bold mb-4">Your Bookings</h2>
       <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 gap-6">
         {reservations.map((reservation) => (
           <ReserveCard key={reservation.id} reservation={reservation} />
