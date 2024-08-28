@@ -15,8 +15,8 @@ export default function StayDetailPage() {
   const tx = transaction;
   console.log(transaction, 'transaction');
   const { address } = useAccount();
-
-  const [buyerData, setBuyerData] = useState( null ); 
+  const [propData, setPropData] = useState<any|null>( null );
+  const [buyerData, setBuyerData] = useState<any | null>( null ); 
   console.log(buyerData, 'buyerData');
 
 
@@ -25,7 +25,9 @@ useEffect( () => {
       const fetchUserData = async () => {
         if ( transaction && address ) {
           try {
-            const user = await fetchRenterByTxAndWallet( transaction.id, address );
+            const prop = await findPropertyById( tx.propety_id );          
+            const user = await fetchRenterByTxAndWallet( tx.id, address );
+            setPropData( prop )
             setBuyerData( user );
           } catch ( error ) {
             console.error( 'Error fetching user data:', error );

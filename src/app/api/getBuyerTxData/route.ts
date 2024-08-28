@@ -40,7 +40,7 @@ export async function GET(request: Request) {
       throw new Error('User not found or error occurred.');
     }
 
-    return NextResponse.json({ data: user }, { status: 200 });
+    return NextResponse.json({ data: user, transaction }, { status: 200 });
   } catch (error: any) {
     console.error('Error:', error);
     return NextResponse.json({ error: error.message }, { status: 500 });

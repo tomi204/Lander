@@ -17,6 +17,7 @@ interface ReservationAttributes {
     nights: number;
     totalPrice: number;
     status: string | null;
+    tx_id: string | null;
     stay: {
       id: string;
       attributes: StayAttributes;
@@ -30,7 +31,7 @@ const ReservationsPage: FC = () => {
   const [error, setError] = useState<string | null>(null);
   const { address } = useAccount();
   
-
+console.log(reservations, 'reservations');
   
   useEffect(() => {
     const fetchReservations = async () => {

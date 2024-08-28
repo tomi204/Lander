@@ -5,7 +5,7 @@ import supabase from '@/supabase/client';
 
 export async function fetchRenterByTxAndWallet(transactionId: string, wallet: string) {
   const response = await fetch(
-    `/api/transaction/buyer?transactionId=${transactionId}&wallet=${wallet}`
+    `/api/getBuyerWallet?transactionId=${transactionId}&wallet=${wallet}`
   );
   const data = await response.json();
 

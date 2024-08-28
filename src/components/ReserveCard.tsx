@@ -17,6 +17,7 @@ interface ReservationAttributes {
     nights: number;
     totalPrice: number;
     status: string | null;
+    tx_id: string | null;
     stay: {
       id: string;
       attributes: StayAttributes;
@@ -31,6 +32,8 @@ interface ReserveCardProps {
 const ReserveCard: FC<ReserveCardProps> = ({ reservation }) => {
   const { startDate, endDate, nights, totalPrice, stay } = reservation.attributes;
   const { title, location, description, image } = stay.attributes;
+
+  console.log(reservation.id, reservation.attributes.tx_id, 'reservation');
 
   return (
     <div className="border rounded-lg overflow-hidden shadow-md">
