@@ -22,22 +22,13 @@ export async function GET(request: Request) {
       .from('transactions')
       .select(`
       *,
-      owner:owner_id (
-        id,
-        name,
-        email,
-        phone,
-        wallet
-      ),
       property:property_id (
         id,
         title,
         location,
         description,
         main_image
-      )
-    
-      
+      )  
     `)
       .eq('buyer_wallet', wallet)
       .single();
@@ -58,7 +49,10 @@ export async function GET(request: Request) {
 
     if (userError || !user) {
       throw new Error('User not found or error occurred.');
+      console.log( userError )
     }
+
+     console.log({user,transaction })
 
     return NextResponse.json({ data: user, transaction }, { status: 200 });
   } catch (error: any) {

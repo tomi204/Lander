@@ -3,11 +3,13 @@ import { FC, useEffect, useState } from 'react';
 import ReserveCard from '@/components/ReserveCard';
 import { useAccount } from 'wagmi';
 import { fetchRenterByTxAndWallet } from '@/services/account';
+
+
 interface StayAttributes {
   title: string;
   location: string;
   description: string;
-  image: string;
+  main_image: string;
 }
 
 interface ReservationAttributes {
@@ -34,23 +36,30 @@ const ReservationsPage: FC = () => {
 
   console.log(reservations, 'reservations');
 
-  useEffect(() => {
+
+  useEffect( () => {
     const fetchReservations = async () => {
       try {
-        const response = await fetchRenterByTxAndWallet(address || '');
-        console.log(response, 'response');
-        setReservations(response.transaction);
-        setError(null);
-      } catch (err) {
-        setError('An unexpected error occurred');
-        setReservations([]);
+        const response = await fetch( `/api/transaction?wallet=${address}` );
+        const result = await response.json();
+
+        if ( response.ok ) {
+          setReservations( result.data );
+          setError( null );
+        } else {
+          setError( result.error );
+          setReservations( [] );
+        }
+      } catch ( err ) {
+        setError( 'An unexpected error occurred' );
+        setReservations( [] );
       } finally {
-        setLoading(false);
+        setLoading( false );
       }
     };
 
     fetchReservations();
-  }, []);
+  }, [] );
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;

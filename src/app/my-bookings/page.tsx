@@ -2,11 +2,13 @@
 import { FC, useEffect, useState } from 'react';
 import ReserveCard from '@/components/ReserveCard';
 import { useAccount } from 'wagmi';
+
+
 interface StayAttributes {
   title: string;
   location: string;
   description: string;
-  image: string;
+  main_image: string;
 }
 
 interface ReservationAttributes {
@@ -36,9 +38,9 @@ console.log(reservations, 'reservations');
   useEffect(() => {
     const fetchReservations = async () => {
       try {
-        const response = await fetch( `/api/transaction?wallet=${address}` );
+        const response = await fetch( `/api/getBuyerTxData?wallet=${address}` );
         const result = await response.json();
-
+console.log(result)
         if (response.ok) {
           setReservations(result.data);
           setError(null);
@@ -64,9 +66,9 @@ console.log(reservations, 'reservations');
     <div className="container mx-auto p-4 md:p-6 lg:p-8">
       <h2 className="text-2xl font-bold mb-4">Your Bookings</h2>
       <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 gap-6">
-        {reservations.map((reservation) => (
+        {reservations.map( ( reservation ) => (
           <ReserveCard key={reservation.id} reservation={reservation} />
-        ))}
+        ) )}
       </div>
     </div>
   );

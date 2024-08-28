@@ -6,7 +6,7 @@ interface StayAttributes {
   title: string;
   location: string;
   description: string;
-  image: string;
+  main_image: string;
 }
 
 interface ReservationAttributes {
@@ -31,17 +31,17 @@ interface ReserveCardProps {
 
 const ReserveCard: FC<ReserveCardProps> = ({ reservation }) => {
   const { startDate, endDate, nights, totalPrice, stay } = reservation.attributes;
-  const { title, location, description, image } = stay.attributes;
+  const { title, location, description, main_image } = stay.attributes;
   const router = useRouter()
   console.log(reservation.id, reservation.attributes.tx_id, 'reservation');
-  
+
   const joinRoom = async ( txId: string ) => {
     router.push( `/p2p/${txId}` );
   }
   return (
     <div className="border rounded-lg overflow-hidden shadow-md">
       <Image
-        src={image}
+        src={main_image}
         alt={title}
         width={400}
         height={200}
