@@ -15,7 +15,7 @@ export const updateBookingStatus = async (
   status: string,
   txId: string,
   chain:string, 
-): Promise<void> => {
+): Promise<any> => {
   const { data: tx, error } = await supabase
     .from('transactions')
     .update({
