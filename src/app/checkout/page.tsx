@@ -1,6 +1,5 @@
 "use client";
 
-
 import { findBookById } from "@/services/books";
 import React, { FC, useMemo, useState, useEffect } from "react";
 import convertSelectedDateToString from "@/utils/converSelectedDateToString";
@@ -17,8 +16,6 @@ import ContractInteraction from "@/components/P2pTransaction";
 import TransactionDetails from "@/components/transactiondetails";
 
 
-//traer context 
-
 export interface CheckOutPagePageMainProps {
   params: {
     id: string;
@@ -31,7 +28,6 @@ export interface CheckOutPagePageMainProps {
 
 const CheckOutPagePageMain: FC<CheckOutPagePageMainProps> = ({ params,
   className = "",
-
   email,
   phoneNumber,
 }) => {

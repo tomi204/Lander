@@ -9,6 +9,30 @@ import { cache } from 'react';
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
 
+
+export const updateBookingStatus = async (
+  bookingId: string,
+  status: string,
+  txId: string,
+  chain:string, 
+): Promise<void> => {
+  const { error } = await supabase
+    .from('transactions')
+    .update({
+      status: status,
+      tx_id: txId,
+      updated_at: new Date().toISOString()
+    })
+    .eq('id', bookingId)
+
+  if (error) {
+    throw new Error(`Failed to update booking status: ${error.message}`)
+  }
+}
+
+
+
+
 export const findUsersBookingsSSR = async (
   token: string,
   params?: Record<string, any>
@@ -23,21 +47,21 @@ export const findUsersBookingsSSR = async (
 };
 
 
-// export const findHostBookingsSSR = async (
-//   token: string,
-//   params?: Record<string, any>
-// ) => {
-//   return serverAxiosInstance.get<StrapiPaginatedResult<Book>>(
-//     "/api/books/host",
-//     {
-//       withCredentials: true,
-//       params,
-//       headers: {
-//         Authorization: `Bearer ${token}`,
-//       },
-//     }
-//   );
-// };
+export const findHostBookings= async (
+  token: string,
+  params?: Record<string, any>
+) => {
+  return serverAxiosInstance.get<StrapiPaginatedResult<Book>>(
+    "/api/books/host",
+    {
+      withCredentials: true,
+      params,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+};
 
 
 
@@ -47,7 +71,7 @@ export const findUsersBookingsSSR = async (
 //   const supabase = createServerComponentClient({ cookies });
   
 //   const { data, error, count } = await supabase
-//     .from('transctions')
+//     .from('transactions')
 //     .select(`
 //       *,
 //       guest:guest_id (

@@ -45,16 +45,16 @@ export interface StayDetailPageProps {
     
     //  router.push( `/checkout/${id}` );
 
-    export default async function StayDetailPage({ params }: StayDetailPageProps) {
-      try {
+export default async function StayDetailPage({ params }: StayDetailPageProps) {
 
-
+  try {
         const router = useRouter();
         const { propertyId, tx } = router.query;
 
-        
+
         console.log("Received propertyId:", propertyId);
         console.log("Received tx:", tx);
+
 
 
         let stay;
