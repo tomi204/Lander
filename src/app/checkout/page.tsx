@@ -26,7 +26,7 @@ useEffect( () => {
         if ( transaction && address ) {
           try {
             const prop = await findPropertyById( tx.propety_id );          
-            const user = await fetchRenterByTxAndWallet( tx.id, address );
+            const user = await fetchRenterByTxAndWallet( address );
             setPropData( prop )
             setBuyerData( user );
           } catch ( error ) {

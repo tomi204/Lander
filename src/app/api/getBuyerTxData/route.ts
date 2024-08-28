@@ -4,15 +4,15 @@ import { cookies } from 'next/headers';
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
-  const transactionId = searchParams.get('transactionId');
+  // const transactionId = searchParams.get('transactionId');
   const wallet = searchParams.get('wallet');
 
-  if (!transactionId || !wallet) {
-    return NextResponse.json(
-      { error: 'Transaction ID and Wallet are required' },
-      { status: 400 }
-    );
-  }
+  // if (!transactionId || !wallet) {
+  //   return NextResponse.json(
+  //     { error: 'Transaction ID and Wallet are required' },
+  //     { status: 400 }
+  //   );
+  // }
 
   try {
     const supabase = createServerComponentClient({ cookies });
@@ -21,7 +21,7 @@ export async function GET(request: Request) {
     const { data: transaction, error: transactionError } = await supabase
       .from('transactions')
       .select('buyer_wallet')
-      .eq('id', transactionId)
+      // .eq('id', transactionId)
       .eq('buyer_wallet', wallet)
       .single();
 
