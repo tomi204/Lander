@@ -76,25 +76,8 @@ async function PageHome({ searchParams }: PageHomeProps) {
   const supabase = createClient();
   const { data: properties } = await supabase.from("properties").select();
 
-  console.log(properties);
-  // const [properties, setProperties] = useState<Stay[] | null>(null);
 
-  // useEffect( () => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await fetch( '/api/properties' );
-  //       if ( !response.ok ) {
-  //         throw new Error( 'Network response was not ok' );
-  //       }
-  //       const data = await response.json();
-  //       setProperties( data );
-  //     } catch ( error :any) {
-  //       setError( error );
-  //     }
-  //   };
 
-  //   fetchData();
-  // }, [] );
   const settings = homeSettingsConst["DEFAULT"];
   const client = getClient();
 
@@ -103,6 +86,8 @@ async function PageHome({ searchParams }: PageHomeProps) {
 
 
   // if ( error ) return <h1 className="flex justify-center items-center h-screen p-5">Failed to load</h1>;
+
+  
   if (!properties)
     return (
       <div className="flex justify-center items-center h-screen p-5">

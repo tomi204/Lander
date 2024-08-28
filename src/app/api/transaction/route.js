@@ -3,6 +3,62 @@ import supabase from '@/supabase/client';
 import { createClient } from "@/supabase/server";
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
+// import { useAccount } from 'wagmi';
+
+
+// {
+//   "data": [
+//     {
+//       "id": "96739042-348c-4b99-9c1c-b9f5aaca2c53",
+//       "attributes": {
+//         "startDate": "2024-08-29",
+//         "endDate": "2024-08-30",
+//         "nights": 1,
+//         "totalPrice": 0.1,
+//         "status": null,
+//         "stay": {
+//           "id": "ba53c728-427b-4b6f-909d-bc0ccf65a847",
+//           "attributes": {
+//             "title": "Rustic Mountain Cabin",
+//             "location": "Mountain Range, Country",
+//             "description": "Cozy cabin nestled in the mountains surrounded by pristine nature.",
+//             "image": "https://plus.unsplash.com/premium_photo-1686090449192-4ab1d00cb735?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8cHJvcGVydHl8ZW58MHx8MHx8fDA%3D"
+//           }
+//         }
+//       }
+//     },
+//     {
+//       "id": "81d8c8c6-3c3e-4ee6-b71b-cc7927509e51",
+//       "attributes": {
+//         "startDate": "2024-08-29",
+//         "endDate": "2024-08-30",
+//         "nights": 1,
+//         "totalPrice": 0.1,
+//         "status": null,
+//         "stay": {
+//           "id": "ba53c728-427b-4b6f-909d-bc0ccf65a847",
+//           "attributes": {
+//             "title": "Rustic Mountain Cabin",
+//             "location": "Mountain Range, Country",
+//             "description": "Cozy cabin nestled in the mountains surrounded by pristine nature.",
+//             "image": "https://plus.unsplash.com/premium_photo-1686090449192-4ab1d00cb735?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8cHJvcGVydHl8ZW58MHx8MHx8fDA%3D"
+//           }
+//         }
+//       }
+//     }
+//   ],
+//     "meta": {
+//     "pagination": {
+//       "page": 1,
+//         "pageSize": 10,
+//           "pageCount": 1,
+//             "total": 2
+//     }
+//   }
+// }
+
+
+
 
 
 
@@ -11,9 +67,10 @@ import { cookies } from 'next/headers';
 // import { useState } from 'react';
 
 // export default function StayDetailPage() {
-//   const { transaction, setTransaction } = useTransaction() || {};
-//   const stay = transaction?.stay;
-//   console.log(transaction, 'transaction');
+
+// const { address } = useAccount();
+//   const { bookings, setBookings } = useState() 
+
 
 //   const [wallet, setWallet] = useState('');
 //   const [transactions, setTransactions] = useState(null);
@@ -21,19 +78,19 @@ import { cookies } from 'next/headers';
 
 //   const fetchTransactions = async () => {
 //     try {
-//       const response = await fetch(`/api/transaction?wallet=${wallet}`);
+//       const response = await fetch(`/api/transaction?wallet=${address}`);
 //       const result = await response.json();
 
 //       if (response.ok) {
-//         setTransactions(result);
+//         setBookings(result);
 //         setError(null);
 //       } else {
 //         setError(result.error);
-//         setTransactions(null);
+//         setBookings(null);
 //       }
 //     } catch (err) {
 //       setError('An unexpected error occurred');
-//       setTransactions(null);
+//       setBookings(null);
 //     }
 //   };
 
