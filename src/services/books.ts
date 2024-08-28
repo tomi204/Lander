@@ -21,6 +21,7 @@ export const updateBookingStatus = async (
     .update({
       status: status,
       tx_id: txId,
+      chain: chain,
       updated_at: new Date().toISOString()
     })
     .eq('id', bookingId)
