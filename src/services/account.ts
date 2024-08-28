@@ -3,10 +3,7 @@ import { VirtualAccount } from "@/interfaces/account.interface";
 import supabase from '@/supabase/client';
 
 
-export async function fetchUserByTxAndWallet(
-  transactionId: string,
-  wallet: string
-) {
+export async function fetchRenterByTxAndWallet(transactionId: string, wallet: string) {
   const response = await fetch(
     `/api/transaction/buyer?transactionId=${transactionId}&wallet=${wallet}`
   );

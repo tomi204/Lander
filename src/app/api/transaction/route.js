@@ -98,6 +98,9 @@ import { cookies } from 'next/headers';
 //     }
 //   };
 
+
+
+// TRANSACTIONS FOR OWNER
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
   const wallet = searchParams.get('wallet');

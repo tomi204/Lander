@@ -4,7 +4,8 @@ import { CreditCard } from 'lucide-react';
 import React ,{useState, useEffect}from 'react';
 import { useTransaction } from '@/contexts/CheckoutProvider';
 import ContractInteraction from '@/components/P2pTransaction';
-import { fetchUserByTxAndWallet } from '@/services/account';
+import { fetchRenterByTxAndWallet } from '@/services/account';
+import { findPropertyById } from '@/services/listings';
 import { useAccount } from 'wagmi';
 
 
@@ -24,7 +25,7 @@ useEffect( () => {
       const fetchUserData = async () => {
         if ( transaction && address ) {
           try {
-            const user = await fetchUserByTxAndWallet( transaction.id, address );
+            const user = await fetchRenterByTxAndWallet( transaction.id, address );
             setBuyerData( user );
           } catch ( error ) {
             console.error( 'Error fetching user data:', error );
@@ -175,11 +176,11 @@ useEffect( () => {
             <div className="space-y-2">
               <div className="flex justify-between">
                 <p>Check-In</p>
-                <p className="font-semibold">{stay?.entrance_date}</p>
+                <p className="font-semibold">{stay?.attributes?.startDate}</p>
               </div>
               <div className="flex justify-between">
                 <p>Check-Out</p>
-                <p className="font-semibold">{stay?.departure_date}</p>
+                <p className="font-semibold">{stay?.attributes?.endDate}</p>
               </div>
               {/* <div className="flex justify-between">
                 <p>Guests</p>
@@ -193,7 +194,7 @@ useEffect( () => {
             <div className="space-y-2">
               <div className="flex justify-between">
                 <p>Nights</p>
-                <p className="font-semibold">{stay?.nights}</p>
+                <p className="font-semibold">{stay?.attributes.nights}</p>
               </div>
               {/* <div className="flex justify-between">
                 <p>Cleaning Fee</p>

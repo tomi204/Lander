@@ -16,7 +16,7 @@ export const updateBookingStatus = async (
   txId: string,
   chain:string, 
 ): Promise<void> => {
-  const { error } = await supabase
+  const { data: tx, error } = await supabase
     .from('transactions')
     .update({
       status: status,
@@ -24,11 +24,12 @@ export const updateBookingStatus = async (
       chain: chain,
       updated_at: new Date().toISOString()
     })
-    .eq('id', bookingId)
+    .eq('id', bookingId).select();
 
   if (error) {
     throw new Error(`Failed to update booking status: ${error.message}`)
   }
+  return tx;
 }
 
 
