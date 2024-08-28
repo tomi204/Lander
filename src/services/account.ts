@@ -1,12 +1,9 @@
-import { serverAxiosInstance } from "./axios/instanceServer";
-import { VirtualAccount } from "@/interfaces/account.interface";
+import { serverAxiosInstance } from './axios/instanceServer';
+import { VirtualAccount } from '@/interfaces/account.interface';
 import supabase from '@/supabase/client';
 
-
-export async function fetchRenterByTxAndWallet( wallet: string) {
-  const response = await fetch(
-    `/api/getBuyerWallet?wallet=${wallet}`
-  );
+export async function fetchRenterByTxAndWallet(wallet: string) {
+  const response = await fetch(`/api/getBuyerTxData?wallet=${wallet}`);
   const data = await response.json();
 
   if (response.ok) {
@@ -18,17 +15,10 @@ export async function fetchRenterByTxAndWallet( wallet: string) {
   }
 }
 
-
 export const getVirtualAccountSSR = async (token: string) => {
-  return serverAxiosInstance.get<VirtualAccount>("/api/virtual-accounts/me", {
+  return serverAxiosInstance.get<VirtualAccount>('/api/virtual-accounts/me', {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
 };
-
-
-
-
-
-

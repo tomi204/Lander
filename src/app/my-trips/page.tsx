@@ -1,7 +1,8 @@
-"use client";
+'use client';
 import { FC, useEffect, useState } from 'react';
 import ReserveCard from '@/components/ReserveCard';
-
+import { useAccount } from 'wagmi';
+import { fetchRenterByTxAndWallet } from '@/services/account';
 interface StayAttributes {
   title: string;
   location: string;
@@ -17,6 +18,7 @@ interface ReservationAttributes {
     nights: number;
     totalPrice: number;
     status: string | null;
+    tx_id: string | null;
     stay: {
       id: string;
       attributes: StayAttributes;
@@ -28,20 +30,17 @@ const ReservationsPage: FC = () => {
   const [reservations, setReservations] = useState<ReservationAttributes[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { address } = useAccount();
+
+  console.log(reservations, 'reservations');
 
   useEffect(() => {
     const fetchReservations = async () => {
       try {
-        const response = await fetch('/api/transaction?wallet=0xd7ed1a1FC1295A0e7Ac16b5834F152F7B6306C0e');
-        const result = await response.json();
-
-        if (response.ok) {
-          setReservations(result.data);
-          setError(null);
-        } else {
-          setError(result.error);
-          setReservations([]);
-        }
+        const response = await fetchRenterByTxAndWallet(address || '');
+        console.log(response, 'response');
+        setReservations(response.transaction);
+        setError(null);
       } catch (err) {
         setError('An unexpected error occurred');
         setReservations([]);
