@@ -2,6 +2,51 @@ import { NextResponse } from 'next/server';
 import supabase from '@/supabase/client';
 import { createClient } from "@/supabase/server";
 
+
+export async function GET(request) {
+  const { searchParams } = new URL(request.url);
+  const wallet = searchParams.get('wallet');
+console.log(wallet)
+  if (!wallet) {
+    return NextResponse.json({ error: 'Wallet address is required' }, { status: 400 });
+  }
+
+  try {
+  
+    let { data: user, error } = await supabase
+      .from('users')
+      .select('id')
+      .eq('wallet', wallet)
+      .single(); 
+
+    if (error || !user) {
+      throw new Error('Owner not found or error occurred.');
+    }
+
+
+    let { data: transactions, error: txError } = await supabase
+      .from('transactions')
+      .select('*')
+      .eq('owner_id', user.id);
+
+    if (txError) {
+      throw new Error('Failed to fetch transactions.');
+    }
+
+    return NextResponse.json(transactions);
+  } catch (error) {
+
+    console.log(error)
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}
+
+
+
+
+
+
+
 export async function POST(req, res) {
 
   try {
