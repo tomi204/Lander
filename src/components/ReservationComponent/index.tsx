@@ -46,6 +46,8 @@ const ReservationComponent: any = ({ stay }: ReservationComponentProps) => {
   const totalPrice = Number(
     price * nights + (cleaningServiceFee ?? 0) + (depositAmount ?? 0)
   );
+console.log(stay, 'stay');
+
 
   const handleCheckout = async () => {
     const transaction = {
