@@ -15,8 +15,8 @@ export const updateBookingStatus = async (
   status: string,
   txId: string,
   chain:string, 
-): Promise<void> => {
-  const { error } = await supabase
+): Promise<any> => {
+  const { data: tx, error } = await supabase
     .from('transactions')
     .update({
       status: status,
@@ -24,11 +24,12 @@ export const updateBookingStatus = async (
       chain: chain,
       updated_at: new Date().toISOString()
     })
-    .eq('id', bookingId)
+    .eq('id', bookingId).select();
 
   if (error) {
     throw new Error(`Failed to update booking status: ${error.message}`)
   }
+  return tx;
 }
 
 
@@ -168,8 +169,16 @@ export const findBookById = cache(async (id: string): Promise<any> => {
         id,
         name,
         email,
-        phone
+        phone,
+        wallet
       ),
+      property:property_id (
+        id,
+        title,
+        location,
+        description,
+        image
+      )
     
       )
     `)

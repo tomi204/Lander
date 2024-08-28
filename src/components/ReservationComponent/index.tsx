@@ -46,6 +46,8 @@ const ReservationComponent: any = ({ stay }: ReservationComponentProps) => {
   const totalPrice = Number(
     price * nights + (cleaningServiceFee ?? 0) + (depositAmount ?? 0)
   );
+console.log(stay, 'stay');
+
 
   const handleCheckout = async () => {
     const transaction = {
@@ -54,7 +56,7 @@ const ReservationComponent: any = ({ stay }: ReservationComponentProps) => {
       departure_date: endDate ? endDate.toISOString() : undefined,
       buyer_wallet: address,
       //check this shit 
-      owner_id: stay.owner.id,
+      owner_id: stay.owner_id,
       property_id: stay.id,
       nights: nights,
     };
