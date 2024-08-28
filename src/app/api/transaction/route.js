@@ -151,7 +151,7 @@ export async function GET(request) {
       throw new Error('Failed to fetch transactions.');
     }
 
-    // Step 3: Format the data as needed
+  
     const formattedData = transactions?.map((booking) => ({
       id: booking.id,
       attributes: {
