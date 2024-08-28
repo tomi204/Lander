@@ -1,45 +1,43 @@
-import { Stay } from "@/data/types";
-import { StrapiPaginatedResult } from "@/interfaces/StrapiPaginatedResults";
-import { serverAxiosInstance } from "./axios/instanceServer";
-import { StrapiData } from "@/interfaces/Strapi";
-import { extractData } from "@/utils/strapiParser";
-import { Book, BookResponse } from "@/interfaces/Booking";
+import { Stay } from '@/data/types';
+import { StrapiPaginatedResult } from '@/interfaces/StrapiPaginatedResults';
+import { serverAxiosInstance } from './axios/instanceServer';
+import { StrapiData } from '@/interfaces/Strapi';
+import { extractData } from '@/utils/strapiParser';
+import { Book, BookResponse } from '@/interfaces/Booking';
 import supabase from '@/supabase/client';
 import { cache } from 'react';
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
 
-
 export const updateBookingStatus = async (
   bookingId: string,
   status: string,
   txId: string,
-  chain:string, 
+  chain: string
 ): Promise<any> => {
+  console.log(bookingId, status, txId, chain, 'bookingId, status, txId, chain');
   const { data: tx, error } = await supabase
     .from('transactions')
     .update({
       status: status,
       tx_id: txId,
       chain: chain,
-      updated_at: new Date().toISOString()
+      updated_at: new Date().toISOString(),
     })
-    .eq('id', bookingId).select();
-console.log(tx, 'tx');
+    .eq('id', bookingId)
+    .select();
+  console.log(tx, 'tx');
   if (error) {
-    throw new Error(`Failed to update booking status: ${error.message}`)
+    throw new Error(`Failed to update booking status: ${error.message}`);
   }
   return tx;
-}
-
-
-
+};
 
 export const findUsersBookingsSSR = async (
   token: string,
   params?: Record<string, any>
 ) => {
-  return serverAxiosInstance.get<StrapiPaginatedResult<Book>>("/api/books/me", {
+  return serverAxiosInstance.get<StrapiPaginatedResult<Book>>('/api/books/me', {
     withCredentials: true,
     params,
     headers: {
@@ -48,13 +46,12 @@ export const findUsersBookingsSSR = async (
   });
 };
 
-
-export const findHostBookings= async (
+export const findHostBookings = async (
   token: string,
   params?: Record<string, any>
 ) => {
   return serverAxiosInstance.get<StrapiPaginatedResult<Book>>(
-    "/api/books/host",
+    '/api/books/host',
     {
       withCredentials: true,
       params,
@@ -65,13 +62,11 @@ export const findHostBookings= async (
   );
 };
 
-
-
 // export const findHostBookingsSSR = async (
 //   params?: Record<string, any>
 // ) => {
 //   const supabase = createServerComponentClient({ cookies });
-  
+
 //   const { data, error, count } = await supabase
 //     .from('transactions')
 //     .select(`
@@ -110,8 +105,8 @@ export const findHostBookings= async (
 //           id: booking.guest.id,
 //           attributes: {
 //             name: booking.guest.name,
-//             // añadir calificacion 
-      
+//             // añadir calificacion
+
 //         }
 //       },
 //       stay: {
@@ -123,7 +118,7 @@ export const findHostBookings= async (
 //             image: booking.stay.image
 
 //           }
-     
+
 //       }
 //     }
 //   })) || [];
@@ -158,12 +153,11 @@ export const findHostBookings= async (
 //   return extractData(res) as Book;
 // };
 
-
-
 export const findBookById = cache(async (id: string): Promise<any> => {
   const { data, error } = await supabase
     .from('transactions')
-    .select(`
+    .select(
+      `
       *,
       owner:owner_id (
         id,
@@ -181,14 +175,15 @@ export const findBookById = cache(async (id: string): Promise<any> => {
       )
     
       )
-    `)
+    `
+    )
     .eq('id', id)
     .single();
 
   if (error) {
     throw new Error(error.message);
   } else {
-    console.log(data)
+    console.log(data);
   }
 
   return data;

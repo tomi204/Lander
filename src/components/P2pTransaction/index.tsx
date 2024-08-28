@@ -104,6 +104,11 @@ const ContractInteraction: FC<ContractInteractionProps> = ({
   const [step, setStep] = useState('');
 
   const [actualId, setActualId] = useState(0);
+  const { data: transactionCount } = useReadContract({
+    address: bscAddresses.P2P,
+    abi: ABI,
+    functionName: 'transactionCount',
+  });
   const CreateTransaction = useCallback(async () => {
     try {
       setLoading(true);
@@ -159,19 +164,14 @@ const ContractInteraction: FC<ContractInteractionProps> = ({
         value: BigInt(0),
       });
 
-      const { data: transactionCount } = useReadContract({
-        address: bscAddresses.P2P,
-        abi: ABI,
-        functionName: 'transactionCount',
-      });
-
       setActualId(Number(transactionCount));
 
+      console.log(transactionCount, 'transactionCount');
       const back = await updateBookingStatus(
         transaction?.id,
         'pending',
         actualId.toString(),
-        transaction?.renter.id
+        'bsc'
       );
 
       console.log('back', back);
