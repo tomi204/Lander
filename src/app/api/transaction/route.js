@@ -24,3 +24,28 @@ export async function POST(req, res) {
       return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
+
+
+
+
+
+
+// data:
+
+// [
+//   {
+//     id: '96739042-348c-4b99-9c1c-b9f5aaca2c53',
+//     amount: 0.1,
+//     entrance_date: '2024-08-29',
+//     departure_date: '2024-08-30',
+//     owner_id: 'b1482764-01e2-4399-9994-019b3eff337f',
+//     property_id: 'ba53c728-427b-4b6f-909d-bc0ccf65a847',
+//     created_at: '2024-08-28T01:09:28.321993+00:00',
+//     updated_at: '2024-08-28T01:09:28.321993+00:00',
+//     buyer_wallet: '0x9a93bc7e9718b3fc18D75dd58B47808d3f9Cb282',
+//     tx_id: null,
+//     chain: null,
+//     nights: 1,
+//     status: null
+//   }
+// ]
