@@ -39,6 +39,7 @@ const ContractInteraction: FC<ContractInteractionProps> = ({
   disabled,
   amount,
   sellerAddress,
+  transactionId,
 }) => {
   const [symbol, setSymbol] = useState('--');
   const [noFunds, setNoFunds] = useState(false);
@@ -158,31 +159,22 @@ const ContractInteraction: FC<ContractInteractionProps> = ({
         value: BigInt(0),
       });
 
-      const data = await waitForTransactionReceipt(wagmiConfig, {
-        hash: result,
+      const { data: transactionCount } = useReadContract({
+        address: bscAddresses.P2P,
+        abi: ABI,
+        functionName: 'transactionCount',
       });
 
-      if (data.status === 'success') {
-        const {
-          data: transactionCount,
-          isError,
-          error: fetchError,
-          isLoading,
-        } = useReadContract({
-          address: bscAddresses.P2P,
-          abi: ABI,
-          functionName: 'transactionCount',
-        });
+      setActualId(Number(transactionCount));
 
-        setActualId(Number(transactionCount));
-      }
-
-      await updateBookingStatus(
+      const back = await updateBookingStatus(
         transaction?.id,
         'pending',
         actualId.toString(),
         transaction?.renter.id
       );
+
+      console.log('back', back);
     } catch (error) {
       console.error(error);
       setErrorMessage('Transaction failed');
@@ -279,40 +271,32 @@ const ContractInteraction: FC<ContractInteractionProps> = ({
           ? 'Approving tokens'
           : 'Creating transaction'}
       </ButtonPrimary>
+      {transactionId ? (
+        <>
+          <ButtonPrimary
+            className="sm:w-full mt-2"
+            loading={loading}
+            onClick={() => approveTransaction(transactionId)}
+          >
+            Approve Transaction
+          </ButtonPrimary>
 
-      <ButtonPrimary
-        className="sm:w-full mt-2"
-        loading={loading}
-        onClick={() => approveTransaction(1)} // Ejemplo para aprobar transacción con ID 1
-      >
-        Approve Transaction
-      </ButtonPrimary>
-
-      <ButtonPrimary
-        className="sm:w-full mt-2"
-        loading={loading}
-        disabled={!isAuth || noFunds || disabled}
-        onClick={() => cancelTransaction(1)} // Ejemplo para cancelar transacción con ID 1
-      >
-        Cancel Transaction
-      </ButtonPrimary>
-
-      {/* {noFunds && (
-        <h3 className="flex-grow text-left text-sm font-medium text-red-700 mt-1 sm:w-full sm:text-center sm:text-sm">
-          Oops! It looks like you need more tokens, around{' '}
-          {formatUnits(BigInt(amount), 18)} {symbol}.
-        </h3>
-      )} */}
+          <ButtonPrimary
+            className="sm:w-full mt-2"
+            loading={loading}
+            disabled={!isAuth || noFunds || disabled}
+            onClick={() => cancelTransaction(transactionId)}
+          >
+            Cancel Transaction
+          </ButtonPrimary>
+        </>
+      ) : null}
 
       {!isConnected && (
         <h3 className="flex-grow text-left text-sm font-medium text-red-700 mt-1 sm:w-full sm:text-center sm:text-sm">
           Please, connect your wallet.
         </h3>
       )}
-
-      <h3 className="flex-grow text-left text-sm font-medium text-red-700 mt-1 sm:w-full sm:text-center sm:text-sm">
-        {errorMessage}
-      </h3>
     </>
   );
 };
