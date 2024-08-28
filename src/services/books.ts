@@ -171,7 +171,7 @@ export const findBookById = cache(async (id: string): Promise<any> => {
         title,
         location,
         description,
-        image
+        main_image
       )
     
       )

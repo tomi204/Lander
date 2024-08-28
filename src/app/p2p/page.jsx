@@ -4,14 +4,63 @@ import { Input } from "@/components/ui/input"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Search, Video, Phone, LayoutGrid, CheckCircle, HourglassIcon, FileCheck, Rocket, X, Briefcase, Star, Airbnb, DollarSign, Calendar, Users, LogIn, LogOut,  ChevronUp, ChevronDown } from "lucide-react"
-import { useState } from "react"
+import { pusherClient } from '@/lib/pusher'
+import { FC, useEffect, useState } from 'react'
+import axios from 'axios'
 
-export default function Component() {
+
+
+export default function Component({params}) {
+  const { txId } = params
   const [isOpen, setIsOpen] = useState(false)
+  const [incomingMessages, setIncomingMessages] = useState  ([])
+
+  // const serializedMessages = existingMessages.map((message) => ({
+  //   text: message.text,
+  //   id: message.id,
+  // }))
+
+  let input = ''
+
+  // const sendMessage = async (text) => {
+  //   await axios.post('/api/message', { text, txId})
+  // }
+
+  const sendMessage = async () => {
+    try {
+      // Perform your async operation here
+      const msg = await axios.post('/api/message', { text, txId })
+      const res = await msg.json();
+      console.log('Message sent:', res);
+    } catch (error) {
+      console.error('Error sending message:', error);
+    }
+  };
+
   // Función para alternar el acordeón
   const toggleAccordion = () => {
     setIsOpen(!isOpen)
   }
+
+
+  useEffect(() => {
+
+    if (txId !== undefined){
+      
+    pusherClient.subscribe(txId)
+
+    pusherClient.bind('incoming-message', (text) => {
+      setIncomingMessages((prev) => [...prev, text])
+    })
+  
+  }
+
+    return () => {
+      pusherClient.unsubscribe(txId)
+    }
+  }, [])
+
+
   return (
     <div className="flex h-screen bg-background text-foreground">
       {/* Sidebar */}
@@ -78,26 +127,44 @@ export default function Component() {
         {/* Chat messages */}
         <ScrollArea className="flex-1 p-4">
           <div className="space-y-4">
-            <div className="flex items-start">
-              <Avatar className="h-8 w-8 mr-2">
+          
+              {/* <Avatar className="h-8 w-8 mr-2">
                 <AvatarImage src={`/placeholder.svg?text=JK`} />
                 <AvatarFallback>JK</AvatarFallback>
               </Avatar>
               <div className="bg-primary text-primary-foreground rounded-lg p-2 max-w-[80%]">
                 <p>Let's do Monday the 8th 1:40 EDT. let me know if that works.</p>
-              </div>
-            </div>
+              </div> */}
+
+
+           <div className="flex items-start">
+              {/* {serializedMessages.map((message) => (
+                  <div className="bg-primary text-primary-foreground rounded-lg p-2 max-w-[80%]">
+                    <p key={message.id}>{message.text}</p>
+                  </div>
+
+                ))} */}
+
             <div className="flex items-start justify-end">
               <div className="bg-muted rounded-lg p-2 max-w-[80%]">
-                <p>Hi, Joel! That works fine for me. Thanks!</p>
+                  {incomingMessages.map((text, i) => (
+                    <p key={i}>{text}</p>
+                  ))}
               </div>
             </div>
+              
+              
+            </div>
+            
           </div>
         </ScrollArea>
 
         {/* Message input */}
         <div className="p-4 border-t">
-          <Input placeholder="Send a message..." />
+          <Input placeholder="Send a message..." onChange={({ target }) => (input = target.value)}
+            className='border border-zinc-300'
+            type='text' />
+          <button onClick={() => sendMessage(input || '')}>send</button>
         </div>
       </div>
 
