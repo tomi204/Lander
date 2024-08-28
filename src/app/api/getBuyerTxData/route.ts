@@ -20,7 +20,25 @@ export async function GET(request: Request) {
     // Step 1: Validate the transaction with the given ID and wallet
     const { data: transaction, error: transactionError } = await supabase
       .from('transactions')
-      .select('*')
+      .select(`
+      *,
+      owner:owner_id (
+        id,
+        name,
+        email,
+        phone,
+        wallet
+      ),
+      property:property_id (
+        id,
+        title,
+        location,
+        description,
+        main_image
+      )
+    
+      )
+    `)
       .eq('buyer_wallet', wallet)
       .single();
 
