@@ -56,7 +56,7 @@ console.log(stay, 'stay');
       departure_date: endDate ? endDate.toISOString() : undefined,
       buyer_wallet: address,
       //check this shit 
-      owner_id: stay.owner_id,
+      owner_id: stay.owner.id,
       property_id: stay.id,
       nights: nights,
     };
