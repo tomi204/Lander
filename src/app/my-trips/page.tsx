@@ -3,7 +3,7 @@ import { FC, useEffect, useState } from 'react';
 import ReserveCard from '@/components/ReserveCard';
 import { useAccount } from 'wagmi';
 import { fetchRenterByTxAndWallet } from '@/services/account';
-
+import TripCard from '@/components/TripCard';
 
 interface StayAttributes {
   title: string;
@@ -34,32 +34,29 @@ const ReservationsPage: FC = () => {
   const [error, setError] = useState<string | null>(null);
   const { address } = useAccount();
 
-  console.log(reservations, 'reservations');
-
-
-  useEffect( () => {
+  useEffect(() => {
     const fetchReservations = async () => {
       try {
-        const response = await fetch( `/api/transaction?wallet=${address}` );
+        const response = await fetch(`/api/getBuyerTxData?wallet=${address}`);
         const result = await response.json();
-
-        if ( response.ok ) {
-          setReservations( result.data );
-          setError( null );
+        console.log(result);
+        if (response.ok) {
+          setReservations(result.transaction);
+          setError(null);
         } else {
-          setError( result.error );
-          setReservations( [] );
+          setError(result.error);
+          setReservations([]);
         }
-      } catch ( err ) {
-        setError( 'An unexpected error occurred' );
-        setReservations( [] );
+      } catch (err) {
+        setError('An unexpected error occurred');
+        setReservations([]);
       } finally {
-        setLoading( false );
+        setLoading(false);
       }
     };
 
     fetchReservations();
-  }, [] );
+  }, []);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
@@ -67,11 +64,15 @@ const ReservationsPage: FC = () => {
   return (
     <div className="container mx-auto p-4 md:p-6 lg:p-8">
       <h2 className="text-2xl font-bold mb-4">Your Trips</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 gap-6">
-        {reservations.map((reservation) => (
-          <ReserveCard key={reservation.id} reservation={reservation} />
-        ))}
-      </div>
+      {reservations.length !== 0 && (
+        <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 gap-6">
+          {reservations?.map((reservation) => (
+            <TripCard key={reservation.id} reservation={reservation} />
+          ))}
+        </div>
+      )}
+
+      {reservations.length === 0 && <p>No trips found</p>}
     </div>
   );
 };

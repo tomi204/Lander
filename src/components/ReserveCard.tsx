@@ -30,14 +30,15 @@ interface ReserveCardProps {
 }
 
 const ReserveCard: FC<ReserveCardProps> = ({ reservation }) => {
-  const { startDate, endDate, nights, totalPrice, stay } = reservation.attributes;
+  const { startDate, endDate, nights, totalPrice, stay } =
+    reservation.attributes;
   const { title, location, description, main_image } = stay.attributes;
-  const router = useRouter()
+  const router = useRouter();
   console.log(reservation.id, reservation.attributes.tx_id, 'reservation');
 
-  const joinRoom = async ( txId: string ) => {
-    router.push( `/p2p/${txId}` );
-  }
+  const joinRoom = async (txId: string) => {
+    router.push(`/p2p/${txId}`);
+  };
   return (
     <div className="border rounded-lg overflow-hidden shadow-md">
       <Image
@@ -52,15 +53,16 @@ const ReserveCard: FC<ReserveCardProps> = ({ reservation }) => {
         <p className="text-sm text-gray-500">{location}</p>
         <p className="text-sm text-gray-500">{description}</p>
         <p className="font-semibold">
-          {new Date(startDate).toLocaleDateString()} - {new Date(endDate).toLocaleDateString()}
+          {new Date(startDate).toLocaleDateString()} -{' '}
+          {new Date(endDate).toLocaleDateString()}
         </p>
         <p>Total: ${totalPrice.toFixed(2)}</p>
-        
-        <button onClick={() => joinRoom( reservation?.id )} className=" w-full  px-8 py-2 rounded-full relative bg-purple-900 text-white text-sm hover:shadow-2xl hover:shadow-white/[0.1] transition duration-200 border border-purple-600">
-    
-          <span className="relative z-20">
-          Contact
-          </span>
+
+        <button
+          onClick={() => joinRoom(reservation?.id)}
+          className=" w-full  px-8 py-2 rounded-full relative bg-purple-900 text-white text-sm hover:shadow-2xl hover:shadow-white/[0.1] transition duration-200 border border-purple-600"
+        >
+          <span className="relative z-20">Contact</span>
         </button>
       </div>
     </div>
