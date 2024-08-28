@@ -20,10 +20,12 @@ export async function GET(request: Request) {
     // Step 1: Validate the transaction with the given ID and wallet
     const { data: transaction, error: transactionError } = await supabase
       .from('transactions')
-      .select('buyer_wallet')
-      // .eq('id', transactionId)
+      .select('*')
       .eq('buyer_wallet', wallet)
       .single();
+
+      // .select('buyer_wallet')
+      // .eq('id', transactionId)
 
     if (transactionError || !transaction) {
       throw new Error('Transaction not found or wallet does not match.');
