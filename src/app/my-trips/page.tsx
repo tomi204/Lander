@@ -5,31 +5,9 @@ import { useAccount } from 'wagmi';
 import { fetchRenterByTxAndWallet } from '@/services/account';
 import TripCard from '@/components/TripCard';
 
-interface StayAttributes {
-  title: string;
-  location: string;
-  description: string;
-  main_image: string;
-}
-
-interface ReservationAttributes {
-  id: string;
-  attributes: {
-    startDate: string;
-    endDate: string;
-    nights: number;
-    totalPrice: number;
-    status: string | null;
-    tx_id: string | null;
-    stay: {
-      id: string;
-      attributes: StayAttributes;
-    };
-  };
-}
-
 const ReservationsPage: FC = () => {
-  const [reservations, setReservations] = useState<ReservationAttributes[]>([]);
+  const [reservations, setReservations] = useState<any>([]);
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { address } = useAccount();
@@ -39,9 +17,8 @@ const ReservationsPage: FC = () => {
       try {
         const response = await fetch(`/api/getBuyerTxData?wallet=${address}`);
         const result = await response.json();
-        console.log(result);
         if (response.ok) {
-          setReservations(result.transaction);
+          setReservations(result);
           setError(null);
         } else {
           setError(result.error);
@@ -61,18 +38,24 @@ const ReservationsPage: FC = () => {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
 
+  console.log(reservations, 'reservationsaaa');
+
   return (
     <div className="container mx-auto p-4 md:p-6 lg:p-8">
       <h2 className="text-2xl font-bold mb-4">Your Trips</h2>
-      {reservations.length !== 0 && (
+      {/* {reservations.length > 1 && (
         <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 gap-6">
-          {reservations?.map((reservation) => (
-            <TripCard key={reservation.id} reservation={reservation} />
+          {reservations?.map((reservation: any) => (
+            <TripCard key={reservation.property.id} reservation={reservation} />
           ))}
         </div>
-      )}
+      )} */}
 
-      {reservations.length === 0 && <p>No trips found</p>}
+      {reservations?.length === 0 && <p>No trips found</p>}
+
+      {typeof reservations === 'object' && (
+        <TripCard key={reservations?.property?.id} reservation={reservations} />
+      )}
     </div>
   );
 };

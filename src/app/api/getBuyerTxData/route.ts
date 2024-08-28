@@ -20,7 +20,8 @@ export async function GET(request: Request) {
     // Step 1: Validate the transaction with the given ID and wallet
     const { data: transaction, error: transactionError } = await supabase
       .from('transactions')
-      .select(`
+      .select(
+        `
       *,
       property:property_id (
         id,
@@ -29,30 +30,20 @@ export async function GET(request: Request) {
         description,
         main_image
       )  
-    `)
+    `
+      )
       .eq('buyer_wallet', wallet)
       .single();
 
-      // .select('buyer_wallet')
-      // .eq('id', transactionId)
+    // .select('buyer_wallet')
+    // .eq('id', transactionId)
+    console.log({ transaction });
 
     if (transactionError || !transaction) {
       throw new Error('Transaction not found or wallet does not match.');
     }
 
-    // Step 2: Fetch user details using the wallet address
-    const { data: user, error: userError } = await supabase
-      .from('users')
-      .select('*')
-      .eq('wallet', wallet)
-      .single();
-
-    if (userError || !user) {
-      throw new Error('User not found or error occurred.');
-    
-    }
-
-     console.log({user,transaction })
+    console.log({ transaction });
 
     return NextResponse.json(transaction, { status: 200 });
   } catch (error: any) {

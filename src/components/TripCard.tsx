@@ -4,29 +4,32 @@ import { useRouter } from 'next/navigation';
 
 const TripCard = ({ reservation }: any) => {
   const router = useRouter();
-  console.log(reservation.id, reservation.attributes.tx_id, 'reservation');
 
   const joinRoom = async (txId: string) => {
     router.push(`/p2p/${txId}`);
   };
+
+  console.log(reservation, 'reservation');
   return (
     <div className="border rounded-lg overflow-hidden shadow-md">
       <Image
-        src={reservation.main_image}
-        alt={reservation.title}
+        src={reservation.property.main_image}
+        alt={reservation.property.title}
         width={400}
         height={200}
         className="w-full h-48 object-cover"
       />
       <div className="p-4 space-y-2">
-        <p className="font-semibold text-lg">{reservation.title}</p>
-        <p className="text-sm text-gray-500">{reservation.location}</p>
-        <p className="text-sm text-gray-500">{reservation.description}</p>
-        <p className="font-semibold">
-          {new Date(reservation.startDate).toLocaleDateString()} -{' '}
-          {new Date(reservation.endDate).toLocaleDateString()}
+        <p className="font-semibold text-lg">{reservation.property.title}</p>
+        <p className="text-sm text-gray-500">{reservation.property.location}</p>
+        <p className="text-sm text-gray-500">
+          {reservation.property.description}
         </p>
-        <p>Total: ${reservation.totalPrice.toFixed(2)}</p>
+        <p className="font-semibold">
+          {new Date(reservation.entrance_date).toLocaleDateString()} -{' '}
+          {new Date(reservation.departure_date).toLocaleDateString()}
+        </p>
+        {/* <p>Total: ${reservation.totalPrice.toFixed(2)}</p> */}
 
         <button
           onClick={() => joinRoom(reservation?.id)}
