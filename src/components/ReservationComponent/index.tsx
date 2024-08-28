@@ -60,7 +60,7 @@ console.log(stay, 'stay');
       property_id: stay.id,
       nights: nights,
     };
-    console.log('enter');
+    
     try {
       const response = await fetch('/api/transaction', {
         method: 'POST',
