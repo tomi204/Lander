@@ -26,7 +26,7 @@ export interface CheckOutPagePageMainProps {
   className?: string;
 }
 
-const CheckOutPagePageMain: FC<CheckOutPagePageMainProps> =  ({params,
+export const CheckOutPagePageMain: FC<CheckOutPagePageMainProps> =  ({params,
   className = "",
  
   email,
@@ -226,4 +226,4 @@ const CheckOutPagePageMain: FC<CheckOutPagePageMainProps> =  ({params,
   );
 };
 
-export default CheckOutPagePageMain;
+
