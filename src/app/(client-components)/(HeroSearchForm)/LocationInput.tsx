@@ -48,10 +48,10 @@ const LocationInput: FC<LocationInputProps> = ({
     }
   `;
 
-  const { data } = useSuspenseQuery<GraphQLStayResponse>(locationsQuery, {
-    variables: { address: debouncedSearchValue },
-  });
-  const locations = covertApolloResponseToLocations(data);
+  // const { data } = useSuspenseQuery<GraphQLStayResponse>(locationsQuery, {
+  //   variables: { address: debouncedSearchValue },
+  // });
+  // const locations = covertApolloResponseToLocations(data);
 
   const [showPopover, setShowPopover] = useState(autoFocus);
 
@@ -96,10 +96,10 @@ const LocationInput: FC<LocationInputProps> = ({
     return (
       <>
         <h3 className="block  mt-2 sm:mt-0 px-4 sm:px-8 font-semibold text-base sm:text-lg text-neutral-800 dark:text-neutral-100">
-          {locations.length} Suggestions
+          {/* {locations.length} Suggestions */}
         </h3>
         <div className="mt-2">
-          {locations.map((item) => (
+          {/* {locations.map((item) => (
             <span
               onClick={() => handleSelectLocation(item)}
               key={item}
@@ -112,7 +112,7 @@ const LocationInput: FC<LocationInputProps> = ({
                 {item}
               </span>
             </span>
-          ))}
+          ))} */}
         </div>
       </>
     );

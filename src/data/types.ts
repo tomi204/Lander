@@ -90,7 +90,7 @@ export interface Stay {
   like: boolean;
   galleryImgs: MediaMultiple;
   listingCategory: StrapiData<TaxonomyType>;
-  maxGuests?: number;
+  maxguests?: number;
   kitchens: number;
   beds: number;
   bedrooms: number;

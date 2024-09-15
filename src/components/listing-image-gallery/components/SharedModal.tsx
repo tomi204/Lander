@@ -17,7 +17,7 @@ import type { MediaMultiple, MediaSimple } from "@/interfaces/Strapi";
 
 interface SharedModalProps {
   imageId?: string;
-  images: MediaMultiple;
+  images: any;
   onChange?: (newVal: string) => void;
   closeModal: () => void;
   navigation: boolean;
@@ -34,12 +34,12 @@ export default function SharedModal({
   const [loaded, setLoaded] = useState(false);
   const [animationDirection, setAnimationDirection] = useState(direction ?? 0);
   const [currentIndex, setCurrentIndex] = useState(
-    imageId ? images.data.findIndex((image) => image.id === imageId) : 0
+    imageId ? images.data.findIndex((image:{id:string} ) => image.id === imageId) : 0
   );
 
   const currentImage = useMemo(() => {
-    return images.data[currentIndex];
-  }, [currentIndex, images.data]);
+    return images[currentIndex];
+  }, [currentIndex, images]);
 
   const moveLeft = useCallback(() => {
     setAnimationDirection(-1);
@@ -48,9 +48,9 @@ export default function SharedModal({
 
   const moveRight = useCallback(() => {
     setAnimationDirection(1);
-    const size = images.data.length - 1;
+    const size = images.length - 1;
     return size > currentIndex && setCurrentIndex(currentIndex + 1);
-  }, [currentIndex, images.data.length]);
+  }, [currentIndex, images?.length]);
 
   const handlers = useSwipeable({
     onSwipedLeft: moveLeft,
@@ -89,7 +89,7 @@ export default function SharedModal({
               >
                 {currentImage && (
                   <Image
-                    src={currentImage.attributes.url || ""}
+                    src={currentImage || ""}
                     width={navigation ? 1280 : 1920}
                     height={navigation ? 853 : 1280}
                     priority
@@ -148,7 +148,7 @@ export default function SharedModal({
                 className="mx-auto mt-6 mb-6 flex aspect-[3/2] h-14"
               >
                 <AnimatePresence initial={false}>
-                  {images?.data.map(({ attributes, id }, index) => (
+                  {/* {images?.map(({ attributes, id }, index) => (
                     <motion.button
                       initial={{
                         width: "0%",
@@ -184,7 +184,7 @@ export default function SharedModal({
                         src={attributes.url || ""}
                       />
                     </motion.button>
-                  ))}
+                  ))} */}
                 </AnimatePresence>
               </motion.div>
             </div>
