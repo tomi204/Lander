@@ -33,12 +33,16 @@ const StayCard2: FC<StayCard2Props> = ({
     reviewCount,
     id,
     type,
-    num_rooms,
+    beds,
     location
 
   } = data;
 
+  console.log(data)
+
   const listingCategory = data?.listingCategory?.data?.attributes;
+
+
   const renderSliderGallery = () => {
     return (
       <div className="relative w-full">
@@ -60,7 +64,7 @@ const StayCard2: FC<StayCard2Props> = ({
 
         {/* TODO: Implement later */}
         {/* <BtnLikeIcon isLiked={like} className="absolute right-3 top-3 z-[1]" /> */}
-        {saleOff && <SaleOffBadge className="absolute left-3 top-3" />}
+        {/* {saleOff && <SaleOffBadge className="absolute left-3 top-3" />} */}
       </div>
     );
   };
@@ -70,7 +74,7 @@ const StayCard2: FC<StayCard2Props> = ({
       <div className={size === "default" ? "mt-3 space-y-3" : "mt-2 space-y-2"}>
         <div className="space-y-2">
           <span className="text-sm text-neutral-500 dark:text-neutral-400">
-            {type} · {num_rooms} beds
+            {type} · {beds} beds
           </span>
           <div className="flex items-center space-x-2">
             {isAds && <Badge name="ADS" color="green" />}
