@@ -31,8 +31,8 @@ const ReservationsPage: FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { address } = useAccount();
+console.log(reservations);
 
-  console.log(reservations, 'reservations');
 
   useEffect(() => {
     const fetchReservations = async () => {

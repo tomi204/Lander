@@ -29,12 +29,19 @@ interface ReserveCardProps {
   reservation: ReservationAttributes;
 }
 
-const ReserveCard: FC<ReserveCardProps> = ({ reservation }) => {
-  const { startDate, endDate, nights, totalPrice, stay } =
-    reservation.attributes;
-  const { title, location, description, main_image } = stay.attributes;
+const ReserveCard: FC<any> = ({ reservation }) => {
+
+const {
+  main_image,
+  title,
+  location,
+  description,
+  departure_date,
+  entrance_date,
+  amount,
+} = reservation; 
   const router = useRouter();
-  console.log(reservation.id, reservation.attributes.tx_id, 'reservation');
+  
 
   const joinRoom = async ( txId: string ) => {
     router.push( `/p2p/${txId}` );
@@ -54,10 +61,10 @@ const ReserveCard: FC<ReserveCardProps> = ({ reservation }) => {
         <p className="text-sm text-gray-500">{location}</p>
         <p className="text-sm text-gray-500">{description}</p>
         <p className="font-semibold">
-          {new Date(startDate).toLocaleDateString()} -{' '}
-          {new Date(endDate).toLocaleDateString()}
+          {new Date(entrance_date).toLocaleDateString()} -{' '}
+          {new Date(departure_date).toLocaleDateString()}
         </p>
-        <p>Total: ${totalPrice.toFixed(2)}</p>
+        <p>Total: ${amount.toFixed(2)}</p>
 
         <button
           onClick={() => joinRoom(reservation?.id)}

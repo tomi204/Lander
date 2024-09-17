@@ -45,7 +45,7 @@ export async function GET(request) {
       )  
     `
       )
-      .in('uuid', data.bookings);
+      .in('id', data.bookings);
 
     if (txError) {
       throw new Error('Failed to fetch transactions.');

@@ -28,7 +28,6 @@ export async function GET(request) {
     }
   
 
-console.log("helllo",data.trips)
 
 
     const { data: transactions, error: txError } = await supabase
@@ -45,7 +44,7 @@ console.log("helllo",data.trips)
       )  
     `
       )
-      .in('uuid', data.trips);
+      .in('id', data.trips);
 
     if (txError) {
       throw new Error('Failed to fetch transactions.');
