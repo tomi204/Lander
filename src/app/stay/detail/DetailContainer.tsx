@@ -19,6 +19,8 @@ import ReactMarkdown from 'react-markdown';
 import rehypeHighlight from 'rehype-highlight';
 import ModalImageGallery from '@/components/listing-image-gallery/ListingImageGallery';
 import ReservationComponent from '@/components/ReservationComponent';
+import LikeSaveBtns from "@/components/LikeSaveBtns";
+
 
 export interface StayDetailContainerProps {
   stay: Stay;
@@ -52,7 +54,7 @@ const StayDetailContainer: FC<StayDetailContainerProps> = ({ stay }) => {
         {/* 1 */}
         <div className="flex justify-between items-center">
           <Badge name={stay?.type} />
-          {/* <LikeSaveBtns /> */}
+          <LikeSaveBtns />
         </div>
 
         {/* 2 */}
@@ -62,8 +64,8 @@ const StayDetailContainer: FC<StayDetailContainerProps> = ({ stay }) => {
 
         {/* 3 */}
         <div className="flex items-center space-x-4">
-          {/* <StartRating />
-          <span>·</span> */}
+          <StartRating />
+          <span>·</span>
           <span>
             <i className="las la-map-marker-alt"></i>
             <span className="ml-1">{stay?.location}</span>
@@ -74,7 +76,7 @@ const StayDetailContainer: FC<StayDetailContainerProps> = ({ stay }) => {
           <div className="flex items-center space-x-3 ">
             <i className="las la-user text-2xl"></i>
             <span className="">
-              {stay?.maxGuests ?? 0}{' '}
+              {stay?.maxguests ?? 0}{' '}
               <span className="hidden md:inline-block">guests</span>
             </span>
           </div>
@@ -88,14 +90,14 @@ const StayDetailContainer: FC<StayDetailContainerProps> = ({ stay }) => {
           <div className="flex items-center space-x-3">
             <i className="las la-bath text-2xl"></i>
             <span className=" ">
-              {stay?.num_bathrooms ?? 0}{' '}
+              {stay?.bathrooms ?? 0}{' '}
               <span className="hidden md:inline-block">baths</span>
             </span>
           </div>
           <div className="flex items-center space-x-3">
             <i className="las la-door-open text-2xl"></i>
             <span className=" ">
-              {stay?.num_rooms ?? 0}{' '}
+              {stay?.bedrooms ?? 0}{' '}
               <span className="hidden md:inline-block">bedrooms</span>
             </span>
           </div>
@@ -431,7 +433,7 @@ const StayDetailContainer: FC<StayDetailContainerProps> = ({ stay }) => {
               loading="lazy"
               allowFullScreen
               referrerPolicy="no-referrer-when-downgrade"
-              src={`https://www.google.com/maps/embed/v1/place?key=${process.env.NEXT_PUBLIC_GOOGLE_API_KEY}&q=${stay?.lat},${stay?.lng}`}
+              src={`https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d26278.126857505544!2d-58.41694242963238!3d-34.58479063746138!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95bcca99c609fc2f%3A0x392ca99351808a75!2sRecoleta%2C%20Cdad.%20Aut%C3%B3noma%20de%20Buenos%20Aires!5e0!3m2!1ses!2sar!4v1726368744344!5m2!1ses!2sar`}
             ></iframe>
           </div>
         </div>
@@ -500,17 +502,22 @@ const StayDetailContainer: FC<StayDetailContainerProps> = ({ stay }) => {
       <header className="rounded-md sm:rounded-xl">
         <div className="relative grid grid-cols-3 sm:grid-cols-4 gap-1 sm:gap-2">
           {stay?.main_image && (
-            <div className="space-y-4">
+            <div
+              className="col-span-2 row-span-3 sm:row-span-2 relative rounded-md sm:rounded-xl overflow-hidden cursor-pointer"
+              onClick={() => handleOpenModalImageGallery()}
+            >
               <Image
                 alt="image"
-                className="w-full h-auto"
-                width="1000"
-                height="1000"
+                className="object-cover rounded-md sm:rounded-xl"
+                width="3000"
+                height="3000"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 50vw"
                 src={stay?.main_image}
               />
+              <div className="absolute inset-0 bg-neutral-900 bg-opacity-20 opacity-0 hover:opacity-100 transition-opacity"></div>
             </div>
           )}
-          {/* {stay.galleryImgs.data?.length && (
+          {/* {stay.galleryImgs && (
             <div
               className="col-span-2 row-span-3 sm:row-span-2 relative rounded-md sm:rounded-xl overflow-hidden cursor-pointer"
               onClick={() => handleOpenModalImageGallery()}
@@ -518,13 +525,8 @@ const StayDetailContainer: FC<StayDetailContainerProps> = ({ stay }) => {
               <Image
                 fill
                 className="object-cover rounded-md sm:rounded-xl"
-                src={
-                  stay.galleryImgs.data[0].attributes.formats.medium?.url ??
-                  stay.galleryImgs.data[0].attributes.formats.thumbnail.url
-                }
-                blurDataURL={
-                  stay.galleryImgs.data[0].attributes.formats.thumbnail.url
-                }
+                src={stay.main_image ?? ''}
+                blurDataURL={stay.main_image}
                 alt=""
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 50vw"
                 priority
@@ -532,7 +534,7 @@ const StayDetailContainer: FC<StayDetailContainerProps> = ({ stay }) => {
               <div className="absolute inset-0 bg-neutral-900 bg-opacity-20 opacity-0 hover:opacity-100 transition-opacity"></div>
             </div>
           )} */}
-          {/* {stay.galleryImgs.data
+          {Array.isArray(stay.galleryImgs) && stay.galleryImgs
             ?.filter((_, i) => i >= 1 && i < 5)
             .map((item, index) => (
               <div
@@ -546,21 +548,23 @@ const StayDetailContainer: FC<StayDetailContainerProps> = ({ stay }) => {
                     fill
                     className="object-cover rounded-md sm:rounded-xl "
                     src={
-                      item.attributes.formats.small?.url ??
-                      item.attributes.formats.thumbnail.url
+                      item ??
+                      item
                     }
-                    blurDataURL={item.attributes.formats.thumbnail.url}
+                    blurDataURL={item}
                     alt=""
                     sizes="400px"
                   />
-                </div> */}
+                </div>
 
           {/* OVERLAY */}
-          {/* <div
+
+
+          <div
                   className="absolute inset-0 bg-neutral-900 bg-opacity-20 opacity-0 hover:opacity-100 transition-opacity cursor-pointer"
                   onClick={() => handleOpenModalImageGallery(item.id)}
                 />
-              </div>   ))}*/}
+              </div>   ))}
 
           {/* <button
             className="absolute hidden md:flex md:items-center md:justify-center left-3 bottom-3 px-4 py-2 rounded-xl bg-neutral-100 text-neutral-500 hover:bg-neutral-200 z-10"
@@ -577,12 +581,12 @@ const StayDetailContainer: FC<StayDetailContainerProps> = ({ stay }) => {
 
       {/* MAIN */}
       <main className="relative lg:z-10 mt-11 flex flex-col lg:flex-row ">
-        {/* <ModalImageGallery
+        <ModalImageGallery
           imageId={currentImageId}
           isShowModal={showModalImageGallery}
           onClose={handleCloseModalImageGallery}
           images={stay.galleryImgs}
-        /> */}
+        />
         {/* CONTENT */}
         <div className="w-full lg:w-3/5 xl:w-2/3 space-y-8 lg:space-y-10 lg:pr-10">
           {renderSection1()}

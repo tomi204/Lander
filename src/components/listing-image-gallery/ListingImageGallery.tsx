@@ -25,7 +25,7 @@ export const getNewParam = ({
 };
 
 interface Props {
-  images?: MediaMultiple;
+  images?: any;
   imageId?: string;
   onClose?: () => void;
   isShowModal: boolean;
@@ -74,18 +74,18 @@ const ModalImageGallery: FC<Props> = ({
         )}
 
         <div className="columns-1 gap-4 sm:columns-2 xl:columns-3">
-          {images?.data.length &&
-            images.data.map(({ id, attributes }) => (
+          {images?.length &&
+            images?.map((i:string) => (
               <div
-                key={id}
+                key={i}
                 onClick={() => {
-                  const newPathname = getNewParam({ value: id });
+                  const newPathname = getNewParam({ value: i });
                   router.push(`${thisPathname}/?${newPathname}` as Route);
                 }}
-                ref={id ? lastViewedPhotoRef : null}
+                ref={i ? lastViewedPhotoRef : null}
                 className="after:content group relative mb-5 block w-full cursor-zoom-in after:pointer-events-none after:absolute after:inset-0 after:rounded-lg after:shadow-highlight focus:outline-none"
               >
-                {attributes.url && (
+                {/* {attributes.url && (
                   <Image
                     alt={attributes.name}
                     className="transform rounded-lg brightness-90 transition will-change-auto group-hover:brightness-110 focus:outline-none"
@@ -98,7 +98,7 @@ const ModalImageGallery: FC<Props> = ({
                     height={480}
                     sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 350px"
                   />
-                )}
+                )} */}
               </div>
             ))}
         </div>

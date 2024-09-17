@@ -51,6 +51,7 @@ console.log(stay, 'stay');
 
   const handleCheckout = async () => {
     const transaction = {
+      main_image:stay.main_image ,
       amount: totalPrice,
       entrance_date: startDate ? startDate.toISOString() : undefined,
       departure_date: endDate ? endDate.toISOString() : undefined,

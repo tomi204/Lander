@@ -8,7 +8,7 @@ import { useWeb3Modal } from '@web3modal/wagmi/react';
 import { useAuth } from '@/contexts/AuthContext';
 import { usePathname } from 'next/navigation';
 import SearchFormMobile from '../(HeroSearchFormMobile)/SearchFormMobile';
-import { ApolloWrapper } from '@/contexts/ApolloProvider';
+// import { ApolloWrapper } from '@/contexts/ApolloProvider';
 import PolygonLogo from '@/images/logos/polygon-white.svg';
 import Image from 'next/image';
 
@@ -40,7 +40,7 @@ const MainNav: FC<MainNav1Props> = ({ className = '' }) => {
   );
 
   return (
-    <ApolloWrapper>
+    // <ApolloWrapper>
       <div className={`flex nc-MainNav1 relative z-10  ${className}`}>
         <div className="px-4 container h-20 relative flex justify-between">
           <div
@@ -83,7 +83,7 @@ const MainNav: FC<MainNav1Props> = ({ className = '' }) => {
           </div>
         </div>
       </div>
-    </ApolloWrapper>
+    // </ApolloWrapper>
   );
 };
 

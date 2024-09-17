@@ -6,7 +6,7 @@ import SectionHeroArchivePage from "./(server-components)/SectionHeroArchivePage
 import CryptoBedSeo from "@/constants/seo";
 import { Metadata } from "next";
 import { gql } from "@apollo/client";
-import { getClient } from "@/utils/apollo";
+// import { getClient } from "@/utils/apollo";
 import { homeSettingsConst } from "@/constants/home";
 import { covertApolloResponseToStays } from "@/adapters/stay.adapters";
 import useSWR from "swr";
@@ -79,7 +79,8 @@ async function PageHome({ searchParams }: PageHomeProps) {
 
 
   const settings = homeSettingsConst["DEFAULT"];
-  const client = getClient();
+
+  // const client = getClient();
 
   // const { data: properties, error } = useSWR( '/api/properties', fetcher );
 
@@ -95,16 +96,16 @@ async function PageHome({ searchParams }: PageHomeProps) {
       </div>
     );
 
-  try {
-    const res = await client.query({
-      query,
-      variables: { address: searchParams.location, guests: searchParams.guests },
-    });
+  // try {
+  //   const res = await client.query({
+  //     query,
+  //     variables: { address: searchParams.location, guests: searchParams.guests },
+  //   });
 
-    items = covertApolloResponseToStays(res);
-  } catch (error) {
-    console.log("error", error);
-  }
+  //   items = covertApolloResponseToStays(res);
+  // } catch (error) {
+  //   console.log("error", error);
+  // }
 
   return (
     <main className="relative overflow-hidden">
