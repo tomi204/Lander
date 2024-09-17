@@ -20,13 +20,13 @@ export async function GET(request) {
     const supabase = createServerComponentClient({ cookies });
 
     // Step 1: Find the user by wallet address
-    let { data: bookings, error: userError } = await supabase
+    let { data, error: userError } = await supabase
       .from('users')
       .select('bookings')
       .eq('wallet', wallet)
       .single();
 
-    if (userError || !user) {
+    if (userError || !data) {
       throw new Error('User not found or error occurred.');
     }
 
@@ -45,7 +45,7 @@ export async function GET(request) {
       )  
     `
       )
-      .in('uuid', bookings);
+      .in('uuid', data.bookings);
 
     if (txError) {
       throw new Error('Failed to fetch transactions.');

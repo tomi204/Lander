@@ -7,7 +7,9 @@ import { Search, Video, Phone, LayoutGrid, CheckCircle, HourglassIcon, FileCheck
 import { pusherClient } from '@/lib/pusher'
 import { FC, useEffect, useState } from 'react'
 import axios from 'axios'
+import useSWR from 'swr'
 
+const fetcher = url => axios.get(url).then(res => res.data)
 
 
 export default function Component({ params }) {
@@ -15,10 +17,25 @@ export default function Component({ params }) {
   const [isOpen, setIsOpen] = useState(false)
   const [incomingMessages, setIncomingMessages] = useState([])
 
+  const { data: txData, error } = useSWR(
+    txId ? `/api/transaction/${txId}` : null,
+    fetcher
+  );
+
+  if (error) return <div>Failed to load transaction</div>;
+  if (!txData) return <div>Loading...</div>;
+
+
+  
   // const serializedMessages = existingMessages.map((message) => ({
   //   text: message.text,
   //   id: message.id,
   // }))
+
+
+
+
+
 
   let input = ''
 

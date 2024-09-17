@@ -20,6 +20,13 @@ export const updateBookingStatus = async (
   buyer_wallet: string
 ): Promise<any> => {
   console.log(bookingId, status, txId, chain, 'bookingId, status, txId, chain');
+
+
+const owner = await updateBookings(owner_wallet, bookingId);
+const userId = await updateTrips(buyer_wallet, bookingId);
+
+console.log(owner, userId , 'owner, userId');
+
   const { data: tx, error } = await supabase
     .from('transactions')
     .update({
@@ -27,21 +34,19 @@ export const updateBookingStatus = async (
       tx_id: txId,
       chain: chain,
       updated_at: new Date().toISOString(),
+      buyer_id: userId,
     })
     .eq('id', bookingId)
-    .select();
+    .select()
+    .single();
 
   if (error) {
     throw new Error(`Failed to update booking status: ${error.message}`);
   }
 
-await updateBookings(owner_wallet, bookingId);
-await updateTrips(buyer_wallet, bookingId);
 
+  return tx.id; 
 
-
-
-  return tx;
 };
 
 export const findUsersBookingsSSR = async (

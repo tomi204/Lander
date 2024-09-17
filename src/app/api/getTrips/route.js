@@ -17,17 +17,19 @@ export async function GET(request) {
     const supabase = createServerComponentClient({ cookies });
 
     // Step 1: Find the user by wallet address
-    let { data: trips, error: userError } = await supabase
+    let { data, error: userError } = await supabase
       .from('users')
       .select('trips')
       .eq('wallet', wallet)
       .single();
 
-    if (userError || !user) {
+    if (userError || !data.trips) {
       throw new Error('User not found or error occurred.');
     }
   
- 
+
+console.log("helllo",data.trips)
+
 
     const { data: transactions, error: txError } = await supabase
       .from('transactions')
@@ -43,7 +45,7 @@ export async function GET(request) {
       )  
     `
       )
-      .in('uuid', trips);
+      .in('uuid', data.trips);
 
     if (txError) {
       throw new Error('Failed to fetch transactions.');

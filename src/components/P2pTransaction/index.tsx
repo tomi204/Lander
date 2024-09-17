@@ -23,6 +23,7 @@ import { ABI } from '../../utils/ABI';
 import { waitForTransactionReceipt } from '@wagmi/core';
 import { updateBookingStatus } from '@/services/books';
 import { useTransaction } from '@/contexts/CheckoutProvider';
+import { useRouter } from 'next/navigation';
 
 interface ContractInteractionProps {
   disabled?: boolean;
@@ -52,7 +53,7 @@ const ContractInteraction: FC<ContractInteractionProps> = ({
   const { address, isConnected } = useAccount();
   const { isAuth } = useAuth();
   const { transaction, setTransaction } = useTransaction() || {};
-
+const router = useRouter();
   const getWalletBalance = useCallback(async () => {
     if (!address) {
       return;
@@ -121,69 +122,74 @@ const ContractInteraction: FC<ContractInteractionProps> = ({
       if (!address) {
         throw new Error('Invalid Address');
       }
-      const tokensApproved = await readContract(wagmiConfig, {
-        address: bscAddresses.USDC,
-        abi: [
-          {
-            constant: true,
-            inputs: [
-              { name: 'owner', type: 'address' },
-              { name: 'spender', type: 'address' },
-            ],
-            name: 'allowance',
-            outputs: [{ name: '', type: 'uint256' }],
-            type: 'function',
-          },
-        ],
-        functionName: 'allowance',
-        args: [address, bscAddresses.P2P],
-      });
+      // const tokensApproved = await readContract(wagmiConfig, {
+      //   address: bscAddresses.USDC,
+      //   abi: [
+      //     {
+      //       constant: true,
+      //       inputs: [
+      //         { name: 'owner', type: 'address' },
+      //         { name: 'spender', type: 'address' },
+      //       ],
+      //       name: 'allowance',
+      //       outputs: [{ name: '', type: 'uint256' }],
+      //       type: 'function',
+      //     },
+      //   ],
+      //   functionName: 'allowance',
+      //   args: [address, bscAddresses.P2P],
+      // });
 
-      if (Number(tokensApproved as number) < Number(amount)) {
-        setStep('Approving tokens');
-        await approveTokens();
-      }
+      // if (Number(tokensApproved as number) < Number(amount)) {
+      //   setStep('Approving tokens');
+      //   await approveTokens();
+      // }
 
-      if (step === 'Approving tokens') {
-        setTimeout(() => {
-          setStep('Creating transaction');
-        }, 15000);
-      }
+      // if (step === 'Approving tokens') {
+      //   setTimeout(() => {
+      //     setStep('Creating transaction');
+      //   }, 15000);
+      // }
 
-      if (step === '') {
-        setStep('Creating transaction');
-      }
+      // if (step === '') {
+      //   setStep('Creating transaction');
+      // }
 
-      const dataEncoded = new Interface(ABI).encodeFunctionData(
-        'createTransaction',
-        [sellerAddress, BigInt(amount * 1000 * 1000)]
-      ) as `0x${string}`;
+      // const dataEncoded = new Interface(ABI).encodeFunctionData(
+      //   'createTransaction',
+      //   [sellerAddress, BigInt(amount * 1000 * 1000)]
+      // ) as `0x${string}`;
 
-      const connections = getConnections(wagmiConfig);
+      // const connections = getConnections(wagmiConfig);
 
-      const result = await sendTransaction(wagmiConfig, {
-        connector: connections[0]?.connector,
-        data: dataEncoded,
-        to: bscAddresses.P2P,
-        value: BigInt(0),
-      });
+      // const result = await sendTransaction(wagmiConfig, {
+      //   connector: connections[0]?.connector,
+      //   data: dataEncoded,
+      //   to: bscAddresses.P2P,
+      //   value: BigInt(0),
+      // });
 
-      console.log(result);
+      // console.log(result);
 
-      setActualId(Number(transactionCount));
+      // setActualId(Number(transactionCount));
 
-      console.log(transactionCount, 'transactionCount');
+      // console.log(transactionCount, 'transactionCount');
 
-      const back = await updateBookingStatus(
+const txID = await updateBookingStatus(
         transaction?.id,
         'pending',
-        actualId.toString(),
+        // actualId.toString(),
+        "23",
         'bsc',
         owner_wallet,
         buyer_wallet
       );
+console.log(txID, 'back');
 
-      console.log('back', back);
+router.push(`/p2p/${txID}`);
+      return txID; 
+
+
     } catch (error) {
       console.error(error);
       setErrorMessage('Transaction failed');

@@ -41,7 +41,7 @@ const ReservationsPage: FC = () => {
         const result = await response.json();
 
         if (response.ok) {
-          setReservations(result.data);
+          setReservations(result);
           setError(null);
         } else {
           setError(result.error);
