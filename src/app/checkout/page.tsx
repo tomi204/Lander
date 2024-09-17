@@ -7,9 +7,10 @@ import ContractInteraction from '@/components/P2pTransaction';
 import { fetchRenterByTxAndWallet } from '@/services/account';
 import { findPropertyById } from '@/services/listings';
 import { useAccount } from 'wagmi';
-
+import { useRouter } from 'next/navigation';
 
 export default function StayDetailPage() {
+  const router = useRouter();
   const { transaction, setTransaction } = useTransaction() || {};
   const tx = transaction;
   console.log(transaction, 'transaction');
@@ -17,7 +18,6 @@ export default function StayDetailPage() {
   const [propData, setPropData] = useState<any | null>(null);
   const [buyerData, setBuyerData] = useState<any | null>(null);
   console.log(buyerData, 'buyerData');
-
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -41,7 +41,10 @@ export default function StayDetailPage() {
       <div className="flex flex-col lg:flex-row gap-8">
         {/* Left Column */}
         <div className="w-full lg:w-2/3 space-y-6">
-          <button className="flex items-center text-blue-600 font-semibold">
+          <button 
+            className="flex items-center text-blue-600 font-semibold"
+            onClick={() => router.back()}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-5 w-5 mr-2"
@@ -147,6 +150,16 @@ export default function StayDetailPage() {
             <p className="text-gray-600">
               The Host will contact you soon. Don’t worry if the Host has some
               delay, your funds are blocked on staking until check-in.
+            </p>
+          </div>
+
+          <div className="space-y-4">
+            <h2 className="text-2xl font-bold">Terms and Conditions</h2>
+            <p className="text-gray-600">
+              By clicking on Create Transaction to book your trip, you agree to our{' '}
+              <a href="#" className="text-blue-600 underline">
+                Terms and Conditions
+              </a>
             </p>
           </div>
         </div>
