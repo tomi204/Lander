@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { supabase } from '@/utils/supabaseClient';
+import { supabase } from '../../../../supabase/client';
 
 export async function GET(request, { params }) {
   const { txId } = params;
