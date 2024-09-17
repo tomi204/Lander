@@ -6,10 +6,18 @@ import React from 'react';
 
 export const Swap = () => {
   const config = {
+    appearance: 'light',
     theme: {
       container: {
         borderRadius: '16px',
       },
+    },
+    variant: 'wide',
+    // It can be either default, split, or custom
+    subvariant: 'split',
+    // Optional, can be used to configure default split subvariant tabs state
+    subvariantOptions: {
+      split: 'bridge',
     },
   };
 
