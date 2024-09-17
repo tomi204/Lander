@@ -60,19 +60,19 @@ export default function Component({ params }) {
   }
 
 
-  useEffect(() => {
-    if (txId !== undefined) {
-      pusherClient.subscribe(txId)
+  // useEffect(() => {
+  //   if (txId !== undefined) {
+  //     pusherClient.subscribe(txId)
 
-      pusherClient.bind('incoming-message', (text) => {
-        setIncomingMessages((prev) => [...prev, text])
-      })
+  //     pusherClient.bind('incoming-message', (text) => {
+  //       setIncomingMessages((prev) => [...prev, text])
+  //     })
 
-      return () => {
-        pusherClient.unsubscribe(txId)
-      }
-    }
-  }, [txId])
+  //     return () => {
+  //       pusherClient.unsubscribe(txId)
+  //     }
+  //   }
+  // }, [txId])
 
 
   return (
