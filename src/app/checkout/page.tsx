@@ -157,8 +157,8 @@ useEffect( () => {
         <div className="w-full lg:w-1/3 space-y-6">
           <div className="border rounded-lg overflow-hidden">
             <Image
-              src={tx?.attributes?.image || ''}
-              alt={tx?.attributes?.title || ''}
+              src={tx?.main_image || ''}
+              alt={tx?.title|| ''}
               width={400}
               height={200}
               className="w-full h-48 object-cover"
