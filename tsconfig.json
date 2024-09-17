@@ -25,6 +25,7 @@
       "@/*": ["./src/*"]
     }
   },
+<<<<<<< HEAD
   "include": [
     "next-env.d.ts",
     "**/*.ts",
@@ -34,5 +35,8 @@
     "src/app/api/getBookings/route.js",
     "src/components/Swap/index.jsx"
   ],
+=======
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/p2p/[id]/page.jsx", "src/app/api/getBookings/route.js", "src/components/Swap/index.jsx", "src/app/api/message/route.js"],
+>>>>>>> 4b6248c1fcb96500ff996730ff449c5c5bb9266a
   "exclude": ["node_modules"]
 }

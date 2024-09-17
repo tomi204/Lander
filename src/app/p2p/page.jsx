@@ -1,21 +1,40 @@
-"use client"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Search, Video, Phone, LayoutGrid, CheckCircle, HourglassIcon, FileCheck, Rocket, X, Briefcase, Star, Airbnb, DollarSign, Calendar, Users, LogIn, LogOut, ChevronUp, ChevronDown } from "lucide-react"
-import { pusherClient } from '@/lib/pusher'
-import { FC, useEffect, useState } from 'react'
-import axios from 'axios'
-import useSWR from 'swr'
+'use client';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import {
+  Search,
+  Video,
+  Phone,
+  LayoutGrid,
+  CheckCircle,
+  HourglassIcon,
+  FileCheck,
+  Rocket,
+  X,
+  Briefcase,
+  Star,
+  Airbnb,
+  DollarSign,
+  Calendar,
+  Users,
+  LogIn,
+  LogOut,
+  ChevronUp,
+  ChevronDown,
+} from 'lucide-react';
+import { pusherClient } from '@/lib/pusher';
+import { FC, useEffect, useState } from 'react';
+import axios from 'axios';
+import useSWR from 'swr';
 
-const fetcher = url => axios.get(url).then(res => res.data)
-
+const fetcher = (url) => axios.get(url).then((res) => res.data);
 
 export default function Component({ params }) {
-  const { txId } = params
-  const [isOpen, setIsOpen] = useState(false)
-  const [incomingMessages, setIncomingMessages] = useState([])
+  const { txId } = params;
+  const [isOpen, setIsOpen] = useState(false);
+  const [incomingMessages, setIncomingMessages] = useState([]);
 
   const { data: txData, error } = useSWR(
     txId ? `/api/transaction/${txId}` : null,
@@ -25,19 +44,12 @@ export default function Component({ params }) {
   if (error) return <div>Failed to load transaction</div>;
   if (!txData) return <div>Loading...</div>;
 
-
-  
   // const serializedMessages = existingMessages.map((message) => ({
   //   text: message.text,
   //   id: message.id,
   // }))
 
-
-
-
-
-
-  let input = ''
+  let input = '';
 
   // const sendMessage = async (text) => {
   //   await axios.post('/api/message', { text, txId})
@@ -46,7 +58,7 @@ export default function Component({ params }) {
   const sendMessage = async () => {
     try {
       // Perform your async operation here
-      const msg = await axios.post('/api/message', { text, txId })
+      const msg = await axios.post('/api/message', { text, txId });
       const res = await msg.json();
       console.log('Message sent:', res);
     } catch (error) {
@@ -56,9 +68,8 @@ export default function Component({ params }) {
 
   // Función para alternar el acordeón
   const toggleAccordion = () => {
-    setIsOpen(!isOpen)
-  }
-
+    setIsOpen(!isOpen);
+  };
 
   // useEffect(() => {
   //   if (txId !== undefined) {
@@ -73,7 +84,6 @@ export default function Component({ params }) {
   //     }
   //   }
   // }, [txId])
-
 
   return (
     <div className="flex h-screen bg-background text-foreground">
@@ -91,13 +101,28 @@ export default function Component({ params }) {
         <ScrollArea className="flex-1">
           {/* Conversation list items */}
           {[
-            { name: "Micha Shalev", role: "Apt. address - city", initials: "MS" },
-            { name: "Brycen C. EC I...", role: "Apt. address - city", initials: "BC" },
-            { name: "Leandro Conti", role: "Apt. address - city", initials: "LC" },
-            { name: "Joel Kraus", role: "Apt. address - city", initials: "JK" },
-            { name: "Jimmy Jun", role: "Apt. address - city", initials: "JJ" },
+            {
+              name: 'Micha Shalev',
+              role: 'Apt. address - city',
+              initials: 'MS',
+            },
+            {
+              name: 'Brycen C. EC I...',
+              role: 'Apt. address - city',
+              initials: 'BC',
+            },
+            {
+              name: 'Leandro Conti',
+              role: 'Apt. address - city',
+              initials: 'LC',
+            },
+            { name: 'Joel Kraus', role: 'Apt. address - city', initials: 'JK' },
+            { name: 'Jimmy Jun', role: 'Apt. address - city', initials: 'JJ' },
           ].map((item, i) => (
-            <div key={i} className="flex items-center p-4 hover:bg-muted cursor-pointer">
+            <div
+              key={i}
+              className="flex items-center p-4 hover:bg-muted cursor-pointer"
+            >
               <Avatar className="h-10 w-10">
                 <AvatarImage src={`/placeholder.svg?text=${item.initials}`} />
                 <AvatarFallback>{item.initials}</AvatarFallback>
@@ -122,7 +147,9 @@ export default function Component({ params }) {
             </Avatar>
             <div className="ml-4">
               <h2 className="text-lg font-semibold">Joel Kraus</h2>
-              <p className="text-sm text-muted-foreground">Apt. address - city</p>
+              <p className="text-sm text-muted-foreground">
+                Apt. address - city
+              </p>
             </div>
           </div>
           <div className="flex space-x-2">
@@ -141,7 +168,6 @@ export default function Component({ params }) {
         {/* Chat messages */}
         <ScrollArea className="flex-1 p-4">
           <div className="space-y-4">
-
             {/* <Avatar className="h-8 w-8 mr-2">
                 <AvatarImage src={`/placeholder.svg?text=JK`} />
                 <AvatarFallback>JK</AvatarFallback>
@@ -149,7 +175,6 @@ export default function Component({ params }) {
               <div className="bg-primary text-primary-foreground rounded-lg p-2 max-w-[80%]">
                 <p>Let's do Monday the 8th 1:40 EDT. let me know if that works.</p>
               </div> */}
-
 
             <div className="flex items-start">
               {/* {serializedMessages.map((message) => (
@@ -166,18 +191,18 @@ export default function Component({ params }) {
                   ))}
                 </div>
               </div>
-
-
             </div>
-
           </div>
         </ScrollArea>
 
         {/* Message input */}
         <div className="p-4 border-t">
-          <Input placeholder="Send a message..." onChange={({ target }) => (input = target.value)}
-            className='border border-zinc-300'
-            type='text' />
+          <Input
+            placeholder="Send a message..."
+            onChange={({ target }) => (input = target.value)}
+            className="border border-zinc-300"
+            type="text"
+          />
           <button onClick={() => sendMessage(input || '')}>send</button>
         </div>
       </div>
@@ -186,7 +211,9 @@ export default function Component({ params }) {
       <div className="w-64 border-l hidden lg:block bg-muted/40">
         <div className="p-4 border-b">
           <h3 className="font-semibold">Joel Kraus</h3>
-          <p className="text-sm text-muted-foreground">9:34 AM EDT (1 h behind)</p>
+          <p className="text-sm text-muted-foreground">
+            9:34 AM EDT (1 h behind)
+          </p>
           {/* Información adicional */}
           <ul className="space-y-2 mt-4">
             <li className="flex items-center">
@@ -209,17 +236,34 @@ export default function Component({ params }) {
         {/* Reservation Details Accordion */}
         <div className="p-4">
           <div className="space-y-4 relative before:absolute before:left-1.5 before:top-1 before:bottom-1 before:w-[1px] before:bg-muted-foreground/20">
-            <button onClick={toggleAccordion} className="w-full flex justify-between items-center p-2 border rounded">
+            <button
+              onClick={toggleAccordion}
+              className="w-full flex justify-between items-center p-2 border rounded"
+            >
               <span>Reservation Details</span>
-              {isOpen ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+              {isOpen ? (
+                <ChevronUp className="h-4 w-4" />
+              ) : (
+                <ChevronDown className="h-4 w-4" />
+              )}
             </button>
             {isOpen && (
               <ul className="mt-2 space-y-1">
-                <li><strong>Huéspedes:</strong> 2 adultos</li>
-                <li><strong>Check-in:</strong> Mañana</li>
-                <li><strong>Check-out:</strong> lun, 26 ago. 2024</li>
-                <li><strong>Fecha de la reserva:</strong> lun, 1 jul. 2024</li>
-                <li><strong>Código de confirmación:</strong> HMZKSFSQT8</li>
+                <li>
+                  <strong>Huéspedes:</strong> 2 adultos
+                </li>
+                <li>
+                  <strong>Check-in:</strong> Mañana
+                </li>
+                <li>
+                  <strong>Check-out:</strong> lun, 26 ago. 2024
+                </li>
+                <li>
+                  <strong>Fecha de la reserva:</strong> lun, 1 jul. 2024
+                </li>
+                <li>
+                  <strong>Código de confirmación:</strong> HMZKSFSQT8
+                </li>
               </ul>
             )}
           </div>
@@ -227,19 +271,31 @@ export default function Component({ params }) {
         {/* Payment Details Accordion */}
         <div className="p-4">
           <div className="space-y-4 relative before:absolute before:left-1.5 before:top-1 before:bottom-1 before:w-[1px] before:bg-muted-foreground/20">
-            <button onClick={toggleAccordion} className="w-full flex justify-between items-center p-2 border rounded">
+            <button
+              onClick={toggleAccordion}
+              className="w-full flex justify-between items-center p-2 border rounded"
+            >
               <span>Payment Details</span>
-              {isOpen ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+              {isOpen ? (
+                <ChevronUp className="h-4 w-4" />
+              ) : (
+                <ChevronDown className="h-4 w-4" />
+              )}
             </button>
             {isOpen && (
               <ul className="mt-2 space-y-1">
-                <li><strong>El viajero pagó:</strong> $16,80 por 2 noches $33,60</li>
-                <li><strong>Tarifa por servicio para huéspedes:</strong> $4,74</li>
-                <li><strong>Total USDT:</strong> $38,34</li>
+                <li>
+                  <strong>El viajero pagó:</strong> $16,80 por 2 noches $33,60
+                </li>
+                <li>
+                  <strong>Tarifa por servicio para huéspedes:</strong> $4,74
+                </li>
+                <li>
+                  <strong>Total USDT:</strong> $38,34
+                </li>
               </ul>
             )}
           </div>
-
         </div>
         <div className="p-4">
           <div className="flex items-center justify-between mb-4">
@@ -260,7 +316,9 @@ export default function Component({ params }) {
               <HourglassIcon className="w-4 h-4 mr-3 text-primary shrink-0" />
               <div>
                 <p className="text-sm font-medium">Contract offer</p>
-                <p className="text-xs text-muted-foreground">Awaiting offer from client</p>
+                <p className="text-xs text-muted-foreground">
+                  Awaiting offer from client
+                </p>
               </div>
             </div>
             <div className="flex items-start">
@@ -279,5 +337,5 @@ export default function Component({ params }) {
         </div>
       </div>
     </div>
-  )
+  );
 }
