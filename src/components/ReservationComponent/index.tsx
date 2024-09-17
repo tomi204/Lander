@@ -50,6 +50,7 @@ console.log(stay, 'stay');
 
 
   const handleCheckout = async () => {
+    
     const transaction = {
       main_image:stay.main_image ,
       amount: totalPrice,

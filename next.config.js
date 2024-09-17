@@ -37,7 +37,7 @@ const nextConfig = {
   images: {
     deviceSizes: [320, 420, 768, 1024, 1200],
     loader: 'default',
-    domains: ['res.cloudinary.com', 'mvefftyequddnuhttftc.supabase.co'],
+    domains: ['res.cloudinary.com', 'mvefftyequddnuhttftc.supabase.co','mvefftyequddnuhttftc.supabase.co'],
     remotePatterns: [
       {
         protocol: 'https',
