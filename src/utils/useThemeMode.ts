@@ -14,7 +14,8 @@ export const useThemeMode = () => {
     // }
     //
     if (localStorage.theme === "dark") {
-      toDark();
+       toLight();
+      // toDark();
     } else {
       toLight();
     }
