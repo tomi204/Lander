@@ -8,12 +8,16 @@ import supabase from '@/supabase/client';
 import { cache } from 'react';
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
+import { updateBookings, updateTrips} from '@/services/users';
+
 
 export const updateBookingStatus = async (
   bookingId: string,
   status: string,
   txId: string,
-  chain: string
+  chain: string,
+  owner_wallet: string,
+  buyer_wallet: string
 ): Promise<any> => {
   console.log(bookingId, status, txId, chain, 'bookingId, status, txId, chain');
   const { data: tx, error } = await supabase
@@ -26,10 +30,17 @@ export const updateBookingStatus = async (
     })
     .eq('id', bookingId)
     .select();
-  console.log(tx, 'tx');
+
   if (error) {
     throw new Error(`Failed to update booking status: ${error.message}`);
   }
+
+await updateBookings(owner_wallet, bookingId);
+await updateTrips(buyer_wallet, bookingId);
+
+
+
+
   return tx;
 };
 

@@ -31,6 +31,8 @@ interface ContractInteractionProps {
   onTxSent?: (hash: string) => void;
   onTxError?: (error: any) => void;
   transactionId?: number;
+  owner_wallet: string;
+  buyer_wallet: string;
 }
 
 const ContractInteraction: FC<ContractInteractionProps> = ({
@@ -40,6 +42,8 @@ const ContractInteraction: FC<ContractInteractionProps> = ({
   amount,
   sellerAddress,
   transactionId,
+  owner_wallet,
+  buyer_wallet,
 }) => {
   const [symbol, setSymbol] = useState('--');
   const [noFunds, setNoFunds] = useState(false);
@@ -164,14 +168,19 @@ const ContractInteraction: FC<ContractInteractionProps> = ({
         value: BigInt(0),
       });
 
+      console.log(result);
+
       setActualId(Number(transactionCount));
 
       console.log(transactionCount, 'transactionCount');
+
       const back = await updateBookingStatus(
         transaction?.id,
         'pending',
         actualId.toString(),
-        'bsc'
+        'bsc',
+        owner_wallet,
+        buyer_wallet
       );
 
       console.log('back', back);

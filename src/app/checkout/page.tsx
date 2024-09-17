@@ -7,7 +7,7 @@ import ContractInteraction from '@/components/P2pTransaction';
 import { fetchRenterByTxAndWallet } from '@/services/account';
 import { findPropertyById } from '@/services/listings';
 import { useAccount } from 'wagmi';
-import { useRouter } from 'next/router';
+
 
 
 export default function StayDetailPage() {
@@ -18,7 +18,11 @@ export default function StayDetailPage() {
   const [propData, setPropData] = useState<any|null>( null );
   const [buyerData, setBuyerData] = useState<any | null>( null ); 
   console.log(buyerData, 'buyerData');
-const router = useRouter();
+
+
+
+
+
 
 
 useEffect( () => {
@@ -45,10 +49,7 @@ useEffect( () => {
       <div className="flex flex-col lg:flex-row gap-8">
         {/* Left Column */}
         <div className="w-full lg:w-2/3 space-y-6">
-          <button
-            className="flex items-center text-blue-600 font-semibold"
-            onClick={() => router.back()}
-          >
+          <button className="flex items-center text-blue-600 font-semibold">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-5 w-5 mr-2"
@@ -122,6 +123,8 @@ useEffect( () => {
           <ContractInteraction
             amount={tx?.amount}
             sellerAddress={tx?.owner_wallet}
+            owner_wallet={tx?.owner_wallet}
+            buyer_wallet={tx?.buyer_wallet}
           />
 
           <div className="space-y-4">
