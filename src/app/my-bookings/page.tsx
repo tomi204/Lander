@@ -37,7 +37,7 @@ const ReservationsPage: FC = () => {
   useEffect(() => {
     const fetchReservations = async () => {
       try {
-        const response = await fetch(`/api/transaction?wallet=${address}`);
+        const response = await fetch(`/api/getBookings?wallet=${address}`);
         const result = await response.json();
 
         if (response.ok) {
@@ -56,7 +56,11 @@ const ReservationsPage: FC = () => {
     };
 
     fetchReservations();
-  }, []);
+  }, [reservations]);
+
+
+
+
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;

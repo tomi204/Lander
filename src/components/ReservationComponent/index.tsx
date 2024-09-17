@@ -50,6 +50,7 @@ console.log(stay, 'stay');
 
 
   const handleCheckout = async () => {
+    
     const transaction = {
       main_image:stay.main_image ,
       amount: totalPrice,
@@ -65,7 +66,7 @@ console.log(stay, 'stay');
     console.log(transaction, 'transaction');
     
     try {
-      const response = await fetch('/api/transaction', {
+      const response = await fetch('/api/createTx', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
