@@ -7,7 +7,7 @@ import ContractInteraction from '@/components/P2pTransaction';
 import { fetchRenterByTxAndWallet } from '@/services/account';
 import { findPropertyById } from '@/services/listings';
 import { useAccount } from 'wagmi';
-
+import { useRouter } from 'next/router';
 
 
 export default function StayDetailPage() {
@@ -18,7 +18,7 @@ export default function StayDetailPage() {
   const [propData, setPropData] = useState<any|null>( null );
   const [buyerData, setBuyerData] = useState<any | null>( null ); 
   console.log(buyerData, 'buyerData');
-
+const router = useRouter();
 
 
 useEffect( () => {
@@ -45,7 +45,10 @@ useEffect( () => {
       <div className="flex flex-col lg:flex-row gap-8">
         {/* Left Column */}
         <div className="w-full lg:w-2/3 space-y-6">
-          <button className="flex items-center text-blue-600 font-semibold">
+          <button
+            className="flex items-center text-blue-600 font-semibold"
+            onClick={() => router.back()}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-5 w-5 mr-2"
@@ -158,7 +161,7 @@ useEffect( () => {
           <div className="border rounded-lg overflow-hidden">
             <Image
               src={tx?.main_image || ''}
-              alt={tx?.title|| ''}
+              alt={tx?.title || ''}
               width={400}
               height={200}
               className="w-full h-48 object-cover"
@@ -218,15 +221,11 @@ useEffect( () => {
             <div className="space-y-2">
               <div className="flex justify-between">
                 <p>Buyer </p>
-                <p className="font-semibold">
-                  { address}
-                </p>
+                <p className="font-semibold">{address}</p>
               </div>
               <div className="flex justify-between">
                 <p>Seller</p>
-                <p className="font-semibold">
-                  {tx?.owner_wallet}
-                </p>
+                <p className="font-semibold">{tx?.owner_wallet}</p>
               </div>
             </div>
           </div>
