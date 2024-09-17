@@ -1,54 +1,45 @@
 'use client';
 import Image from 'next/image';
 import { CreditCard } from 'lucide-react';
-import React ,{useState, useEffect}from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTransaction } from '@/contexts/CheckoutProvider';
 import ContractInteraction from '@/components/P2pTransaction';
 import { fetchRenterByTxAndWallet } from '@/services/account';
 import { findPropertyById } from '@/services/listings';
 import { useAccount } from 'wagmi';
-import { useRouter } from 'next/router';
-
 
 export default function StayDetailPage() {
   const { transaction, setTransaction } = useTransaction() || {};
   const tx = transaction;
   console.log(transaction, 'transaction');
   const { address } = useAccount();
-  const [propData, setPropData] = useState<any|null>( null );
-  const [buyerData, setBuyerData] = useState<any | null>( null ); 
+  const [propData, setPropData] = useState<any | null>(null);
+  const [buyerData, setBuyerData] = useState<any | null>(null);
   console.log(buyerData, 'buyerData');
-const router = useRouter();
 
-
-useEffect( () => {
-      const fetchUserData = async () => {
-        if ( transaction && address ) {
-          try {
-            const prop = await findPropertyById( tx.propety_id );          
-            const user = await fetchRenterByTxAndWallet( address );
-            setPropData( prop )
-            setBuyerData( user );
-          } catch ( error ) {
-            console.error( 'Error fetching user data:', error );
-          }
+  useEffect(() => {
+    const fetchUserData = async () => {
+      if (transaction && address) {
+        try {
+          const prop = await findPropertyById(tx.propety_id);
+          const user = await fetchRenterByTxAndWallet(address);
+          setPropData(prop);
+          setBuyerData(user);
+        } catch (error) {
+          console.error('Error fetching user data:', error);
         }
-      };
+      }
+    };
 
-      fetchUserData();
-    }, [transaction, address] );
-
-
+    fetchUserData();
+  }, [transaction, address]);
 
   return (
     <div className="container mx-auto p-4 md:p-6 lg:p-8">
       <div className="flex flex-col lg:flex-row gap-8">
         {/* Left Column */}
         <div className="w-full lg:w-2/3 space-y-6">
-          <button
-            className="flex items-center text-blue-600 font-semibold"
-            onClick={() => router.back()}
-          >
+          <button className="flex items-center text-blue-600 font-semibold">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-5 w-5 mr-2"
