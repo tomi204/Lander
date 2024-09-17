@@ -186,7 +186,7 @@ const ContractInteraction: FC<ContractInteractionProps> = ({
       );
       console.log(txID, 'back');
 
-      router.push(`/p2p/${txID}`);
+      router.push(`/p2p/detail/${txID}`);
       return txID;
     } catch (error) {
       console.error(error);

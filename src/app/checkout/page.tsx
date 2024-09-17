@@ -8,7 +8,6 @@ import { fetchRenterByTxAndWallet } from '@/services/account';
 import { findPropertyById } from '@/services/listings';
 import { useAccount } from 'wagmi';
 
-
 export default function StayDetailPage() {
   const { transaction, setTransaction } = useTransaction() || {};
   const tx = transaction;
@@ -17,7 +16,6 @@ export default function StayDetailPage() {
   const [propData, setPropData] = useState<any | null>(null);
   const [buyerData, setBuyerData] = useState<any | null>(null);
   console.log(buyerData, 'buyerData');
-
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -216,11 +214,20 @@ export default function StayDetailPage() {
             <div className="space-y-2">
               <div className="flex justify-between">
                 <p>Buyer </p>
-                <p className="font-semibold">{address}</p>
+                <p className="font-semibold">
+                  {address?.substring(0, 8)}...
+                  {address?.substring(address.length - 5, address.length)}
+                </p>
               </div>
               <div className="flex justify-between">
                 <p>Seller</p>
-                <p className="font-semibold">{tx?.owner_wallet}</p>
+                <p className="font-semibold">
+                  {tx?.owner_wallet.substring(0, 8)}...
+                  {tx?.owner_wallet.substring(
+                    tx?.owner_wallet.length - 5,
+                    tx?.owner_wallet.length
+                  )}
+                </p>
               </div>
             </div>
           </div>
