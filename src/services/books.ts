@@ -175,6 +175,13 @@ export const findBookById = cache(async (id: string): Promise<any> => {
     .select(
       `
       *,
+      renter:buyer_id (
+        id,
+        name,
+        email,
+        phone,
+        wallet
+      ),
       owner:owner_id (
         id,
         name,
