@@ -8,8 +8,7 @@ import supabase from '@/supabase/client';
 import { cache } from 'react';
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
-import { updateBookings, updateTrips} from '@/services/users';
-
+import { updateBookings, updateTrips } from '@/services/users';
 
 export const updateBookingStatus = async (
   bookingId: string,
@@ -21,11 +20,10 @@ export const updateBookingStatus = async (
 ): Promise<any> => {
   console.log(bookingId, status, txId, chain, 'bookingId, status, txId, chain');
 
+  const owner = await updateBookings(owner_wallet, bookingId);
+  const userId = await updateTrips(buyer_wallet, bookingId);
 
-const owner = await updateBookings(owner_wallet, bookingId);
-const userId = await updateTrips(buyer_wallet, bookingId);
-
-console.log(owner, userId , 'owner, userId');
+  console.log(owner, userId, 'owner, userId');
 
   const { data: tx, error } = await supabase
     .from('transactions')
@@ -44,9 +42,7 @@ console.log(owner, userId , 'owner, userId');
     throw new Error(`Failed to update booking status: ${error.message}`);
   }
 
-
-  return tx.id; 
-
+  return tx.id;
 };
 
 export const findUsersBookingsSSR = async (
@@ -206,8 +202,6 @@ export const findBookById = cache(async (id: string): Promise<any> => {
   if (error) {
     throw new Error(error.message);
   } else {
-    console.log(data);
+    return data;
   }
-
-  return data;
 });

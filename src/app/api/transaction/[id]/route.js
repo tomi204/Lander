@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/supabase/server';
 
-export async function GET( { params }) {
+export async function GET({ params }) {
   const { txId } = params;
- const supabase = createClient();
+  const supabase = createClient();
   try {
     const { data: transaction, error } = await supabase
       .from('transactions')

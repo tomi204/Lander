@@ -24,6 +24,7 @@ import { waitForTransactionReceipt } from '@wagmi/core';
 import { updateBookingStatus } from '@/services/books';
 import { useTransaction } from '@/contexts/CheckoutProvider';
 import { useRouter } from 'next/navigation';
+import { Button } from '../ui/button';
 
 interface ContractInteractionProps {
   disabled?: boolean;
@@ -119,6 +120,8 @@ const ContractInteraction: FC<ContractInteractionProps> = ({
       setLoading(true);
       setErrorMessage('');
 
+      console.log(Number(transactionCount), 'transactionCount');
+
       if (!address) {
         throw new Error('Invalid Address');
       }
@@ -169,24 +172,28 @@ const ContractInteraction: FC<ContractInteractionProps> = ({
         value: BigInt(0),
       });
 
-      console.log(result);
+      console.log('result', result);
 
-      setActualId(Number(transactionCount));
+      await waitForTransactionReceipt(wagmiConfig, {
+        hash: result,
+      });
 
-      console.log(transactionCount, 'transactionCount');
+      if (Number(transactionCount) > 0) {
+        setActualId(Number(transactionCount));
+      }
+
+      setActualId(Number(transactionCount) + 1);
 
       const txID = await updateBookingStatus(
         transaction?.id,
         'pending',
-        // actualId.toString(),
-        '23',
+        (Number(transactionCount) + 1).toString(),
         'bsc',
         owner_wallet,
         buyer_wallet
       );
-      console.log(txID, 'back');
 
-      router.push(`/p2p/detail/${txID}`);
+      router.push(`/p2p/${txID}`);
       return txID;
     } catch (error) {
       console.error(error);
@@ -273,35 +280,35 @@ const ContractInteraction: FC<ContractInteractionProps> = ({
 
   return (
     <>
-      <ButtonPrimary
-        className="sm:w-full"
-        loading={loading}
-        onClick={CreateTransaction}
-      >
-        {step === ''
-          ? 'Create Transaction'
-          : step === 'Approving tokens'
-          ? 'Approving tokens'
-          : 'Creating transaction'}
-      </ButtonPrimary>
+      {!transactionId && (
+        <ButtonPrimary
+          className="sm:w-full"
+          loading={loading}
+          onClick={CreateTransaction}
+        >
+          {step === ''
+            ? 'Create Transaction'
+            : step === 'Approving tokens'
+            ? 'Approving tokens'
+            : 'Creating transaction'}
+        </ButtonPrimary>
+      )}
       {transactionId ? (
         <>
-          <ButtonPrimary
-            className="sm:w-full mt-2"
-            loading={loading}
+          <Button
+            className="w-full bg-blue-300 hover:bg-blue-600 text-black"
             onClick={() => approveTransaction(transactionId)}
           >
             Approve Transaction
-          </ButtonPrimary>
+          </Button>
 
-          <ButtonPrimary
-            className="sm:w-full mt-2"
-            loading={loading}
+          {/* <Button
+            className="w-full bg-blue-300 hover:bg-blue-600 text-black"
             disabled={!isAuth || noFunds || disabled}
             onClick={() => cancelTransaction(transactionId)}
           >
             Cancel Transaction
-          </ButtonPrimary>
+          </Button> */}
         </>
       ) : null}
 

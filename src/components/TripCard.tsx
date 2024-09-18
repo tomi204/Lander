@@ -20,10 +20,12 @@ const TripCard = ({ reservation }: any) => {
         className="w-full h-48 object-cover"
       />
       <div className="p-4 space-y-2">
-        <p className="font-semibold text-lg">{reservation?.title}</p>
-        <p className="text-sm text-gray-500">{reservation?.location}</p>
+        <p className="font-semibold text-lg">{reservation?.property.title}</p>
         <p className="text-sm text-gray-500">
-          {reservation?.description}
+          {reservation?.property?.location}
+        </p>
+        <p className="text-sm text-gray-500">
+          {reservation?.property?.description}
         </p>
         <p className="font-semibold">
           {new Date(reservation?.entrance_date).toLocaleDateString()} -{' '}

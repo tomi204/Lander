@@ -4,7 +4,6 @@
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
-    "strict": true,
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "esModuleInterop": true,
@@ -13,6 +12,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
+    "strict": true,
     "incremental": true,
     "plugins": [
       {
@@ -25,18 +25,13 @@
       "@/*": ["./src/*"]
     }
   },
-<<<<<<< HEAD
   "include": [
     "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    ".next/types/**/*.ts",
-    "src/app/p2p/detail/[id]/page.jsx",
-    "src/app/api/getBookings/route.js",
-    "src/components/Swap/index.jsx"
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.js",
+    "src/**/*.jsx",
+    ".next/types/**/*.ts"
   ],
-=======
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/p2p/[id]/page.jsx", "src/app/api/getBookings/route.js", "src/components/Swap/index.jsx", "src/app/api/message/route.js"],
->>>>>>> 4b6248c1fcb96500ff996730ff449c5c5bb9266a
   "exclude": ["node_modules"]
 }
