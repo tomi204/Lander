@@ -4,7 +4,6 @@
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
-    "strict": true,
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "esModuleInterop": true,
@@ -13,6 +12,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
+    "strict": true,
     "incremental": true,
     "plugins": [
       {
@@ -21,10 +21,17 @@
     ],
     "baseUrl": ".",
     "paths": {
-      "react": [ "./node_modules/@types/react" ],
+      "react": ["./node_modules/@types/react"],
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/p2p/[id]/page.jsx", "src/app/api/getBookings/route.js", "src/components/Swap/index.jsx", "src/app/api/message/route.js"],
+  "include": [
+    "next-env.d.ts",
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.js",
+    "src/**/*.jsx",
+    ".next/types/**/*.ts"
+  ],
   "exclude": ["node_modules"]
 }
