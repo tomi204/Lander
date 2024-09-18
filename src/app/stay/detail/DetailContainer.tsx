@@ -20,8 +20,8 @@ import rehypeHighlight from 'rehype-highlight';
 import ModalImageGallery from '@/components/listing-image-gallery/ListingImageGallery';
 import ReservationComponent from '@/components/ReservationComponent';
 import LikeSaveBtns from "@/components/LikeSaveBtns";
-
-
+import useSWR from 'swr';
+import { fetcher } from '@/utils/fetcher';
 export interface StayDetailContainerProps {
   stay: Stay;
 }
@@ -30,6 +30,13 @@ const StayDetailContainer: FC<StayDetailContainerProps> = ({ stay }) => {
   const [isOpenModalAmenities, setIsOpenModalAmenities] = useState(false);
   const [showModalImageGallery, setShowModalImageGallery] = useState(false);
   const [currentImageId, setCurrentImageId] = useState<string>();
+
+  const txId = '1512c0c9-5d3b-4976-b7ce-3221c8d4cc20';
+
+const { data, error } = useSWR(`/api/transaction/${txId}`, fetcher);
+console.log(data)
+
+
 
   function closeModalAmenities() {
     setIsOpenModalAmenities(false);

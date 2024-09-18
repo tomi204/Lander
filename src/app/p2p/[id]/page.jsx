@@ -13,10 +13,11 @@ const fetcher = url => axios.get(url).then(res => res.data)
 
 
 export default function Component({ params }) {
-  const { txId } = params
-  const [isOpen, setIsOpen] = useState(false)
-  const [incomingMessages, setIncomingMessages] = useState([])
-
+ const { txId } = params;
+ const [isOpen, setIsOpen] = useState(false);
+ const [incomingMessages, setIncomingMessages] = useState([]);
+ const [inputMessage, setInputMessage] = useState('');
+ 
   const { data: txData, error } = useSWR(
     txId ? `/api/transaction/${txId}` : null,
     fetcher
@@ -60,19 +61,19 @@ export default function Component({ params }) {
   }
 
 
-  // useEffect(() => {
-  //   if (txId !== undefined) {
-  //     pusherClient.subscribe(txId)
 
-  //     pusherClient.bind('incoming-message', (text) => {
-  //       setIncomingMessages((prev) => [...prev, text])
-  //     })
+  useEffect(() => {
+    if (txId) {
+      const channel = pusherClient.subscribe(`chat-${txId}`);
+      channel.bind('new-message', (data) => {
+        setIncomingMessages((prevMessages) => [...prevMessages, data]);
+      });
 
-  //     return () => {
-  //       pusherClient.unsubscribe(txId)
-  //     }
-  //   }
-  // }, [txId])
+      return () => {
+        pusherClient.unsubscribe(`chat-${txId}`);
+      };
+    }
+  }, [txId]);
 
 
   return (
