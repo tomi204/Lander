@@ -62,18 +62,18 @@ export default function Component({ params }) {
 
 
 
-  useEffect(() => {
-    if (txId) {
-      const channel = pusherClient.subscribe(`chat-${txId}`);
-      channel.bind('new-message', (data) => {
-        setIncomingMessages((prevMessages) => [...prevMessages, data]);
-      });
+  // useEffect(() => {
+  //   if (txId) {
+  //     const channel = pusherClient.subscribe(`chat-${txId}`);
+  //     channel.bind('new-message', (data) => {
+  //       setIncomingMessages((prevMessages) => [...prevMessages, data]);
+  //     });
 
-      return () => {
-        pusherClient.unsubscribe(`chat-${txId}`);
-      };
-    }
-  }, [txId]);
+  //     return () => {
+  //       pusherClient.unsubscribe(`chat-${txId}`);
+  //     };
+  //   }
+  // }, [txId]);
 
 
   return (
