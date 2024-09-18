@@ -14,4 +14,9 @@ export const NAVIGATION: NavItemType[] = [
     href: "/add-listing/1",
     name: "Be a Host",
   },
+  {
+    id: ncNanoId(),
+    href: "/swap",
+    name: "SWAP",
+  },
 ];

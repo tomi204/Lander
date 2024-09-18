@@ -46,7 +46,7 @@ export default function AvatarDropdown({ address, className = "", show, onLogout
                     <Avatar sizeClass="w-12 h-12" />
 
                     <div className="flex-grow">
-                      <h4 className="font-semibold">LANDER</h4>
+                      <h4 className="font-semibold">CRYPTOBED</h4>
                       <p className="text-xs mt-0.5">
                         <WalletAddressComponent address={address} />
                       </p>
