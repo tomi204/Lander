@@ -48,10 +48,10 @@ const SectionOurFeatures: FC<SectionOurFeaturesProps> = ({
           <li className="space-y-4">
             <Badge color="green" name="Exposure " />
             <span className="block text-xl font-semibold">
-              Reach millions with Chisfis
+              Reach millions with low fees 
             </span>
             <span className="block mt-5 text-neutral-500 dark:text-neutral-400">
-              Millions of people are searching for unique places to stay around
+              Millions of nomads are searching for unique places to stay around
               the world
             </span>
           </li>
@@ -61,8 +61,7 @@ const SectionOurFeatures: FC<SectionOurFeaturesProps> = ({
               Secure and simple
             </span>
             <span className="block mt-5 text-neutral-500 dark:text-neutral-400">
-              A Holiday Lettings listing gives you a secure and easy way to take
-              bookings and payments online
+            We use cutting edge technology to ensure your security and privacy
             </span>
           </li>
         </ul>

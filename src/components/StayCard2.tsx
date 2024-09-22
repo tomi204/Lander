@@ -1,9 +1,11 @@
 import React, { FC } from "react";
+import { Star, Bed, Bath, Wifi, Car } from 'lucide-react';
 import GallerySlider from "@/components/GallerySlider";
 import { Stay } from "@/data/types";
 import StartRating from "@/components/StartRating";
 import BtnLikeIcon from "@/components/BtnLikeIcon";
 import SaleOffBadge from "@/components/SaleOffBadge";
+import { Badge as Label} from '@/components/ui/badge';
 import Badge from "@/shared/Badge";
 import Link from "next/link";
 import Image from "next/image";
@@ -20,6 +22,8 @@ const StayCard2: FC<StayCard2Props> = ({
 }) => {
   const {
     main_image,
+    bathrooms,
+    description,
     galleryImgs,
     address,
     name,
@@ -38,7 +42,7 @@ const StayCard2: FC<StayCard2Props> = ({
 
   } = data;
 
-  console.log(data)
+  
 
   const listingCategory = data?.listingCategory?.data?.attributes;
 
@@ -71,23 +75,22 @@ const StayCard2: FC<StayCard2Props> = ({
 
   const renderContent = () => {
     return (
-      <div className={size === "default" ? "mt-3 space-y-3" : "mt-2 space-y-2"}>
+      <div className={size === 'default' ? 'mt-3 space-y-3' : 'mt-2 space-y-2'}>
         <div className="space-y-2">
-          <span className="text-sm text-neutral-500 dark:text-neutral-400">
-            {type} · {beds} beds
-          </span>
           <div className="flex items-center space-x-2">
             {isAds && <Badge name="ADS" color="green" />}
             <h2
-              className={`font-semibold capitalize text-neutral-900 dark:text-white ${
-                size === "default" ? "text-base" : "text-base"
+              className={`font-semibold capitalize  tracking-wide text-indigo-500  dark:text-white ${
+                size === 'default' ? 'text-base' : 'text-base'
               }`}
             >
-              <span className="line-clamp-1">{title}</span>
+              {title}
+
+              {/* <span className="line-clamp-1">{description}</span> */}
             </h2>
           </div>
           <div className="flex items-center text-neutral-500 dark:text-neutral-400 text-sm space-x-1.5">
-            {size === "default" && (
+            {size === 'default' && (
               <svg
                 className="h-4 w-4"
                 fill="none"
@@ -111,17 +114,45 @@ const StayCard2: FC<StayCard2Props> = ({
             <span className="">{location}</span>
           </div>
         </div>
+
+        <div className="mt-4 flex items-center">
+          <div className="flex items-center">
+            {[...Array(5)].map((_, i) => (
+              <Star
+                key={i}
+                className={`h-4 w-4 ${
+                  i < 4 ? 'text-yellow-400 fill-current' : 'text-gray-300'
+                }`}
+              />
+            ))}
+          </div>
+          <span className="ml-2 text-sm text-gray-600">4.0 (128 reviews)</span>
+        </div>
+
+        <div className="mt-4 flex items-center text-sm text-gray-500">
+          <Bed className="h-4 w-4 mr-1" />
+          <span className="mr-2">{beds}</span>
+          <Bath className="h-4 w-4 mr-1" />
+          <span className="mr-2">{bathrooms}</span>
+          <Wifi className="h-4 w-4 mr-1" />
+          <span className="mr-2">Wifi</span>
+          {/* <Car className="h-4 w-4 mr-1" />
+          <span>Free parking</span> */}
+        </div>
         <div className="w-14 border-b border-neutral-100 dark:border-neutral-800"></div>
         <div className="flex justify-between items-center">
           <span className="text-base font-semibold">
             {price}
             {` `}
-            {size === "default" && (
-              <span className="text-sm text-neutral-500 dark:text-neutral-400 font-normal">
+            {size === 'default' && (
+              <span className="text-sm text-neutral-500 dark:text-neutral-400 font-normal mr-10">
                 /night
               </span>
             )}
           </span>
+          <Label variant="default" className="text-sm mr-15">
+            {type}
+          </Label>
           {!!reviewStart && (
             <StartRating reviewCount={reviewCount} point={reviewStart} />
           )}

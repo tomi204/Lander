@@ -1,9 +1,9 @@
-import { Popover, Transition } from "@headlessui/react";
-import { Fragment } from "react";
-import Avatar from "@/shared/Avatar";
-import SwitchDarkMode2 from "@/shared/SwitchDarkMode2";
-import Link from "next/link";
-import WalletAddressComponent from "@/components/WalletAddressComponent";
+import { Popover, Transition } from '@headlessui/react';
+import { Fragment } from 'react';
+import Avatar from '@/shared/Avatar';
+import SwitchDarkMode2 from '@/shared/SwitchDarkMode2';
+import Link from 'next/link';
+import WalletAddressComponent from '@/components/WalletAddressComponent';
 interface Props {
   show: boolean;
   address: string;
@@ -11,7 +11,12 @@ interface Props {
   onLogout?: () => void;
 }
 
-export default function AvatarDropdown({ address, className = "", show, onLogout }: Props) {
+export default function AvatarDropdown({
+  address,
+  className = '',
+  show,
+  onLogout,
+}: Props) {
   if (!show) {
     return <></>;
   }
@@ -24,9 +29,7 @@ export default function AvatarDropdown({ address, className = "", show, onLogout
             className={`self-center w-10 h-10 sm:w-12 sm:h-12 rounded-full text-slate-700 dark:text-slate-300 focus:outline-none flex items-center justify-end`}
           >
             <div className="flex items-center space-x-2  hover:bg-slate-100  dark:hover:bg-slate-800">
-              <p className="sm:hidden text-s mt-0.8">
-                <WalletAddressComponent address={address} />
-              </p>
+              <h4 className="font-semibold">Profile</h4>
               <Avatar sizeClass="w-12 h-12 sm:w-9 sm:h-9 " />
             </div>
           </Popover.Button>
@@ -46,7 +49,7 @@ export default function AvatarDropdown({ address, className = "", show, onLogout
                     <Avatar sizeClass="w-12 h-12" />
 
                     <div className="flex-grow">
-                      <h4 className="font-semibold">CRYPTOBED</h4>
+                      <h4 className="font-semibold">USER</h4>
                       <p className="text-xs mt-0.5">
                         <WalletAddressComponent address={address} />
                       </p>
@@ -57,7 +60,7 @@ export default function AvatarDropdown({ address, className = "", show, onLogout
 
                   {/* ------------------ 1 --------------------- */}
                   <Link
-                    href={"/profile"}
+                    href={'/profile'}
                     className="flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
                     onClick={() => close()}
                   >
@@ -86,18 +89,23 @@ export default function AvatarDropdown({ address, className = "", show, onLogout
                       </svg>
                     </div>
                     <div className="ml-4">
-                      <p className="text-sm font-medium ">{"Account"}</p>
+                      <p className="text-sm font-medium ">{'Account'}</p>
                     </div>
                   </Link>
 
                   {/* ------------------ 2 --------------------- */}
                   <Link
-                    href={"/my-listing-stays"}
+                    href={'/my-listing-stays'}
                     className="flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
                     onClick={() => close()}
                   >
                     <div className="flex items-center justify-center flex-shrink-0 text-neutral-500 dark:text-neutral-300">
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                      <svg
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                      >
                         <path
                           d="M8 12.2H15"
                           stroke="currentColor"
@@ -133,17 +141,22 @@ export default function AvatarDropdown({ address, className = "", show, onLogout
                       </svg>
                     </div>
                     <div className="ml-4">
-                      <p className="text-sm font-medium ">{"Listings"}</p>
+                      <p className="text-sm font-medium ">{'Listings'}</p>
                     </div>
                   </Link>
                   {/* ------------------ 2 --------------------- */}
                   <Link
-                    href={"/my-bookings"}
+                    href={'/my-bookings'}
                     className="flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
                     onClick={() => close()}
                   >
                     <div className="flex items-center justify-center flex-shrink-0 text-neutral-500 dark:text-neutral-300">
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                      <svg
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                      >
                         <path
                           d="M8 12.2H15"
                           stroke="currentColor"
@@ -179,17 +192,22 @@ export default function AvatarDropdown({ address, className = "", show, onLogout
                       </svg>
                     </div>
                     <div className="ml-4">
-                      <p className="text-sm font-medium ">{"Bookings"}</p>
+                      <p className="text-sm font-medium ">{'Bookings'}</p>
                     </div>
-                  </Link>   
-                    {/* ------------------ 2 --------------------- */}
-                   <Link
-                    href={"/my-trips"}
+                  </Link>
+                  {/* ------------------ 2 --------------------- */}
+                  <Link
+                    href={'/my-trips'}
                     className="flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
                     onClick={() => close()}
                   >
                     <div className="flex items-center justify-center flex-shrink-0 text-neutral-500 dark:text-neutral-300">
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                      <svg
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                      >
                         <path
                           d="M8 12.2H15"
                           stroke="currentColor"
@@ -225,7 +243,7 @@ export default function AvatarDropdown({ address, className = "", show, onLogout
                       </svg>
                     </div>
                     <div className="ml-4">
-                      <p className="text-sm font-medium ">{"Trips"}</p>
+                      <p className="text-sm font-medium ">{'Trips'}</p>
                     </div>
                   </Link>
 
@@ -325,7 +343,7 @@ export default function AvatarDropdown({ address, className = "", show, onLogout
 
                   {/* ------------------ 2 --------------------- */}
                   <Link
-                    href={"/#"}
+                    href={'/#'}
                     className="flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
                     onClick={() => close()}
                   >
@@ -360,8 +378,11 @@ export default function AvatarDropdown({ address, className = "", show, onLogout
                         />
                       </svg>
                     </div>
-                    <div className="ml-4" onClick={() => onLogout && onLogout()}>
-                      <p className="text-sm font-medium ">{"Log out"}</p>
+                    <div
+                      className="ml-4"
+                      onClick={() => onLogout && onLogout()}
+                    >
+                      <p className="text-sm font-medium ">{'Log out'}</p>
                     </div>
                   </Link>
                 </div>

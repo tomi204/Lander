@@ -78,6 +78,10 @@ const MainNav: FC<MainNav1Props> = ({ className = '' }) => {
                 onLogout={() => {
                   logOut();
                 }}
+
+
+
+                
               />
             </div>
           </div>

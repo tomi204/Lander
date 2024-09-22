@@ -1,19 +1,20 @@
-import BgGlassmorphism from "@/components/BgGlassmorphism";
-import { Stay } from "@/data/types";
-import React  from "react";
-import SectionGridHasMap from "./listing/SectionGridHasMap";
-import SectionHeroArchivePage from "./(server-components)/SectionHeroArchivePage";
-import CryptoBedSeo from "@/constants/seo";
-import { Metadata } from "next";
-import { gql } from "@apollo/client";
+import BgGlassmorphism from '@/components/BgGlassmorphism';
+import { Stay } from '@/data/types';
+import React from 'react';
+import SectionGridHasMap from './listing/SectionGridHasMap';
+import SectionHeroArchivePage from './(server-components)/SectionHeroArchivePage';
+import CryptoBedSeo from '@/constants/seo';
+import { Metadata } from 'next';
+import { gql } from '@apollo/client';
 // import { getClient } from "@/utils/apollo";
-import { homeSettingsConst } from "@/constants/home";
-import { covertApolloResponseToStays } from "@/adapters/stay.adapters";
-import useSWR from "swr";
-import { fetcher } from "@/utils/fetcher";
-import { LoadingSpinner } from "@/components/AnyReactComponent/loadingSpinner";
-import { createClient } from "@/supabase/server";
-
+import { homeSettingsConst } from '@/constants/home';
+import { covertApolloResponseToStays } from '@/adapters/stay.adapters';
+import useSWR from 'swr';
+import { fetcher } from '@/utils/fetcher';
+import { LoadingSpinner } from '@/components/AnyReactComponent/loadingSpinner';
+import { createClient } from '@/supabase/server';
+import SectionOurFeatures from '@/components/SectionOurFeatures';
+import SectionSubscribe2 from '@/components/SectionSubscribe2';
 
 export const revalidate = 2;
 
@@ -74,21 +75,16 @@ export const metadata: Metadata = CryptoBedSeo;
 async function PageHome({ searchParams }: PageHomeProps) {
   let items: Stay[] = [];
   const supabase = createClient();
-  const { data: properties } = await supabase.from("properties").select();
+  const { data: properties } = await supabase.from('properties').select();
 
-
-
-  const settings = homeSettingsConst["DEFAULT"];
+  const settings = homeSettingsConst['DEFAULT'];
 
   // const client = getClient();
 
   // const { data: properties, error } = useSWR( '/api/properties', fetcher );
 
-
-
   // if ( error ) return <h1 className="flex justify-center items-center h-screen p-5">Failed to load</h1>;
 
-  
   if (!properties)
     return (
       <div className="flex justify-center items-center h-screen p-5">
@@ -121,17 +117,25 @@ async function PageHome({ searchParams }: PageHomeProps) {
         </div>
 
         <div className="w-full ">
-          <h2 className="font-medium text-4xl md:text-5xl leading-[110%] pb-2 md:pb-10">Stays</h2>
+          <h2 className="font-medium text-4xl md:text-5xl leading-[110%] pb-2 md:pb-10">
+            Stays
+          </h2>
           <div className="w-full border-b border-neutral-200 dark:border-neutral-700"></div>
         </div>
         {/* List Stays */}
-        <SectionGridHasMap items={items} properties={properties}/>
+        <SectionGridHasMap items={items} properties={properties} />
         {/* SECTION 1 */}
-        {/* <SectionSliderNewCategories categories={DEMO_CATS} /> */}
+        {/* <SectionSliderNewCategories /> */}
 
-        {/* <SectionOurFeatures />
+        <SectionOurFeatures />
 
-        <SectionGridFeaturePlaces cardType="card2" /> */}
+
+
+{/* 
+        <SectionGridFeaturePlaces
+          properties={properties}
+          cardType="card1"
+        /> */}
 
         {/* <SectionHowItWork /> */}
 
@@ -147,7 +151,7 @@ async function PageHome({ searchParams }: PageHomeProps) {
           />
         </div> */}
 
-        {/* <SectionSubscribe2 /> */}
+        <SectionSubscribe2 />
 
         {/* <div className="relative py-16">
           <BackgroundSection className="bg-orange-50 dark:bg-black dark:bg-opacity-20 " />

@@ -6,6 +6,7 @@ import SaleOffBadge from "@/components/SaleOffBadge";
 import Badge from "@/shared/Badge";
 import Link from "next/link";
 import GallerySlider from "./GallerySlider";
+import Image from "next/image";
 
 export interface StayCardProps {
   className?: string;
@@ -19,6 +20,8 @@ const StayCard: FC<StayCardProps> = ({
   data,
 }) => {
   const {
+    main_image,
+    title,
     galleryImgs,
     address,
     name,
@@ -33,17 +36,25 @@ const StayCard: FC<StayCardProps> = ({
     id,
   } = data;
 
-  const listingCategory = data.listingCategory.data.attributes;
+  // const listingCategory = data.listingCategory.data.attributes;
 
   const renderSliderGallery = () => {
     return (
       <div className="relative w-full">
-        <GallerySlider
+        {/* <GallerySlider
           uniqueID={`StayCard_${id}`}
           ratioClass="aspect-w-4 aspect-h-3 "
           galleryImgs={galleryImgs}
           href={href}
           galleryClass={size === "default" ? undefined : ""}
+        /> */}
+
+        <Image
+          width={500}
+          height={400}
+          alt={'Gallery Image'}
+          src={main_image || 'Gallery Image'} // Assuming galleryImgs may have an 'alt' property
+          className="rounded-lg w-full"
         />
         <BtnLikeIcon isLiked={like} className="absolute right-3 top-3 z-[1]" />
         {saleOff && <SaleOffBadge className="absolute left-3 top-3" />}
@@ -56,7 +67,7 @@ const StayCard: FC<StayCardProps> = ({
       <div className={size === "default" ? "p-4 space-y-4" : "p-3 space-y-1"}>
         <div className={size === "default" ? "space-y-2" : "space-y-1"}>
           <span className="text-sm text-neutral-500 dark:text-neutral-400">
-            {listingCategory.name} · {bedrooms} beds
+            {title} · {bedrooms} beds
           </span>
           <div className="flex items-center space-x-2">
             {isAds && <Badge name="ADS" color="green" />}
