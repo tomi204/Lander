@@ -2,11 +2,9 @@
 import React, { FC } from 'react';
 import ChatSupport from '@/components/ChatSupport';
 
-export interface CommonLayoutProps {
-  children?: React.ReactNode;
-}
 
-const Chat: FC<CommonLayoutProps> = ({ children }) => {
+
+const Chat: FC = () => {
   return (
     <>
       <ChatSupport />
@@ -14,4 +12,4 @@ const Chat: FC<CommonLayoutProps> = ({ children }) => {
   );
 };
 
-export default Chat;
+export  default Chat;
