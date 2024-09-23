@@ -1,6 +1,6 @@
-import { StrapiData, Media, MediaMultiple } from "@/interfaces/Strapi";
-import { Route } from "@/routers/types";
-import { StaticImageData } from "next/image";
+import { StrapiData, Media, MediaMultiple } from '@/interfaces/Strapi';
+import { Route } from '@/routers/types';
+import { StaticImageData } from 'next/image';
 
 //  ######  CustomLink  ######## //
 export interface CustomLink {
@@ -18,8 +18,8 @@ export interface TaxonomyType {
   thumbnail?: string;
   desc?: string;
   color?: TwMainColor | string;
-  taxonomy: "category" | "tag";
-  listingType?: "stay" | "experiences" | "car";
+  taxonomy: 'category' | 'tag';
+  listingType?: 'stay' | 'experiences' | 'car';
 }
 
 export interface User {
@@ -50,18 +50,18 @@ export interface PostDataType {
   commentCount: number;
   viewdCount: number;
   readingTime: number;
-  postType?: "standard" | "video" | "gallery" | "audio";
+  postType?: 'standard' | 'video' | 'gallery' | 'audio';
 }
 
 export type TwMainColor =
-  | "pink"
-  | "green"
-  | "yellow"
-  | "red"
-  | "indigo"
-  | "blue"
-  | "purple"
-  | "gray";
+  | 'pink'
+  | 'green'
+  | 'yellow'
+  | 'red'
+  | 'indigo'
+  | 'blue'
+  | 'purple'
+  | 'gray';
 
 //
 export interface Stay {
@@ -114,9 +114,8 @@ enum type {
   Cabin = 'Cabin',
   Office = 'Office',
   Apartment = 'Apartment',
-  House = 'House'
+  House = 'House',
 }
-
 
 export interface Country {
   id: string;
@@ -131,9 +130,33 @@ export interface Amenity {
   id: string;
   name: string;
   label: string;
-  type: "general" | "other" | "safe";
+  type: 'general' | 'other' | 'safe';
   createdAt: Date;
   updatedAt: Date;
   publishedAt: Date;
   locale: string;
+}
+
+export interface IRealState {
+  id: string;
+  title: string;
+  description: string;
+  location: string;
+  price: number;
+  bedrooms: number;
+  bathrooms: number;
+  garages: number;
+  type: string;
+  profitability: number;
+  main_image: string;
+  // galleryImgs: MediaMultiple;
+  address: string;
+  amount: number;
+  features: string[];
+  financials: {
+    rentalIncome: number;
+    propertyTax: number;
+  };
+  yearBuilt: number;
+  area: number;
 }

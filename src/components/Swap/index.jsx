@@ -53,9 +53,6 @@ export const Swap = () => {
           styleOverrides: {
             root: {
               backgroundColor: '#f8f8fa',
-              // .MuiTabs-indicator: {
-              //   backgroundColor: "#ffffff"
-              // }
             },
           },
         },

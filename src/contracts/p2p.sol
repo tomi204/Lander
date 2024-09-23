@@ -2,7 +2,11 @@
 pragma solidity ^0.8.0;
 
 interface IERC20 {
-  function transferFrom(address sender, address recipient, uint256 amount) external returns (bool);
+  function transferFrom(
+    address sender,
+    address recipient,
+    uint256 amount
+  ) external returns (bool);
 
   function transfer(address recipient, uint256 amount) external returns (bool);
 }
@@ -25,7 +29,7 @@ contract P2PIntermediary {
   mapping(uint256 => Transaction) public transactions;
 
   modifier onlyOwner() {
-    require(msg.sender == owner, "Not the contract owner");
+    require(msg.sender == owner, 'Not the contract owner');
     _;
   }
 
@@ -35,7 +39,10 @@ contract P2PIntermediary {
     address indexed seller,
     uint256 amount
   );
-  event TransactionApproved(uint256 indexed transactionId, address indexed approver);
+  event TransactionApproved(
+    uint256 indexed transactionId,
+    address indexed approver
+  );
   event TransactionCompleted(uint256 indexed transactionId);
 
   constructor() {
@@ -43,7 +50,10 @@ contract P2PIntermediary {
     owner = msg.sender;
   }
 
-  function createTransaction(address _seller, uint256 _amount) external returns (uint256) {
+  function createTransaction(
+    address _seller,
+    uint256 _amount
+  ) external returns (uint256) {
     transactionCount++;
     uint256 transactionId = transactionCount;
 
@@ -57,7 +67,10 @@ contract P2PIntermediary {
       isCompleted: false
     });
 
-    require(token.transferFrom(msg.sender, address(this), _amount), "Transfer failed");
+    require(
+      token.transferFrom(msg.sender, address(this), _amount),
+      'Transfer failed'
+    );
 
     emit TransactionCreated(transactionId, msg.sender, _seller, _amount);
 
@@ -67,10 +80,12 @@ contract P2PIntermediary {
   function approveTransaction(uint256 _transactionId) external {
     Transaction storage txn = transactions[_transactionId];
 
-    require(!txn.isCompleted, "Transaction already completed");
+    require(!txn.isCompleted, 'Transaction already completed');
     require(
-      msg.sender == txn.buyer || msg.sender == txn.seller || msg.sender == owner,
-      "Not authorized to approve"
+      msg.sender == txn.buyer ||
+        msg.sender == txn.seller ||
+        msg.sender == owner,
+      'Not authorized to approve'
     );
 
     if (msg.sender == txn.buyer) {
@@ -90,7 +105,10 @@ contract P2PIntermediary {
 
     if (approvalCount >= 2) {
       txn.isCompleted = true;
-      require(token.transfer(txn.seller, txn.amount), "Transfer to seller failed");
+      require(
+        token.transfer(txn.seller, txn.amount),
+        'Transfer to seller failed'
+      );
       emit TransactionCompleted(_transactionId);
     }
   }
@@ -98,13 +116,15 @@ contract P2PIntermediary {
   function cancelTransaction(uint256 _transactionId) external {
     Transaction storage txn = transactions[_transactionId];
 
-    require(!txn.isCompleted, "Transaction already completed");
+    require(!txn.isCompleted, 'Transaction already completed');
     require(
-      msg.sender == txn.buyer || msg.sender == txn.seller || msg.sender == owner,
-      "Not authorized to cancel"
+      msg.sender == txn.buyer ||
+        msg.sender == txn.seller ||
+        msg.sender == owner,
+      'Not authorized to cancel'
     );
 
     txn.isCompleted = true;
-    require(token.transfer(txn.buyer, txn.amount), "Refund to buyer failed");
+    require(token.transfer(txn.buyer, txn.amount), 'Refund to buyer failed');
   }
 }

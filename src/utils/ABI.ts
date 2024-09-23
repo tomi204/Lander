@@ -154,3 +154,7 @@ export const ABI = [
     type: 'function',
   },
 ];
+
+export const NFT_ABI = [
+  'function mintUSDC(uint256 quantity, address to) external',
+];
