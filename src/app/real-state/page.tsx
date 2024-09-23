@@ -55,32 +55,11 @@ export default function RealState() {
                 <TabsTrigger value="whole">Whole</TabsTrigger>
               </TabsList>
               <TabsContent value="fractional">
-                <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                  {[1, 2, 3, 4].map((i) => (
-                    <Card key={i}>
-                      <CardHeader>
-                        <CardTitle>Luxury Apartment {i}</CardTitle>
-                        <CardDescription>Fractional Investment</CardDescription>
-                      </CardHeader>
-                      <CardContent>
-                        <img
-                          alt={`Apartment ${i}`}
-                          className="w-full h-48 object-cover mb-4"
-                          height="200"
-                          src={`/placeholder.svg?height=200&width=300`}
-                          style={{
-                            aspectRatio: '300/200',
-                            objectFit: 'cover',
-                          }}
-                          width="300"
-                        />
-                        <p className="text-sm">Estimated Annual Return: 8.5%</p>
-                        <p className="text-sm">Minimum Investment: $10,000</p>
-                      </CardContent>
-                      <CardFooter>
-                        <Button className="w-full">Invest Now</Button>
-                      </CardFooter>
-                    </Card>
+                <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                  {__realState.map((item: any) => (
+                    <div key={item.id}>
+                      <RealStateCard data={{ ...item, id: item.id }} />
+                    </div>
                   ))}
                 </div>
               </TabsContent>
