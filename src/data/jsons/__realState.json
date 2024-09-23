@@ -1,0 +1,25 @@
+[
+  {
+    "id": "1",
+    "title": "The Palermo Luxe Residence",
+    "description": "The Palermo Luxe Residence is a luxurious residential project located in the heart of Ho Chi Minh City. It offers a modern and luxurious living experience with a range of amenities and facilities.",
+    "location": "Buenos Aires, Argentina",
+    "price": 1,
+    "bedrooms": 3,
+    "bathrooms": 2,
+    "garages": 1,
+    "type": "Apartment",
+    "amount": 100,
+    "profitability": 5,
+    "address": "0xFBD7db87dc03aE643Ca8a128f32C3bee4c89EB4d",
+    "main_image": "https://ipfs.io/ipfs/Qmc84ohAynsRWbRYJfhAeDarpC8oGZjtY5WZHz5SurNidB",
+
+    "features": ["Swimming pool", "Gym", "Parking"],
+    "financials": {
+      "rentalIncome": 1000,
+      "propertyTax": 100
+    },
+    "yearBuilt": 2022,
+    "area": 100
+  }
+]
