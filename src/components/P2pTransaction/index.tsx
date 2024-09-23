@@ -160,7 +160,7 @@ const ContractInteraction: FC<ContractInteractionProps> = ({
 
       const dataEncoded = new Interface(ABI).encodeFunctionData(
         'createTransaction',
-        [sellerAddress, BigInt(amount * 1000 * 1000)]
+        [sellerAddress, BigInt(amount * 1000000 * 1000000)]
       ) as `0x${string}`;
 
       const connections = getConnections(wagmiConfig);

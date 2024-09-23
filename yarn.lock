@@ -669,7 +669,7 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
-"@lifi/sdk@^3.1.5", "@lifi/sdk@^3.2.1":
+"@lifi/sdk@^3.1.3", "@lifi/sdk@^3.2.3":
   version "3.2.3"
   resolved "https://registry.yarnpkg.com/@lifi/sdk/-/sdk-3.2.3.tgz#b44e70e794fec8e1e2256d741516b0e4d32a9c8a"
   integrity sha512-aGoFiDeTHtSMKptqa27H3KJzludeIHvSDW9jOqQQze+NhHhwaVgEvPVoLhf5wxLKmEAgbAeBvT3BIfbiKSlGEQ==
@@ -684,45 +684,45 @@
   resolved "https://registry.yarnpkg.com/@lifi/types/-/types-15.13.0.tgz#dc40e66fb5920b0a033fb600324ba495f57e6642"
   integrity sha512-nTxoEXMl5+P5Hqeg2l36+izCKslVr0USyZya8KnWSDwI1X8FU2Wzvdylgsi4X1qytiCFurKuQc9x1mJ6Xk8N0w==
 
-"@lifi/wallet-management@^3.1.5":
-  version "3.1.5"
-  resolved "https://registry.yarnpkg.com/@lifi/wallet-management/-/wallet-management-3.1.5.tgz#68590fd57d53392ae300eee543498e5069cb04ca"
-  integrity sha512-wHLdaoM/gPNCacdSE4+/eedwvtu5b0pEmgJzBl51MaxhnG2XLnllqOGbcg0KgkLA75XIjlLTZsno+I0zar5Fkw==
+"@lifi/wallet-management@^3.1.6":
+  version "3.1.6"
+  resolved "https://registry.yarnpkg.com/@lifi/wallet-management/-/wallet-management-3.1.6.tgz#25924da305bba67f358e7519f53f6909885135d6"
+  integrity sha512-uy1cPkjtFe0DrD6tot/HM5fGuTsNKgJdaEUHiwZgX2H8A2RjO6eBGbAGE9LU+oSiw2AoJQpvpsMHX5EWeY+kfg==
   dependencies:
-    "@lifi/sdk" "^3.2.1"
+    "@lifi/sdk" "^3.2.3"
     "@solana/wallet-adapter-base" "^0.9.23"
     react "^18.3.1"
-    viem "^2.21.6"
-    wagmi "^2.12.11"
+    viem "^2.21.9"
+    wagmi "^2.12.12"
 
-"@lifi/widget@^3.4.4":
-  version "3.5.3"
-  resolved "https://registry.yarnpkg.com/@lifi/widget/-/widget-3.5.3.tgz#46f1cf1a8641efab0b71d095b01109ade175088c"
-  integrity sha512-vab1S2XshQPWODac97U4HqRJoPk8h5r609PnzoBPpLctJS7/X0yrESNQZtVbdimKUv3QeIMfKlr0akD+5oD4wQ==
+"@lifi/widget@^3.3.0":
+  version "3.6.1"
+  resolved "https://registry.yarnpkg.com/@lifi/widget/-/widget-3.6.1.tgz#aa59f000e508e824622508b355450ad08e04cef2"
+  integrity sha512-09+usAfzC1DqPb8Rc2TAPcl0xe0tFO00TeURN1chtxFGnvZi80g5ICrJENm62DWkl0ic75rzeejr8eT/U8o04A==
   dependencies:
     "@emotion/react" "^11.13.3"
     "@emotion/styled" "^11.13.0"
-    "@lifi/sdk" "^3.2.1"
-    "@lifi/wallet-management" "^3.1.5"
+    "@lifi/sdk" "^3.2.3"
+    "@lifi/wallet-management" "^3.1.6"
     "@mui/icons-material" "^5.16.7"
     "@mui/lab" "^5.0.0-alpha.173"
     "@mui/material" "^5.16.7"
     "@solana/wallet-adapter-base" "^0.9.23"
     "@solana/wallet-adapter-react" "^0.15.35"
     "@solana/web3.js" "^1.95.3"
-    "@tanstack/react-query" "^5.56.0"
-    "@tanstack/react-virtual" "^3.10.7"
+    "@tanstack/react-query" "^5.56.2"
+    "@tanstack/react-virtual" "^3.10.8"
     i18next "^23.15.1"
     microdiff "^1.4.0"
     mitt "^3.0.1"
     react "^18.3.1"
     react-dom "^18.3.1"
-    react-i18next "^15.0.1"
+    react-i18next "^15.0.2"
     react-intersection-observer "^9.13.1"
     react-router-dom "^6.26.2"
     uuid "^10.0.0"
-    viem "^2.21.6"
-    wagmi "^2.12.11"
+    viem "^2.21.9"
+    wagmi "^2.12.12"
     zustand "^4.5.5"
 
 "@lit-labs/ssr-dom-shim@^1.0.0", "@lit-labs/ssr-dom-shim@^1.1.0":
@@ -2680,9 +2680,9 @@
   resolved "https://registry.yarnpkg.com/@tanstack/query-core/-/query-core-5.56.2.tgz#2def2fb0290cd2836bbb08afb0c175595bb8109b"
   integrity sha512-gor0RI3/R5rVV3gXfddh1MM+hgl0Z4G7tj6Xxpq6p2I03NGPaJ8dITY9Gz05zYYb/EJq9vPas/T4wn9EaDPd4Q==
 
-"@tanstack/react-query@^5.18.1", "@tanstack/react-query@^5.56.0":
+"@tanstack/react-query@^5.18.1", "@tanstack/react-query@^5.56.2":
   version "5.56.2"
-  resolved "https://registry.npmjs.org/@tanstack/react-query/-/react-query-5.56.2.tgz"
+  resolved "https://registry.yarnpkg.com/@tanstack/react-query/-/react-query-5.56.2.tgz#3a0241b9d010910905382f5e99160997b8795f91"
   integrity sha512-SR0GzHVo6yzhN72pnRhkEFRAHMsUo5ZPzAxfTMvUxFIDVS6W9LYUp6nXW3fcHVdg0ZJl8opSH85jqahvm6DSVg==
   dependencies:
     "@tanstack/query-core" "5.56.2"
@@ -2694,7 +2694,7 @@
   dependencies:
     "@tanstack/virtual-core" "3.10.7"
 
-"@tanstack/react-virtual@^3.10.7":
+"@tanstack/react-virtual@^3.10.8":
   version "3.10.8"
   resolved "https://registry.yarnpkg.com/@tanstack/react-virtual/-/react-virtual-3.10.8.tgz#bf4b06f157ed298644a96ab7efc1a2b01ab36e3c"
   integrity sha512-VbzbVGSsZlQktyLrP5nxE+vE1ZR+U0NFAWPbJLoG2+DKPwd2D7dVICTVIIaYlJqX1ZCEnYDbaOpmMwbsyhBoIA==
@@ -9875,7 +9875,7 @@ react-hooks-global-state@^2.1.0:
   dependencies:
     zustand "4.0.0"
 
-react-i18next@^15.0.1:
+react-i18next@^15.0.2:
   version "15.0.2"
   resolved "https://registry.yarnpkg.com/react-i18next/-/react-i18next-15.0.2.tgz#8b7f3c0e66cb4f99f95e2c507353398c41a68cc2"
   integrity sha512-z0W3/RES9Idv3MmJUcf0mDNeeMOUXe+xoL0kPfQPbDoZHmni/XsIoq5zgT2MCFUiau283GuBUK578uD/mkAbLQ==
@@ -11961,7 +11961,7 @@ vfile@^5.0.0:
     unist-util-stringify-position "^3.0.0"
     vfile-message "^3.0.0"
 
-viem@^2.1.1, viem@^2.21.6, viem@^2.21.8:
+viem@^2.1.1, viem@^2.21.8:
   version "2.21.8"
   resolved "https://registry.yarnpkg.com/viem/-/viem-2.21.8.tgz#12a6aaa386038675ddec9ec2be943963133dde33"
   integrity sha512-j85Z8pfgcAA7HLtLOd7k7mdyw1ogUjyCxrmwyxzlcAPE8+u8O8GySUMgOxNW/n9mazO2R8XpZ+9nUoXgesAn/g==
@@ -11991,6 +11991,21 @@ viem@^2.17.0, viem@^2.7.3:
     webauthn-p256 "0.0.5"
     ws "8.17.1"
 
+viem@^2.21.9:
+  version "2.21.10"
+  resolved "https://registry.yarnpkg.com/viem/-/viem-2.21.10.tgz#a6c6fb201512320946f1266321df74ac2e6b1d2a"
+  integrity sha512-n+BKNabWI0k2i7PB4UEdxgHHpQmMeDk+2X9093l/yU0NLUjIgiazybfD1BksGwbiIRk/WXr+aoRqKOExxRDxWA==
+  dependencies:
+    "@adraffy/ens-normalize" "1.10.0"
+    "@noble/curves" "1.4.0"
+    "@noble/hashes" "1.4.0"
+    "@scure/bip32" "1.4.0"
+    "@scure/bip39" "1.4.0"
+    abitype "1.0.5"
+    isows "1.0.4"
+    webauthn-p256 "0.0.5"
+    ws "8.17.1"
+
 void-elements@3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/void-elements/-/void-elements-3.1.0.tgz#614f7fbf8d801f0bb5f0661f5b2f5785750e4f09"
@@ -12007,7 +12022,7 @@ vue@>=3:
     "@vue/server-renderer" "3.4.15"
     "@vue/shared" "3.4.15"
 
-wagmi@^2.12.11:
+wagmi@^2.12.12:
   version "2.12.12"
   resolved "https://registry.yarnpkg.com/wagmi/-/wagmi-2.12.12.tgz#0780267ac473f7dfe25d887ae5186e1e3790c087"
   integrity sha512-BgB8GprWJzWuq3V6vCr12kP9a+ta9AWEkoM/fjQWE90yD9YWEgYmpK/uqXNnZLymsuSfxyIFn7JhYIs+mwo/yA==
