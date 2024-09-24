@@ -17,11 +17,11 @@ export const NAVIGATION: NavItemType[] = [
   {
     id: ncNanoId(),
     href: '/swap',
-    name: 'SWAP',
+    name: 'Swap',
   },
   {
     id: ncNanoId(),
     href: '/real-state',
-    name: 'Real State',
+    name: 'Invest',
   },
 ];
