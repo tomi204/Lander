@@ -9,6 +9,7 @@ import { wagmiConfig } from '@/constants/wagmi-config';
 import { bscAddresses } from '@/constants/addresses';
 import { ABI, NFT_ABI } from '../../utils/ABI';
 import { waitForTransactionReceipt, getTransactionReceipt } from '@wagmi/core';
+import Notiflix from 'notiflix';
 
 export async function ApproveTokens() {
   try {
@@ -62,10 +63,14 @@ export async function MintUSDC({ address }: { address: Address }) {
     console.log(data.status === 'success' ? 'Minted' : 'Not Minted');
 
     if (data.status === 'success') {
+      Notiflix.Notify.success('NFT Minted');
+
       return hashMint;
     }
     return hashMint;
   } catch (error) {
+    Notiflix.Notify.failure('Mint Failed');
+
     console.error('Error minting USDC:', error);
     throw error;
   }
