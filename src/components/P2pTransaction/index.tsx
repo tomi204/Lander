@@ -245,10 +245,23 @@ const ContractInteraction: FC<ContractInteractionProps> = ({
 
         if (onTxSent) {
           onTxSent(hash);
+
+          toast({
+            title: 'Transaction approved successfully',
+            description: 'You can now complete the transaction',
+            variant: 'default',
+          });
         }
       } catch (error) {
         console.error(error);
         setErrorMessage('Transaction approval failed');
+
+        toast({
+          title: 'Transaction Error',
+          description: 'Error approving transaction',
+          variant: 'destructive',
+        });
+
         if (onTxError) {
           onTxError(error);
         }
