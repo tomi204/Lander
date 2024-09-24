@@ -13,7 +13,6 @@ import { cookieToInitialState } from '@wagmi/core';
 import { wagmiConfig as config } from '@/constants/wagmi-config';
 import { headers } from 'next/headers';
 import { TransactionProvider } from '@/contexts/CheckoutProvider';
-import { Toaster } from '@/components/ui/toaster';
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -40,7 +39,6 @@ export default function RootLayout({
             <TransactionProvider>{children}</TransactionProvider>
             <FooterNav />
             <Footer />
-            <Toaster />
           </AuthProvider>
         </Web3ModalProvider>
       </body>

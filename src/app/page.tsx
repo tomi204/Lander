@@ -129,9 +129,7 @@ async function PageHome({ searchParams }: PageHomeProps) {
 
         <SectionOurFeatures />
 
-
-
-{/* 
+        {/* 
         <SectionGridFeaturePlaces
           properties={properties}
           cardType="card1"

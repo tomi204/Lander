@@ -21,14 +21,13 @@ import {
   CheckCircle2,
   DollarSignIcon,
   Loader,
-  PhoneIcon, 
+  PhoneIcon,
   HelpCircle,
-  HeadphonesIcon
+  HeadphonesIcon,
 } from 'lucide-react';
 import React from 'react';
 import { useTransactionInfo } from '../../hooks/useTransactionInfo';
 import { useAccount } from 'wagmi';
-import { format } from 'date-fns';
 import { LoadingSpinner } from '@/components/AnyReactComponent/loadingSpinner';
 import ContractInteraction from '@/components/P2pTransaction';
 import { ModalRanking } from '@/components/ModalRanking';
@@ -114,6 +113,7 @@ export default function P2PDetails({ data }) {
                 </div>
               </CardContent>
             </Card>
+
             <Card>
               <CardHeader>
                 <CardTitle>Check in & Check out Details</CardTitle>
@@ -209,9 +209,11 @@ export default function P2PDetails({ data }) {
               </CardHeader>
               <CardContent>
                 <div className="flex justify-center">
-                  <Button 
+                  <Button
                     className="px-8 py-2 rounded-full relative bg-purple-900 text-white text-sm hover:shadow-2xl hover:shadow-white/[0.1] transition duration-200 border border-purple-600"
-                    onClick={() => {/* chat support page */}}
+                    onClick={() => {
+                      /* chat support page */
+                    }}
                   >
                     ¿Necesitas ayuda?
                   </Button>
