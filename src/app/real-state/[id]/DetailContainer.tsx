@@ -34,6 +34,7 @@ import Image from 'next/image';
 import { MintUSDC } from '@/utils/blockchain';
 import { useAccount } from 'wagmi';
 import { Address } from 'viem';
+import { useRouter } from 'next/navigation';
 
 export default function RealStateDetailContainer({
   property,
@@ -42,6 +43,7 @@ export default function RealStateDetailContainer({
 }) {
   const [investmentAmount, setInvestmentAmount] = useState(0.4);
   const { address } = useAccount();
+  const router = useRouter();
   //   const property = {
   //     name: 'Luxury Apartment 1',
   //     type: 'Fractional Investment',
@@ -100,7 +102,7 @@ export default function RealStateDetailContainer({
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <Button variant="ghost" className="mb-4">
+      <Button variant="ghost" className="mb-4" onClick={() => router.back()}>
         <ArrowLeft className="mr-2 h-4 w-4" /> Back to Listings
       </Button>
       <div className="grid md:grid-cols-2 gap-8">
