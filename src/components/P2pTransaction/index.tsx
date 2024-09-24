@@ -296,7 +296,7 @@ const ContractInteraction: FC<ContractInteractionProps> = ({
           onClick={CreateTransaction}
         >
           {step === ''
-            ? 'Create Transaction'
+            ? 'Pay with USDC'
             : step === 'Approving tokens'
             ? 'Approving tokens'
             : 'Creating transaction'}
