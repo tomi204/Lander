@@ -73,7 +73,10 @@ export default function P2PDetails({ data }) {
     <div className="min-h-screen bg-white">
       <header className="bg-white border-b border-gray-200 py-4">
         <div className="container mx-auto px-4">
-          <h1 className="text-2xl font-bold text-gray-800">P2P Section</h1>
+          <h1 className="text-2xl font-bold text-gray-800">
+            {' '}
+            {address === data?.renter.wallet ? 'Your Booking' : 'Your Trip'}
+          </h1>
         </div>
       </header>
       <main className="container mx-auto px-4 py-8">

@@ -61,6 +61,7 @@
     "@worldcoin/idkit-core": "^1.2.2",
     "axios": "^1.4.0",
     "axios-hooks": "^4.0.0",
+    "canvas-confetti": "^1.9.3",
     "class-variance-authority": "^0.7.0",
     "client-only": "^0.0.1",
     "clsx": "^2.1.1",

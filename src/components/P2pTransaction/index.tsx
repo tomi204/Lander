@@ -25,6 +25,8 @@ import { updateBookingStatus } from '@/services/books';
 import { useTransaction } from '@/contexts/CheckoutProvider';
 import { useRouter } from 'next/navigation';
 import { Button } from '../ui/button';
+import { showConfetti } from '@/hooks/useConfetti';
+
 
 interface ContractInteractionProps {
   disabled?: boolean;
@@ -193,8 +195,15 @@ const ContractInteraction: FC<ContractInteractionProps> = ({
         buyer_wallet
       );
 
-      router.push(`/p2p/${txID}`);
-      return txID;
+      if (txID) {
+
+        showConfetti();
+        router.push(`/p2p/${txID}`);
+        return txID;
+      }
+
+
+
     } catch (error) {
       console.error(error);
       setErrorMessage('Transaction failed');
