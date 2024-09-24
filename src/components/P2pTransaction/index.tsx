@@ -192,22 +192,18 @@ const ContractInteraction: FC<ContractInteractionProps> = ({
         hash: result,
       });
 
+      await new Promise((resolve) => setTimeout(resolve, 10000));
+
       if (Number(transactionCount) > 0) {
         setActualId(Number(transactionCount));
       }
 
       setActualId(Number(transactionCount) + 1);
 
-      if (isLoading) {
-        Notiflix.Loading.pulse();
-      }
-      if (isLoading) {
-        setTimeout(() => {}, 10000);
-      }
       const txID = await updateBookingStatus(
         transaction?.id,
         'pending',
-        (Number(transactionCount) + 1).toString(),
+        (Number(actualId) + 1).toString(),
         'bsc',
         owner_wallet,
         buyer_wallet
