@@ -21,6 +21,9 @@ import {
   CheckCircle2,
   DollarSignIcon,
   Loader,
+  PhoneIcon, 
+  HelpCircle,
+  HeadphonesIcon
 } from 'lucide-react';
 import React from 'react';
 import { useTransactionInfo } from '../../hooks/useTransactionInfo';
@@ -28,6 +31,7 @@ import { useAccount } from 'wagmi';
 import { format } from 'date-fns';
 import { LoadingSpinner } from '@/components/AnyReactComponent/loadingSpinner';
 import ContractInteraction from '@/components/P2pTransaction';
+import { ModalRanking } from '@/components/ModalRanking';
 
 export default function P2PDetails({ data }) {
   const { address } = useAccount();
@@ -192,6 +196,25 @@ export default function P2PDetails({ data }) {
                 </div>
               </CardContent>
             </Card>
+            {/* Support */}
+            <Card className="mt-8">
+              <CardHeader>
+                <CardTitle className="flex items-center">
+                  <HeadphonesIcon className="w-5 h-5 mr-2" />
+                  Support
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="flex justify-center">
+                  <Button 
+                    className="px-8 py-2 rounded-full relative bg-purple-900 text-white text-sm hover:shadow-2xl hover:shadow-white/[0.1] transition duration-200 border border-purple-600"
+                    onClick={() => {/* chat support page */}}
+                  >
+                    ¿Necesitas ayuda?
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
           </section>
           <section>
             <Card className="mb-8">
@@ -246,7 +269,7 @@ export default function P2PDetails({ data }) {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4 mb-4 h-64 overflow-y-auto">
+                <div className="space-y-4 mb-4 h-96 overflow-y-auto">
                   {messages.map((message, index) => (
                     <div
                       key={index}
@@ -278,6 +301,7 @@ export default function P2PDetails({ data }) {
                 </div>
               </CardContent>
             </Card>
+            <ModalRanking />
           </section>
         </div>
       </main>

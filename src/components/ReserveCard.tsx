@@ -57,8 +57,8 @@ const {
         className="w-full h-48 object-cover"
       />
       <div className="p-4 space-y-2">
-        <p className="font-semibold text-lg">{title}</p>
-        <p className="text-sm text-gray-500">{location}</p>
+        <p className="font-semibold text-lg">{reservation?.property.title}</p>
+        <p className="text-sm text-gray-500">{reservation?.property?.location}</p>
         <p className="text-sm text-gray-500">{description}</p>
         <p className="font-semibold">
           {new Date(entrance_date).toLocaleDateString()} -{' '}

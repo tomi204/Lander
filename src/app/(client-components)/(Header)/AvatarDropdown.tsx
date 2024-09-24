@@ -4,6 +4,8 @@ import Avatar from '@/shared/Avatar';
 import SwitchDarkMode2 from '@/shared/SwitchDarkMode2';
 import Link from 'next/link';
 import WalletAddressComponent from '@/components/WalletAddressComponent';
+import { Bed, Briefcase } from 'lucide-react'; // Importa los nuevos iconos
+
 interface Props {
   show: boolean;
   address: string;
@@ -144,103 +146,27 @@ export default function AvatarDropdown({
                       <p className="text-sm font-medium ">{'Listings'}</p>
                     </div>
                   </Link>
-                  {/* ------------------ 2 --------------------- */}
+                  {/* ------------------ Bookings --------------------- */}
                   <Link
                     href={'/my-bookings'}
                     className="flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
                     onClick={() => close()}
                   >
                     <div className="flex items-center justify-center flex-shrink-0 text-neutral-500 dark:text-neutral-300">
-                      <svg
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                      >
-                        <path
-                          d="M8 12.2H15"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeMiterlimit="10"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                        <path
-                          d="M8 16.2H12.38"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeMiterlimit="10"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                        <path
-                          d="M10 6H14C16 6 16 5 16 4C16 2 15 2 14 2H10C9 2 8 2 8 4C8 6 9 6 10 6Z"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeMiterlimit="10"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                        <path
-                          d="M16 4.02002C19.33 4.20002 21 5.43002 21 10V16C21 20 20 22 15 22H9C4 22 3 20 3 16V10C3 5.44002 4.67 4.20002 8 4.02002"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeMiterlimit="10"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
+                      <Bed className="w-6 h-6" /> {/* Nuevo icono de cama */}
                     </div>
                     <div className="ml-4">
                       <p className="text-sm font-medium ">{'Bookings'}</p>
                     </div>
                   </Link>
-                  {/* ------------------ 2 --------------------- */}
+                  {/* ------------------ Trips --------------------- */}
                   <Link
                     href={'/my-trips'}
                     className="flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
                     onClick={() => close()}
                   >
                     <div className="flex items-center justify-center flex-shrink-0 text-neutral-500 dark:text-neutral-300">
-                      <svg
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                      >
-                        <path
-                          d="M8 12.2H15"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeMiterlimit="10"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                        <path
-                          d="M8 16.2H12.38"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeMiterlimit="10"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                        <path
-                          d="M10 6H14C16 6 16 5 16 4C16 2 15 2 14 2H10C9 2 8 2 8 4C8 6 9 6 10 6Z"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeMiterlimit="10"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                        <path
-                          d="M16 4.02002C19.33 4.20002 21 5.43002 21 10V16C21 20 20 22 15 22H9C4 22 3 20 3 16V10C3 5.44002 4.67 4.20002 8 4.02002"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeMiterlimit="10"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
+                      <Briefcase className="w-6 h-6" /> {/* Nuevo icono de maleta */}
                     </div>
                     <div className="ml-4">
                       <p className="text-sm font-medium ">{'Trips'}</p>
