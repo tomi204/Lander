@@ -8,11 +8,12 @@ import type { WidgetConfig } from '@lifi/widget';
 export const Swap = () => {
   const config = {
     appearance: 'light',
+    toChain: 56,
     theme: {},
   } as Partial<WidgetConfig>;
   return (
     <React.Suspense fallback={<WidgetSkeleton config={config} />}>
-      <LiFiWidget config={config} integrator="nextjs-example" />
+      <LiFiWidget config={config} toChain={56} integrator="nextjs-example" />
     </React.Suspense>
   );
 };
