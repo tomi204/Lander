@@ -2,7 +2,7 @@
 import { FC, useEffect, useState } from 'react';
 import ReserveCard from '@/components/ReserveCard';
 import { useAccount } from 'wagmi';
-
+import { LoadingSpinner2 } from '@/components/AnyReactComponent/loadingSpinner';
 interface StayAttributes {
   title: string;
   location: string;
@@ -31,7 +31,7 @@ const ReservationsPage: FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { address } = useAccount();
-console.log(reservations);
+
 
 
   useEffect(() => {
@@ -62,7 +62,7 @@ console.log(reservations);
 
 
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <LoadingSpinner2 className="spinner-class" />; // Added className prop
   if (error) return <p>Error: {error}</p>;
 
   return (

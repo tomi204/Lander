@@ -21,21 +21,23 @@ import {
   CheckCircle2,
   DollarSignIcon,
   Loader,
-  PhoneIcon, 
+  PhoneIcon,
   HelpCircle,
-  HeadphonesIcon
+  HeadphonesIcon,
 } from 'lucide-react';
 import React from 'react';
 import { useTransactionInfo } from '../../hooks/useTransactionInfo';
 import { useAccount } from 'wagmi';
 import { format } from 'date-fns';
-import { LoadingSpinner } from '@/components/AnyReactComponent/loadingSpinner';
+import { LoadingSpinner2 } from '@/components/AnyReactComponent/loadingSpinner';
 import ContractInteraction from '@/components/P2pTransaction';
 import { ModalRanking } from '@/components/ModalRanking';
+import { useRouter } from 'next/navigation';
+
 
 export default function P2PDetails({ data }) {
   const { address } = useAccount();
-  console.log(data, 'data');
+  const router = useRouter();
   const [showDetails, setShowDetails] = useState(false);
   const [messages, setMessages] = useState([
     {
@@ -58,19 +60,11 @@ export default function P2PDetails({ data }) {
   const { transactionInfo, loading } = useTransactionInfo(data?.tx_id);
 
   if (data?.property?.title === undefined) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <LoadingSpinner />
-      </div>
-    );
+    return <LoadingSpinner2 />;
   }
 
   if (loading) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <LoadingSpinner />
-      </div>
-    );
+    return <LoadingSpinner2 />;
   }
 
   return (
@@ -209,12 +203,17 @@ export default function P2PDetails({ data }) {
               </CardHeader>
               <CardContent>
                 <div className="flex justify-center">
-                  <Button 
-                    className="px-8 py-2 rounded-full relative bg-purple-900 text-white text-sm hover:shadow-2xl hover:shadow-white/[0.1] transition duration-200 border border-purple-600"
-                    onClick={() => {/* chat support page */}}
+                  <button
+                    className="p-[3px] relative"
+                    onClick={() => {
+                      router.push(`/chat-support`);
+                    }}
                   >
-                    ¿Necesitas ayuda?
-                  </Button>
+                    <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg" />
+                    <div className="px-8 py-2  bg-black rounded-[6px]  relative group transition duration-200 text-white hover:bg-transparent">
+                      ¿Need Assistance?
+                    </div>
+                  </button>
                 </div>
               </CardContent>
             </Card>
@@ -239,7 +238,7 @@ export default function P2PDetails({ data }) {
                   </div>
                   <Badge variant="outline" className="flex items-center">
                     <CheckCircle2 className="w-4 h-4 mr-1" />
-                    Verificado
+                    Verified
                   </Badge>
                 </div>
                 <div className="flex justify-between items-center">
@@ -258,7 +257,7 @@ export default function P2PDetails({ data }) {
                   </div>
                   <Badge variant="outline" className="flex items-center">
                     <CheckCircle2 className="w-4 h-4 mr-1" />
-                    Verificado
+                    Verified
                   </Badge>
                 </div>
               </CardContent>

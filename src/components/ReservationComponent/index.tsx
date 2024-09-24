@@ -46,11 +46,11 @@ const ReservationComponent: any = ({ stay }: ReservationComponentProps) => {
   const totalPrice = Number(
     price * nights + (cleaningServiceFee ?? 0) + (depositAmount ?? 0)
   );
-console.log(stay, 'stay');
+
 
 
   const handleCheckout = async () => {
-    
+
     const transaction = {
       main_image:stay.main_image ,
       amount: totalPrice,
@@ -63,8 +63,8 @@ console.log(stay, 'stay');
       owner_id: stay.owner.id,
     };
 
-    console.log(transaction, 'transaction');
-    
+
+
     try {
       const response = await fetch('/api/createTx', {
         method: 'POST',
@@ -79,7 +79,7 @@ console.log(stay, 'stay');
       }
 
       const tx = await response.json();
-      console.log(tx, 'tx');
+
       let id = tx?.data[0]?.id;
       if (id) {
 
@@ -264,6 +264,7 @@ console.log(stay, 'stay');
               />
               <GuestsInput onChange={onChangeGuests} error={!!guestsError} />
             </div>
+            
             <div className="flex flex-col rounded-3xl pt-2 pb-2">
               <ButtonPrimary
                 disabled={disabled}

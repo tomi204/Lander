@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+
 import {
   Modal,
   ModalBody,
@@ -7,11 +7,22 @@ import {
   ModalFooter,
   ModalTrigger,
 } from '@/components/ui/animated-modal';
+import { Textarea } from './ui/textarea';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { Bed, Bath, Wifi, Tv, UtensilsCrossed, Car, Star } from 'lucide-react';
+import React, {
+  ReactNode,
+  createContext,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
+
 
 export function ModalRanking() {
+
   const [rating, setRating] = useState(0);
   const images = [
     'https://images.unsplash.com/photo-1517322048670-4fba75cbbb62?q=80&w=3000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
@@ -28,13 +39,13 @@ export function ModalRanking() {
             Rate your Experience
           </span>
           <div className="-translate-x-40 group-hover/modal-btn:translate-x-0 flex items-center justify-center absolute inset-0 transition duration-500 text-white z-20">
-            ⭐⭐⭐⭐⭐    
+            ⭐⭐⭐⭐⭐
           </div>
         </ModalTrigger>
         <ModalBody>
           <ModalContent>
             <h4 className="text-lg md:text-2xl text-neutral-600 dark:text-neutral-100 font-bold text-center mb-8">
-              🏡 ¡Calificá tu experiencia! 😎
+              🏡 ¡Rate your experience! 😎
             </h4>
             <div className="flex justify-center items-center">
               {images.map((image, idx) => (
@@ -65,44 +76,51 @@ export function ModalRanking() {
                 </motion.div>
               ))}
             </div>
-
             <div className="py-10 flex flex-wrap gap-x-4 gap-y-6 items-start justify-start max-w-sm mx-auto">
               <div className="flex items-center justify-center">
                 <Bed className="mr-1 text-neutral-700 dark:text-neutral-300 h-4 w-4" />
                 <span className="text-neutral-700 dark:text-neutral-300 text-sm">
-                  3 habitaciones
+                  3 rooms
                 </span>
               </div>
               <div className="flex items-center justify-center">
                 <Bath className="mr-1 text-neutral-700 dark:text-neutral-300 h-4 w-4" />
                 <span className="text-neutral-700 dark:text-neutral-300 text-sm">
-                  2 baños
+                  2 baths
                 </span>
               </div>
               <div className="flex items-center justify-center">
                 <Wifi className="mr-1 text-neutral-700 dark:text-neutral-300 h-4 w-4" />
                 <span className="text-neutral-700 dark:text-neutral-300 text-sm">
-                  Wi-Fi gratis
+                  free Wi-Fi
                 </span>
               </div>
               <div className="flex items-center justify-center">
                 <Tv className="mr-1 text-neutral-700 dark:text-neutral-300 h-4 w-4" />
                 <span className="text-neutral-700 dark:text-neutral-300 text-sm">
-                  TV por cable
+                  cable TV
                 </span>
               </div>
               <div className="flex items-center justify-center">
                 <UtensilsCrossed className="mr-1 text-neutral-700 dark:text-neutral-300 h-4 w-4" />
                 <span className="text-neutral-700 dark:text-neutral-300 text-sm">
-                  Cocina equipada
+                  full Kitchen
                 </span>
               </div>
+            </div>
+
+            <div className="mt-4 mb-2 flex flex-col items-center justify-center">
+              {' '}
+              <span className="text-neutral-700 dark:text-neutral-300 text-sm mb-2">
+               Leave your comments:
+              </span>
+              <Textarea />
             </div>
 
             {/* Star Rating System */}
             <div className="mt-4 mb-2 flex flex-col items-center justify-center">
               <span className="text-neutral-700 dark:text-neutral-300 text-sm mb-2">
-                Califica tu experiencia:
+                Rate on stars:
               </span>
               <div className="flex space-x-2 justify-center">
                 {[1, 2, 3, 4, 5].map((star) => (
@@ -120,7 +138,7 @@ export function ModalRanking() {
             </div>
           </ModalContent>
           <ModalFooter className="gap-4">
-            <button 
+            <button
               className="bg-black text-white dark:bg-white dark:text-black text-sm px-2 py-1 rounded-md border border-black w-28"
               onClick={() => {
                 // Handle rating submission here
@@ -128,7 +146,7 @@ export function ModalRanking() {
                 // You can add your submission logic here
               }}
             >
-              Enviar
+              Send
             </button>
           </ModalFooter>
         </ModalBody>
@@ -136,5 +154,3 @@ export function ModalRanking() {
     </div>
   );
 }
-
-

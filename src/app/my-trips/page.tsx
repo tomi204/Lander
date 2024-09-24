@@ -4,6 +4,7 @@ import ReserveCard from '@/components/ReserveCard';
 import { useAccount } from 'wagmi';
 import { fetchRenterByTxAndWallet } from '@/services/account';
 import TripCard from '@/components/TripCard';
+import { LoadingSpinner2 } from '@/components/AnyReactComponent/loadingSpinner';
 
 const ReservationsPage: FC = () => {
   const [reservations, setReservations] = useState<any>([]);
@@ -36,10 +37,10 @@ const ReservationsPage: FC = () => {
     fetchReservations();
   }, []);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <LoadingSpinner2 className="spinner-class" />;
   if (error) return <p>Error: {error}</p>;
 
-  console.log(reservations, 'reservationsaaa');
+ 
 
   return (
     <div className="container mx-auto p-4 md:p-6 lg:p-8">
