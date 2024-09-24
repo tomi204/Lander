@@ -31,10 +31,10 @@ const StayDetailContainer: FC<StayDetailContainerProps> = ({ stay }) => {
   const [showModalImageGallery, setShowModalImageGallery] = useState(false);
   const [currentImageId, setCurrentImageId] = useState<string>();
 
-  const txId = '1512c0c9-5d3b-4976-b7ce-3221c8d4cc20';
+//   const txId = '1512c0c9-5d3b-4976-b7ce-3221c8d4cc20';
 
-const { data, error } = useSWR(`/api/transaction/${txId}`, fetcher);
-console.log(data)
+// const { data, error } = useSWR(`/api/transaction/${txId}`, fetcher);
+
 
 
 

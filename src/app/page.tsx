@@ -11,7 +11,7 @@ import { homeSettingsConst } from '@/constants/home';
 import { covertApolloResponseToStays } from '@/adapters/stay.adapters';
 import useSWR from 'swr';
 import { fetcher } from '@/utils/fetcher';
-import { LoadingSpinner } from '@/components/AnyReactComponent/loadingSpinner';
+import { LoadingSpinner2 } from '@/components/AnyReactComponent/loadingSpinner';
 import { createClient } from '@/supabase/server';
 import SectionOurFeatures from '@/components/SectionOurFeatures';
 import SectionSubscribe2 from '@/components/SectionSubscribe2';
@@ -88,7 +88,7 @@ async function PageHome({ searchParams }: PageHomeProps) {
   if (!properties)
     return (
       <div className="flex justify-center items-center h-screen p-5">
-        <LoadingSpinner className="" />
+        <LoadingSpinner2 className="" />
       </div>
     );
 
@@ -130,6 +130,9 @@ async function PageHome({ searchParams }: PageHomeProps) {
         <SectionOurFeatures />
 
         {/* 
+
+
+{/*
         <SectionGridFeaturePlaces
           properties={properties}
           cardType="card1"
