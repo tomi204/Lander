@@ -1,5 +1,5 @@
-import { Dialog, Transition } from "@headlessui/react";
-import { FC, Fragment } from "react";
+import { Dialog, Transition } from '@headlessui/react';
+import { FC, Fragment } from 'react';
 
 interface HelpModalProps {
   isOpen: boolean;
