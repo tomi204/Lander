@@ -14,7 +14,7 @@ export async function ApproveTokens() {
   try {
     const connections = getConnections(wagmiConfig);
     const dataEncoded = new Interface(ABI).encodeFunctionData('approve', [
-      bscAddresses.P2P,
+      bscAddresses.NFT_TEST_1,
       parseUnits('10000', 18),
     ]) as `0x${string}`;
 
@@ -55,7 +55,6 @@ export async function MintUSDC({ address }: { address: Address }) {
       connector: connections[0]?.connector,
       data: dataEncoded,
       to: bscAddresses.NFT_TEST_1,
-      gas: BigInt(10000),
     });
     const data = await waitForTransactionReceipt(wagmiConfig, {
       hash: hashMint,
@@ -66,14 +65,6 @@ export async function MintUSDC({ address }: { address: Address }) {
       return hashMint;
     }
     return hashMint;
-
-    // const data = await waitForTransactionReceipt(wagmiConfig, {
-    //   hash: hash,
-    // });
-    // console.log(data.status === 'success' ? 'Minted' : 'Not Minted');
-    // if (data.status === 'success') {
-    //   return hash;
-    // }
   } catch (error) {
     console.error('Error minting USDC:', error);
     throw error;

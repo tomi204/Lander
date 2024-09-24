@@ -1,5 +1,5 @@
-import { NavItemType } from "@/shared/Navigation/NavigationItem";
-import ncNanoId from "@/utils/ncNanoId";
+import { NavItemType } from '@/shared/Navigation/NavigationItem';
+import ncNanoId from '@/utils/ncNanoId';
 
 export const NAVIGATION: NavItemType[] = [
   // {
@@ -11,12 +11,17 @@ export const NAVIGATION: NavItemType[] = [
     id: ncNanoId(),
     // eslint-disable-next-line
     // @ts-ignore
-    href: "/add-listing/1",
-    name: "Be a Host",
+    href: '/add-listing/1',
+    name: 'Be a Host',
   },
   {
     id: ncNanoId(),
-    href: "/swap",
-    name: "SWAP",
+    href: '/swap',
+    name: 'SWAP',
+  },
+  {
+    id: ncNanoId(),
+    href: '/real-state',
+    name: 'Real State',
   },
 ];

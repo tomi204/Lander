@@ -26,7 +26,7 @@ import { useTransaction } from '@/contexts/CheckoutProvider';
 import { useRouter } from 'next/navigation';
 import { Button } from '../ui/button';
 import { showConfetti } from '@/hooks/useConfetti';
-
+import { useToast } from '../ui/use-toast';
 
 interface ContractInteractionProps {
   disabled?: boolean;
@@ -57,6 +57,8 @@ const ContractInteraction: FC<ContractInteractionProps> = ({
   const { isAuth } = useAuth();
   const { transaction, setTransaction } = useTransaction() || {};
   const router = useRouter();
+  const { toast } = useToast();
+
   const getWalletBalance = useCallback(async () => {
     if (!address) {
       return;
@@ -196,17 +198,23 @@ const ContractInteraction: FC<ContractInteractionProps> = ({
       );
 
       if (txID) {
-
         showConfetti();
+        toast({
+          title: 'Transaction created successfully',
+          description: 'You can now approve the transaction',
+          variant: 'default',
+        });
         router.push(`/p2p/${txID}`);
         return txID;
       }
-
-
-
     } catch (error) {
       console.error(error);
       setErrorMessage('Transaction failed');
+      toast({
+        title: 'Transaction Error',
+        description: 'Error creating transaction',
+        variant: 'destructive',
+      });
       if (onTxError) {
         onTxError(error);
       }
@@ -237,10 +245,23 @@ const ContractInteraction: FC<ContractInteractionProps> = ({
 
         if (onTxSent) {
           onTxSent(hash);
+
+          toast({
+            title: 'Transaction approved successfully',
+            description: 'You can now complete the transaction',
+            variant: 'default',
+          });
         }
       } catch (error) {
         console.error(error);
         setErrorMessage('Transaction approval failed');
+
+        toast({
+          title: 'Transaction Error',
+          description: 'Error approving transaction',
+          variant: 'destructive',
+        });
+
         if (onTxError) {
           onTxError(error);
         }
