@@ -1,7 +1,5 @@
 'use client';
-import { Dialog, DialogHeader } from '@/components/ui/dialog';
 import { Swap } from '../../components/Swap/index';
-import { DialogDescription, DialogTitle } from '@radix-ui/react-dialog';
 
 export default function SwapPage() {
   return (
