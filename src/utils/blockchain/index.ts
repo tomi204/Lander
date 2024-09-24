@@ -55,7 +55,6 @@ export async function MintUSDC({ address }: { address: Address }) {
       connector: connections[0]?.connector,
       data: dataEncoded,
       to: bscAddresses.NFT_TEST_1,
-      gas: BigInt(10000),
     });
     const data = await waitForTransactionReceipt(wagmiConfig, {
       hash: hashMint,
