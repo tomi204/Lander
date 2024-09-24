@@ -209,8 +209,6 @@ const ContractInteraction: FC<ContractInteractionProps> = ({
         buyer_wallet
       );
 
-      Notiflix.Loading.remove();
-
       Notiflix.Notify.success('Transaction created');
 
       console.log(txID, 'txID');
