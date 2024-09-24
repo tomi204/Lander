@@ -34,7 +34,6 @@ import ContractInteraction from '@/components/P2pTransaction';
 import { ModalRanking } from '@/components/ModalRanking';
 import { useRouter } from 'next/navigation';
 
-
 export default function P2PDetails({ data }) {
   const { address } = useAccount();
   const router = useRouter();
@@ -42,11 +41,11 @@ export default function P2PDetails({ data }) {
   const [messages, setMessages] = useState([
     {
       sender: 'owner',
-      text: 'Hola, bienvenido. ¿Tienes alguna pregunta sobre la propiedad?',
+      text: 'Hello, welcome. Do you have any questions about the property?',
     },
     {
       sender: 'renter',
-      text: 'Hola, sí. ¿La cocina está totalmente equipada?',
+      text: 'Hello, yes. Is the kitchen fully equipped?',
     },
   ]);
   const [newMessage, setNewMessage] = useState('');
