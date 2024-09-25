@@ -20,13 +20,13 @@ import {
 } from 'wagmi';
 import { bscAddresses } from '@/constants/addresses';
 import { ABI } from '../../utils/ABI';
-import { waitForTransactionReceipt } from '@wagmi/core';
+import { waitForTransactionReceipt, getTransactionReceipt } from '@wagmi/core';
 import { updateBookingStatus } from '@/services/books';
 import { useTransaction } from '@/contexts/CheckoutProvider';
 import { useRouter } from 'next/navigation';
 import { Button } from '../ui/button';
 import { showConfetti } from '@/hooks/useConfetti';
-import { useToast } from '../ui/use-toast';
+import Notiflix from 'notiflix';
 
 interface ContractInteractionProps {
   disabled?: boolean;
@@ -57,7 +57,7 @@ const ContractInteraction: FC<ContractInteractionProps> = ({
   const { isAuth } = useAuth();
   const { transaction, setTransaction } = useTransaction() || {};
   const router = useRouter();
-  const { toast } = useToast();
+  //const { toast } = useToast();
 
   const getWalletBalance = useCallback(async () => {
     if (!address) {
@@ -101,7 +101,12 @@ const ContractInteraction: FC<ContractInteractionProps> = ({
       });
 
       setApprovedHash(hash);
+      const txResponse = await getTransactionReceipt(wagmiConfig, {
+        hash: hash,
+      });
+      console.log(txResponse);
 
+      Notiflix.Notify.success('Tokens Approved');
       if (data.status === 'success') {
         return hash;
       }
@@ -114,11 +119,14 @@ const ContractInteraction: FC<ContractInteractionProps> = ({
   const [step, setStep] = useState('');
 
   const [actualId, setActualId] = useState(0);
-  const { data: transactionCount } = useReadContract({
+  const { data: transactionCount, isLoading } = useReadContract({
     address: bscAddresses.P2P,
     abi: ABI,
     functionName: 'transactionCount',
   });
+
+  console.log(transactionCount, 'transactionCount');
+
   const CreateTransaction = useCallback(async () => {
     try {
       setLoading(true);
@@ -178,9 +186,13 @@ const ContractInteraction: FC<ContractInteractionProps> = ({
 
       console.log('result', result);
 
+      console.log(result, 'result');
+
       await waitForTransactionReceipt(wagmiConfig, {
         hash: result,
       });
+
+      await new Promise((resolve) => setTimeout(resolve, 10000));
 
       if (Number(transactionCount) > 0) {
         setActualId(Number(transactionCount));
@@ -191,30 +203,26 @@ const ContractInteraction: FC<ContractInteractionProps> = ({
       const txID = await updateBookingStatus(
         transaction?.id,
         'pending',
-        (Number(transactionCount) + 1).toString(),
+        (Number(actualId) + 1).toString(),
         'bsc',
         owner_wallet,
         buyer_wallet
       );
 
+      Notiflix.Notify.success('Transaction created');
+
+      console.log(txID, 'txID');
+
       if (txID) {
         showConfetti();
-        toast({
-          title: 'Transaction created successfully',
-          description: 'You can now approve the transaction',
-          variant: 'default',
-        });
+
         router.push(`/p2p/${txID}`);
         return txID;
       }
     } catch (error) {
       console.error(error);
       setErrorMessage('Transaction failed');
-      toast({
-        title: 'Transaction Error',
-        description: 'Error creating transaction',
-        variant: 'destructive',
-      });
+
       if (onTxError) {
         onTxError(error);
       }
@@ -245,22 +253,11 @@ const ContractInteraction: FC<ContractInteractionProps> = ({
 
         if (onTxSent) {
           onTxSent(hash);
-
-          toast({
-            title: 'Transaction approved successfully',
-            description: 'You can now complete the transaction',
-            variant: 'default',
-          });
+          Notiflix.Notify.success('Transaction Approved');
         }
       } catch (error) {
         console.error(error);
         setErrorMessage('Transaction approval failed');
-
-        toast({
-          title: 'Transaction Error',
-          description: 'Error approving transaction',
-          variant: 'destructive',
-        });
 
         if (onTxError) {
           onTxError(error);
@@ -308,6 +305,8 @@ const ContractInteraction: FC<ContractInteractionProps> = ({
     [ABI, onTxError, onTxSent]
   );
 
+  console.log(loading, 'loading');
+
   return (
     <>
       {!transactionId && (
@@ -323,6 +322,7 @@ const ContractInteraction: FC<ContractInteractionProps> = ({
             : 'Creating transaction'}
         </ButtonPrimary>
       )}
+
       {transactionId ? (
         <>
           <Button

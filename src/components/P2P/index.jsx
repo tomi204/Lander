@@ -107,6 +107,7 @@ export default function P2PDetails({ data }) {
                 </div>
               </CardContent>
             </Card>
+
             <Card>
               <CardHeader>
                 <CardTitle>Check in & Check out Details</CardTitle>
