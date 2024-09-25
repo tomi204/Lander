@@ -13,6 +13,8 @@ import { cookieToInitialState } from '@wagmi/core';
 import { wagmiConfig as config } from '@/constants/wagmi-config';
 import { headers } from 'next/headers';
 import { TransactionProvider } from '@/contexts/CheckoutProvider';
+import GTM from '@/components/GTM';
+
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -41,6 +43,7 @@ export default function RootLayout({
             <Footer />
           </AuthProvider>
         </Web3ModalProvider>
+        <GTM />
       </body>
     </html>
   );
