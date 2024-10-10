@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import Logo from "@/shared/Logo";
+import Logo from '@/shared/Logo';
 //import SocialsList1 from "@/shared/SocialsList1";
-import { CustomLink } from "@/data/types";
-import React from "react";
-import FooterNav from "./FooterNav";
+import { CustomLink } from '@/data/types';
+import React from 'react';
+import FooterNav from './FooterNav';
 
 export interface WidgetFooterMenu {
   id: string;

@@ -60,8 +60,9 @@ export default function StayDetailPage() {
             <section className="gap-4 items-center flex">
               {isConnected && (
                 <div className="flex flex-row gap-4">
-                  {TokensPolygon.map((token) => (
+                  {TokensPolygon.map((token, index) => (
                     <BuyButton
+                      key={index}
                       buyer_id={tx?.buyer_id}
                       owner_id={tx?.owner_id}
                       amount={tx?.amount}
