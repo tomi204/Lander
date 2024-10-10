@@ -1,28 +1,53 @@
+'use client';
 import { Popover, Transition } from '@headlessui/react';
-import { Fragment } from 'react';
+import { Fragment, useEffect, useState, useMemo } from 'react';
 import Avatar from '@/shared/Avatar';
-import SwitchDarkMode2 from '@/shared/SwitchDarkMode2';
 import Link from 'next/link';
 import WalletAddressComponent from '@/components/WalletAddressComponent';
-import { Bed, Briefcase } from 'lucide-react'; // Importa los nuevos iconos
-
-interface Props {
-  show: boolean;
-  address: string;
-  className?: string;
-  onLogout?: () => void;
-}
+import { Bed, Briefcase } from 'lucide-react';
+import { AvatarDropdownProps } from '@/interfaces/Common';
+import { useBlockchain } from '@/contexts/BlockchainContext';
+import { useWeb3Modal } from '@web3modal/ethers/react';
+import { useWallet } from '@solana/wallet-adapter-react';
+import { Avatar as AvatarBase } from '@coinbase/onchainkit/identity';
+import { useUser } from '@/contexts/UserContext';
 
 export default function AvatarDropdown({
-  address,
   className = '',
   show,
   onLogout,
-}: Props) {
+}: AvatarDropdownProps) {
+  const { user, loading, error, refreshUser } = useUser();
+
+  const memoizedUser = useMemo(() => user, [user]);
+
+  useEffect(() => {
+    if (!memoizedUser && !loading && !error) {
+      refreshUser();
+    }
+  });
+
+  const [isSolana, setIsSolana] = useState(false);
+  const { address, chain } = useBlockchain();
+  const { open } = useWeb3Modal();
+  const { disconnect, select } = useWallet();
+
   if (!show) {
-    return <></>;
+    return null;
   }
 
+  const handleOpenModal = () => {
+    if (chain === 'evm') {
+      open({
+        view: 'Account',
+      });
+    }
+    if (chain === 'solana') {
+      setIsSolana(true);
+    }
+  };
+
+  console.log(chain, 'chain');
   return (
     <Popover className={`relative flex ${className}`}>
       {({ open, close }) => (
@@ -30,9 +55,12 @@ export default function AvatarDropdown({
           <Popover.Button
             className={`self-center w-10 h-10 sm:w-12 sm:h-12 rounded-full text-slate-700 dark:text-slate-300 focus:outline-none flex items-center justify-end`}
           >
-            <div className="flex items-center space-x-2  hover:bg-slate-100  dark:hover:bg-slate-800">
-              <h4 className="font-semibold">Profile</h4>
-              <Avatar sizeClass="w-12 h-12 sm:w-9 sm:h-9 " />
+            <div className="flex items-center space-x-2 hover:bg-slate-100 dark:hover:bg-slate-800">
+              <h4 className="font-semibold">{memoizedUser?.name}</h4>
+              <Avatar
+                imgUrl={memoizedUser?.avatar_url}
+                sizeClass="w-12 h-12 sm:w-9 sm:h-9"
+              />
             </div>
           </Popover.Button>
           <Transition
@@ -47,14 +75,30 @@ export default function AvatarDropdown({
             <Popover.Panel className="absolute z-10 w-screen max-w-[260px] px-4 top-full -right-10 sm:right-0 sm:px-0">
               <div className="overflow-hidden rounded-3xl shadow-lg ring-1 ring-black ring-opacity-5">
                 <div className="relative grid grid-cols-1 gap-6 bg-white dark:bg-neutral-800 py-7 px-6">
-                  <div className="flex items-center space-x-3">
-                    <Avatar sizeClass="w-12 h-12" />
-
+                  <div className="flex items-center m-auto w-full justify-center">
                     <div className="flex-grow">
+                      {/* {chain === 'evm' ? (
+                        <CoinBaseIdentity />
+                      ) : (
+                        <> */}
+                      <Avatar sizeClass="w-12 h-12" />
                       <h4 className="font-semibold">USER</h4>
-                      <p className="text-xs mt-0.5">
-                        <WalletAddressComponent address={address} />
+                      <p className="text-xs mt-0.5" onClick={handleOpenModal}>
+                        <WalletAddressComponent address={address || ''} />
                       </p>
+                      {/* </>
+                      )} */}
+
+                      {!isSolana ? (
+                        <p
+                          className="text-xs mt-0.5"
+                          onClick={handleOpenModal}
+                        ></p>
+                      ) : (
+                        <>
+                          <p onClick={disconnect}>Disconnect</p>
+                        </>
+                      )}
                     </div>
                   </div>
 
@@ -166,106 +210,15 @@ export default function AvatarDropdown({
                     onClick={() => close()}
                   >
                     <div className="flex items-center justify-center flex-shrink-0 text-neutral-500 dark:text-neutral-300">
-                      <Briefcase className="w-6 h-6" /> {/* Nuevo icono de maleta */}
+                      <Briefcase className="w-6 h-6" />{' '}
+                      {/* Nuevo icono de maleta */}
                     </div>
                     <div className="ml-4">
                       <p className="text-sm font-medium ">{'Trips'}</p>
                     </div>
                   </Link>
 
-                  {/* ------------------ 2 --------------------- */}
-                  {/* <Link
-                      href={"/account-savelists"}
-                      className="flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
-                      onClick={() => close()}
-                    >
-                      <div className="flex items-center justify-center flex-shrink-0 text-neutral-500 dark:text-neutral-300">
-                        <svg
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                        >
-                          <path
-                            d="M12.62 20.81C12.28 20.93 11.72 20.93 11.38 20.81C8.48 19.82 2 15.69 2 8.68998C2 5.59998 4.49 3.09998 7.56 3.09998C9.38 3.09998 10.99 3.97998 12 5.33998C13.01 3.97998 14.63 3.09998 16.44 3.09998C19.51 3.09998 22 5.59998 22 8.68998C22 15.69 15.52 19.82 12.62 20.81Z"
-                            stroke="currentColor"
-                            strokeWidth="1.5"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
-                      </div>
-                      <div className="ml-4">
-                        <p className="text-sm font-medium ">{"Wishlist"}</p>
-                      </div>
-                    </Link>
-*/}
                   <div className="w-full border-b border-neutral-200 dark:border-neutral-700" />
-
-                  {/* ------------------ 2 --------------------- */}
-                  {/* TODO: add helps links */}
-
-                  {/* <Link
-                      href={"/#"}
-                      className="flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
-                      onClick={() => close()}
-                    >
-                      <div className="flex items-center justify-center flex-shrink-0 text-neutral-500 dark:text-neutral-300">
-                        <svg
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M11.97 22C17.4928 22 21.97 17.5228 21.97 12C21.97 6.47715 17.4928 2 11.97 2C6.44715 2 1.97 6.47715 1.97 12C1.97 17.5228 6.44715 22 11.97 22Z"
-                            stroke="currentColor"
-                            strokeWidth="1.5"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                          <path
-                            d="M12 16.5C14.4853 16.5 16.5 14.4853 16.5 12C16.5 9.51472 14.4853 7.5 12 7.5C9.51472 7.5 7.5 9.51472 7.5 12C7.5 14.4853 9.51472 16.5 12 16.5Z"
-                            stroke="currentColor"
-                            strokeWidth="1.5"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                          <path
-                            d="M4.89999 4.92993L8.43999 8.45993"
-                            stroke="currentColor"
-                            strokeWidth="1.5"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                          <path
-                            d="M4.89999 19.07L8.43999 15.54"
-                            stroke="currentColor"
-                            strokeWidth="1.5"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                          <path
-                            d="M19.05 19.07L15.51 15.54"
-                            stroke="currentColor"
-                            strokeWidth="1.5"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                          <path
-                            d="M19.05 4.92993L15.51 8.45993"
-                            stroke="currentColor"
-                            strokeWidth="1.5"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
-                      </div>
-                      <div className="ml-4">
-                        <p className="text-sm font-medium ">{"Help"}</p>
-                      </div>
-                    </Link> */}
 
                   {/* ------------------ 2 --------------------- */}
                   <Link
