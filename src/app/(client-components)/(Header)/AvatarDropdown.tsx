@@ -7,10 +7,11 @@ import WalletAddressComponent from '@/components/WalletAddressComponent';
 import { Bed, Briefcase } from 'lucide-react';
 import { AvatarDropdownProps } from '@/interfaces/Common';
 import { useBlockchain } from '@/contexts/BlockchainContext';
-import { useWeb3Modal } from '@web3modal/ethers/react';
 import { useWallet } from '@solana/wallet-adapter-react';
-import { Avatar as AvatarBase } from '@coinbase/onchainkit/identity';
+//import { Avatar as AvatarBase } from '@coinbase/onchainkit/identity';
+//import CoinBaseIdentity from './CoinBaseIdentity';
 import { useUser } from '@/contexts/UserContext';
+import { useAppKit } from '@reown/appkit/react';
 
 export default function AvatarDropdown({
   className = '',
@@ -29,7 +30,7 @@ export default function AvatarDropdown({
 
   const [isSolana, setIsSolana] = useState(false);
   const { address, chain } = useBlockchain();
-  const { open } = useWeb3Modal();
+  const { open } = useAppKit();
   const { disconnect, select } = useWallet();
 
   if (!show) {

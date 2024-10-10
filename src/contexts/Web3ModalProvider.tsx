@@ -7,18 +7,7 @@ import { wagmiAdapter } from '@/constants/wagmi-config';
 import { Config, cookieToInitialState, WagmiProvider } from 'wagmi';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactNode } from 'react';
-const projectId =
-  process.env.NEXT_PUBLIC_WALLET_CONNECT_ID ||
-  'ddddb6c7ffd11d2d6bae3dd88eff5f3a';
-
-// const polygon = {
-//   chainId: 137,
-//   name: 'Polygon',
-//   currency: 'MATIC',
-//   explorerUrl: 'https://polygonscan.com',
-//   rpcUrl: 'https://polygon-rpc.com',
-// };
-
+const projectId = 'ee0ce490d3a704e0950aa17edaf69837';
 const metadata = {
   name: 'Lander',
   description: 'Welcome to Lander',

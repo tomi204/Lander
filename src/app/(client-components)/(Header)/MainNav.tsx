@@ -1,6 +1,7 @@
 import React, { FC, useEffect, useCallback, useMemo, useState } from 'react';
 import Logo from '@/shared/Logo';
 import Navigation from '@/shared/Navigation/Navigation';
+import ButtonPrimary from '@/shared/ButtonPrimary';
 import AvatarDropdown from './AvatarDropdown';
 import { useAuth } from '@/contexts/AuthContext';
 import { usePathname } from 'next/navigation';
@@ -8,9 +9,11 @@ import SearchFormMobile from '../(HeroSearchFormMobile)/SearchFormMobile';
 import { useBlockchain } from '@/contexts/BlockchainContext';
 import { MainNavProps } from '@/interfaces/Common';
 import ConnectModal from '@/components/ConnectWalletModal';
-//import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
+import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 import { useHydrated } from '@/hooks/useHydrated';
+import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+
 import supabase from '@/utils/supabase/client';
 
 const PAGE_WITH_SEARCH: string[] = ['/'];
@@ -79,7 +82,7 @@ const MainNav: FC<MainNavProps> = ({ className = '' }) => {
           {useHydrated() && (
             <div className="flex justify-around space-x-0.5 items-center ">
               {!isConnected && <ConnectModal />}
-              <div className="px-8" />
+              <div className="px-10" />
               {!user && (
                 <button className="shadow-[inset_0_0_0_2px_#2935db] text-black px-8 py-2 rounded-full tracking-widest uppercase font-bold bg-transparent hover:bg-[#2935db] hover:text-white dark:text-neutral-200 transition duration-200">
                   <Link href="/login">Log-in</Link>

@@ -11,9 +11,11 @@ import { updateUserWallet } from '@/services/users';
 
 import { useWallet } from '@solana/wallet-adapter-react';
 import {
-  useWeb3ModalAccount,
-  useWeb3ModalProvider,
-} from '@web3modal/ethers/react';
+  useAppKit,
+  useAppKitAccount,
+  useAppKitProvider,
+} from '@reown/appkit/react';
+
 interface BlockchainContextProps {
   chain: string | null | undefined;
   address: Address | string | undefined;
@@ -39,14 +41,13 @@ export const BlockchainProvider = ({ children }: { children: ReactNode }) => {
   const [address, setAddress] = useState<string | null | undefined>();
   const [chain, setChain] = useState<string | null | undefined>();
 
-  const { isConnected: connectedEVM, address: addressEVM } =
-    useWeb3ModalAccount();
+  const { isConnected: connectedEVM, address: addressEVM } = useAppKitAccount();
   const { publicKey: addressSOL, connected: connectedSOL } = useWallet();
 
   const [isConnected, setIsConnected] = useState(false);
   const [chainId, setChainId] = useState<number | null | undefined>();
 
-  const { walletProvider } = useWeb3ModalProvider();
+  const { walletProvider } = useAppKitProvider('eip155');
 
   async function getChainId() {
     //  const chain = await walletProvider?.request({ method: 'eth_chainId' });
@@ -68,15 +69,15 @@ export const BlockchainProvider = ({ children }: { children: ReactNode }) => {
   //     console.log('enter in useEffect and chainId is', chainId);
   //   }, [walletProvider, isConnected]);
 
-  useEffect(() => {
-    walletProvider?.request({ method: 'eth_requestAccounts' }).then((res) => {
-      if (res.length > 0) {
-        getChainId();
-        setAddress(res[0]);
-        setIsConnected(true);
-      }
-    });
-  }, []);
+  //   useEffect(() => {
+  //     walletProvider?.request({ method: 'eth_requestAccounts' }).then((res) => {
+  //       if (res.length > 0) {
+  //         getChainId();
+  //         setAddress(res[0]);
+  //         setIsConnected(true);
+  //       }
+  //     });
+  //   }, []);
 
   //create a context user
 

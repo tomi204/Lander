@@ -14,13 +14,13 @@ import {
 import { BaseIcon, BNBIcon, EthereumIcon, SolanaIcon } from '@/icons';
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 import { useBlockchain } from '@/contexts/BlockchainContext';
-import { useWeb3Modal } from '@web3modal/ethers/react';
+import { useAppKit } from '@reown/appkit/react';
 
 const ConnectModal = () => {
   const [selectedNetwork, setSelectedNetwork] = useState('');
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { isConnected } = useBlockchain();
-  const { open } = useWeb3Modal();
+  const { open } = useAppKit();
 
   function HandleConnectWallet(chain: string) {
     if (chain === 'SOL' && selectedNetwork === 'SOL') {
@@ -68,7 +68,7 @@ const ConnectModal = () => {
                 </p>
               )}
 
-              {/* {selectedNetwork === '' && (
+              {selectedNetwork === '' && (
                 <Button
                   flex={1}
                   onClick={() => {
@@ -79,7 +79,7 @@ const ConnectModal = () => {
 
                   <Text>EVM</Text>
                 </Button>
-              )} */}
+              )}
             </HStack>
           </ModalBody>
         </ModalContent>

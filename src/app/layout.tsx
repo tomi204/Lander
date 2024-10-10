@@ -12,6 +12,9 @@ import { AppKit } from '@/contexts/Web3ModalProvider';
 import { TransactionProvider } from '@/contexts/CheckoutProvider';
 import GTM from '@/components/GTM';
 import { headers } from 'next/headers';
+import { BlockchainProvider } from '@/contexts/BlockchainContext';
+import { UserProvider } from '@/contexts/UserContext';
+import { ChakraProvider } from '@chakra-ui/react';
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -31,13 +34,19 @@ export default function RootLayout({
     <html lang="en" className={poppins.className}>
       <body className="bg-white text-base dark:bg-neutral-900 text-neutral-900 dark:text-neutral-200">
         <AppKit cookies={cookies}>
-          <AuthProvider>
-            <ClientCommons />
-            <SiteHeader />
-            <TransactionProvider>{children}</TransactionProvider>
-            <FooterNav />
-            <Footer />
-          </AuthProvider>
+          <ChakraProvider>
+            <BlockchainProvider>
+              <UserProvider>
+                <AuthProvider>
+                  <ClientCommons />
+                  <SiteHeader />
+                  <TransactionProvider>{children}</TransactionProvider>
+                  <FooterNav />
+                  <Footer />
+                </AuthProvider>
+              </UserProvider>
+            </BlockchainProvider>
+          </ChakraProvider>
         </AppKit>
         <GTM />
       </body>

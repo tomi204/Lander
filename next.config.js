@@ -37,8 +37,19 @@ const nextConfig = {
   images: {
     deviceSizes: [320, 420, 768, 1024, 1200],
     loader: 'default',
-    domains: ['res.cloudinary.com', 'mvefftyequddnuhttftc.supabase.co','mvefftyequddnuhttftc.supabase.co'],
+    domains: [
+      'res.cloudinary.com',
+      'lh3.googleusercontent.com',
+      'mvefftyequddnuhttftc.supabase.co',
+      'mvefftyequddnuhttftc.supabase.co',
+    ],
     remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'googleusercontent.com',
+        port: '',
+        pathname: '/**',
+      },
       {
         protocol: 'https',
         hostname: 'images.pexels.com',
