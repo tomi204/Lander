@@ -69,7 +69,7 @@ export default function StayDetailPage() {
                   sellerAddress={tx?.owner_wallet}
                   owner_wallet={tx?.owner_wallet}
                   buyer_wallet={tx?.buyer_wallet}
-                  tokenAddress={polygonAddresses.USDC}
+                  tokenAddress={polygonAddresses.USDT}
                   tokenName={'USDC'}
                 />
               )}
@@ -189,20 +189,20 @@ export default function StayDetailPage() {
                 <div className="flex justify-between">
                   <p>Seller</p>
                   <p className="font-semibold">
-                    {/* {tx?.owner_wallet?.substring(0, 8)}...
-                  {tx?.owner_wallet?.substring(
-                    tx?.owner_wallet?.length - 5,
-                    tx?.owner_wallet.length
-                  )} */}
-                    {'C46KB5iG71zwaoQRyVtVEfZe95kaNRD6YYqeUnKcZWs'.substring(
+                    {tx?.owner_wallet?.substring(0, 8)}...
+                    {tx?.owner_wallet?.substring(
+                      tx?.owner_wallet?.length - 5,
+                      tx?.owner_wallet.length
+                    )}
+                    {/* {'C46KB5iG71zwaoQRyVtVEfZe95kaNRD6YYqeUnKcZWs'.substring(
                       0,
                       8
-                    )}
+                    )} */}
                     ...
-                    {'C46KB5iG71zwaoQRyVtVEfZe95kaNRD6YYqeUnKcZWs'.substring(
+                    {/* {'C46KB5iG71zwaoQRyVtVEfZe95kaNRD6YYqeUnKcZWs'.substring(
                       'C46KB5iG71zwaoQRyVtVEfZe95kaNRD6YYqeUnKcZWs'.length - 5,
                       'C46KB5iG71zwaoQRyVtVEfZe95kaNRD6YYqeUnKcZWs'.length
-                    )}
+                    )} */}
                   </p>
                 </div>
               </div>

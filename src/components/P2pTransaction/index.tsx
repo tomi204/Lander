@@ -13,8 +13,7 @@ import Notiflix from 'notiflix';
 import { Address, erc20Abi } from 'viem';
 import { useBlockchain } from '@/contexts/BlockchainContext';
 import { polygonAddresses } from '@/constants/addresses';
-import { useWeb3ModalProvider } from '@web3modal/ethers/react';
-import { BrowserProvider, Contract, ethers } from 'ethers';
+import { Contract, ethers } from 'ethers';
 import { TokensBase } from '@/constants/Tokens';
 import { Token, TokenChip } from '@coinbase/onchainkit/token';
 import {
@@ -25,9 +24,8 @@ import {
   PublicKey,
 } from '@solana/web3.js';
 
-import { useWallet } from '@solana/wallet-adapter-react';
-import { Button } from '../ui/button';
-
+import { useEthersSigner, useEthersProvider } from '@/blockchain';
+import { config } from '@/constants/wagmi-config';
 interface ContractInteractionProps {
   disabled?: boolean;
   amount: number;
@@ -62,17 +60,13 @@ const BuyButton: FC<ContractInteractionProps> = ({
   const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const { address, isConnected, chain } = useBlockchain();
-  const { isAuth } = useAuth();
   const { transaction, setTransaction } = useTransaction() || {};
   const router = useRouter();
-  const { walletProvider } = useWeb3ModalProvider();
-  const { connected, publicKey, disconnect, signTransaction, sendTransaction } =
-    useWallet();
-
+  // const { publicKey, sendTransaction } = useWallet();
+  const provider = useEthersProvider();
+  const signer = useEthersSigner();
   async function CreateTransaction() {
     try {
-      const provider = new BrowserProvider(walletProvider as any);
-
       setLoading(true);
       setErrorMessage('');
 
@@ -80,7 +74,6 @@ const BuyButton: FC<ContractInteractionProps> = ({
         throw new Error('Invalid Address');
       }
 
-      const signer = await provider.getSigner();
       const erc20Contract = new Contract(tokenAddress, erc20Abi, signer);
       const decimals = await erc20Contract.decimals();
       // const parsedAmount = ethers.parseUnits(
@@ -96,7 +89,7 @@ const BuyButton: FC<ContractInteractionProps> = ({
 
       const receipt = await tx.wait();
       console.log(receipt, 'receipt hash');
-      const data = await provider.getTransactionReceipt(tx.hash);
+      const data = await provider?.getTransactionReceipt(tx.hash);
 
       if (data && data.logs.length > 0) {
         const transferEventAbi = [
@@ -152,51 +145,51 @@ const BuyButton: FC<ContractInteractionProps> = ({
     }
   }
   const token = TokensBase?.find((token) => token.name === tokenName);
-  const handleSend = async () => {
-    if (!publicKey) {
-      console.error('No se ha conectado a la billetera.');
-      return;
-    }
+  // const handleSend = async () => {
+  //   if (!publicKey) {
+  //     console.error('No se ha conectado a la billetera.');
+  //     return;
+  //   }
 
-    const toAddress = 'C46KB5iG71zwaoQRyVtVEfZe95kaNRD6YYqeUnKcZWs';
-    const amount = 1000000;
-    const connection = new Connection(clusterApiUrl('devnet'), 'confirmed');
+  //   const toAddress = 'C46KB5iG71zwaoQRyVtVEfZe95kaNRD6YYqeUnKcZWs';
+  //   const amount = 1000000;
+  //   const connection = new Connection(clusterApiUrl('devnet'), 'confirmed');
 
-    const transactionSol = new Transaction().add(
-      SystemProgram.transfer({
-        fromPubkey: publicKey,
-        toPubkey: new PublicKey(toAddress),
-        lamports: amount,
-      })
-    );
+  //   const transactionSol = new Transaction().add(
+  //     SystemProgram.transfer({
+  //       fromPubkey: publicKey,
+  //       toPubkey: new PublicKey(toAddress),
+  //       lamports: amount,
+  //     })
+  //   );
 
-    try {
-      const signature = await sendTransaction(transactionSol, connection);
-      console.log('Transacción enviada con éxito. ID:', signature);
-      const transactionInfo = {
-        amount: ethers.formatUnits(amount, 9),
-        from: address as string,
-        to: toAddress,
-        decimals: 9,
-        token: 'native',
-      };
-      const txID = await updateBookingStatus({
-        bookingId: transaction?.id as string,
-        status: 'pending',
-        txHash: signature,
-        chain: 'sol',
-        owner_wallet,
-        buyer_wallet,
-        transactionInfo: transactionInfo,
-        buyer_id,
-        owner_id,
-      });
+  //   try {
+  //     const signature = await sendTransaction(transactionSol, connection);
+  //     console.log('Transacción enviada con éxito. ID:', signature);
+  //     const transactionInfo = {
+  //       amount: ethers.formatUnits(amount, 9),
+  //       from: address as string,
+  //       to: toAddress,
+  //       decimals: 9,
+  //       token: 'native',
+  //     };
+  //     const txID = await updateBookingStatus({
+  //       bookingId: transaction?.id as string,
+  //       status: 'pending',
+  //       txHash: signature,
+  //       chain: 'sol',
+  //       owner_wallet,
+  //       buyer_wallet,
+  //       transactionInfo: transactionInfo,
+  //       buyer_id,
+  //       owner_id,
+  //     });
 
-      console.log(txID, 'txID');
-    } catch (error) {
-      console.error('Error al enviar SOL:', error);
-    }
-  };
+  //     console.log(txID, 'txID');
+  //   } catch (error) {
+  //     console.error('Error al enviar SOL:', error);
+  //   }
+  // };
   return (
     <>
       {!transactionId && chain === 'evm' && (
@@ -204,7 +197,7 @@ const BuyButton: FC<ContractInteractionProps> = ({
           <TokenChip token={token as Token} className="bg-none" />
         </section>
       )}
-      {chain === 'solana' && (
+      {/* {chain === 'solana' && (
         <section onClick={handleSend}>
           <Button className="bg-violet-700 text-white rounded-3xl">
             Buy with Sol
@@ -216,7 +209,7 @@ const BuyButton: FC<ContractInteractionProps> = ({
         <h3 className="flex-grow text-left text-sm font-medium text-red-700 mt-1 sm:w-full sm:text-center sm:text-sm">
           Please, connect your wallet.
         </h3>
-      )}
+      )} */}
     </>
   );
 };
