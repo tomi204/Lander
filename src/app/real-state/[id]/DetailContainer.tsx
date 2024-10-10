@@ -31,7 +31,7 @@ import {
 } from 'lucide-react';
 import { IRealState } from '@/data/types';
 import Image from 'next/image';
-import { MintUSDC } from '@/utils/blockchain';
+//import { MintUSDC } from '@/utils/blockchain';
 import { useAccount } from 'wagmi';
 import { Address } from 'viem';
 import { useRouter } from 'next/navigation';
@@ -360,9 +360,9 @@ export default function RealStateDetailContainer({
       </div>
       <Button
         className="w-full"
-        onClick={() => MintUSDC({ address: address as Address })}
+        // onClick={() => MintUSDC({ address: address as Address })}
       >
-        Invest Now
+        This is a demo button
       </Button>
     </div>
   );

@@ -2,31 +2,31 @@
 
 import { FC, useCallback, useEffect, useState } from 'react';
 import ButtonPrimary from '@/shared/ButtonPrimary';
-import { Interface } from 'ethers';
 
 import { useAuth } from '@/contexts/AuthContext';
-import {
-  sendTransaction,
-  getConnections,
-  getBalance,
-  readContract,
-} from '@wagmi/core';
-import { Address, parseUnits } from 'viem';
-import { wagmiConfig } from '@/constants/wagmi-config';
-import {
-  useAccount,
-  useReadContract,
-  useWaitForTransactionReceipt,
-} from 'wagmi';
-import { bscAddresses } from '@/constants/addresses';
-import { ABI } from '../../utils/ABI';
-import { waitForTransactionReceipt, getTransactionReceipt } from '@wagmi/core';
+
 import { updateBookingStatus } from '@/services/books';
 import { useTransaction } from '@/contexts/CheckoutProvider';
 import { useRouter } from 'next/navigation';
-import { Button } from '../ui/button';
-import { showConfetti } from '@/hooks/useConfetti';
+
 import Notiflix from 'notiflix';
+import { Address, erc20Abi } from 'viem';
+import { useBlockchain } from '@/contexts/BlockchainContext';
+import { polygonAddresses } from '@/constants/addresses';
+import { useWeb3ModalProvider } from '@web3modal/ethers/react';
+import { BrowserProvider, Contract, ethers } from 'ethers';
+import { TokensBase } from '@/constants/Tokens';
+import { Token, TokenChip } from '@coinbase/onchainkit/token';
+import {
+  Connection,
+  Transaction,
+  SystemProgram,
+  clusterApiUrl,
+  PublicKey,
+} from '@solana/web3.js';
+
+import { useWallet } from '@solana/wallet-adapter-react';
+import { Button } from '../ui/button';
 
 interface ContractInteractionProps {
   disabled?: boolean;
@@ -37,187 +37,108 @@ interface ContractInteractionProps {
   transactionId?: number;
   owner_wallet: string;
   buyer_wallet: string;
+  owner_id: string;
+  buyer_id: string;
+  tokenAddress: string;
+  tokenName: string;
 }
 
-const ContractInteraction: FC<ContractInteractionProps> = ({
+const BuyButton: FC<ContractInteractionProps> = ({
   onTxError,
   onTxSent,
   disabled,
   amount,
   sellerAddress,
+  owner_id,
+  buyer_id,
   transactionId,
   owner_wallet,
   buyer_wallet,
+  tokenName,
+  tokenAddress,
 }) => {
   const [symbol, setSymbol] = useState('--');
   const [noFunds, setNoFunds] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(false);
-  const { address, isConnected } = useAccount();
+  const { address, isConnected, chain } = useBlockchain();
   const { isAuth } = useAuth();
   const { transaction, setTransaction } = useTransaction() || {};
   const router = useRouter();
-  //const { toast } = useToast();
+  const { walletProvider } = useWeb3ModalProvider();
+  const { connected, publicKey, disconnect, signTransaction, sendTransaction } =
+    useWallet();
 
-  const getWalletBalance = useCallback(async () => {
-    if (!address) {
-      return;
-    }
-
-    const balance = await getBalance(wagmiConfig, {
-      address,
-      token: bscAddresses.USDC,
-    });
-
-    setSymbol(balance.symbol);
-    setNoFunds(amount > balance.value);
-    return balance;
-  }, [address, amount]);
-
-  useEffect(() => {
-    getWalletBalance();
-  }, [getWalletBalance]);
-
-  const [approvedHash, setApprovedHash] = useState(
-    '0x${string}' as `0x${string}`
-  );
-  const approveTokens = useCallback(async () => {
+  async function CreateTransaction() {
     try {
-      const connections = getConnections(wagmiConfig);
-      const dataEncoded = new Interface(ABI).encodeFunctionData('approve', [
-        bscAddresses.P2P,
-        parseUnits(amount.toString(), 18),
-      ]) as `0x${string}`;
+      const provider = new BrowserProvider(walletProvider as any);
 
-      const hash = await sendTransaction(wagmiConfig, {
-        connector: connections[0]?.connector,
-        data: dataEncoded,
-        to: bscAddresses.USDC,
-        value: BigInt(0),
-      });
-
-      const data = await waitForTransactionReceipt(wagmiConfig, {
-        hash: hash,
-      });
-
-      setApprovedHash(hash);
-      const txResponse = await getTransactionReceipt(wagmiConfig, {
-        hash: hash,
-      });
-      console.log(txResponse);
-
-      Notiflix.Notify.success('Tokens Approved');
-      if (data.status === 'success') {
-        return hash;
-      }
-    } catch (error) {
-      console.error('Error approving tokens:', error);
-      throw error;
-    }
-  }, [ABI, amount]);
-
-  const [step, setStep] = useState('');
-
-  const [actualId, setActualId] = useState(0);
-  const { data: transactionCount, isLoading } = useReadContract({
-    address: bscAddresses.P2P,
-    abi: ABI,
-    functionName: 'transactionCount',
-  });
-
-  console.log(transactionCount, 'transactionCount');
-
-  const CreateTransaction = useCallback(async () => {
-    try {
       setLoading(true);
       setErrorMessage('');
-
-      console.log(Number(transactionCount), 'transactionCount');
 
       if (!address) {
         throw new Error('Invalid Address');
       }
-      const tokensApproved = await readContract(wagmiConfig, {
-        address: bscAddresses.USDC,
-        abi: [
-          {
-            constant: true,
-            inputs: [
-              { name: 'owner', type: 'address' },
-              { name: 'spender', type: 'address' },
-            ],
-            name: 'allowance',
-            outputs: [{ name: '', type: 'uint256' }],
-            type: 'function',
-          },
-        ],
-        functionName: 'allowance',
-        args: [address, bscAddresses.P2P],
-      });
 
-      if (Number(tokensApproved as number) < Number(amount)) {
-        setStep('Approving tokens');
-        await approveTokens();
-      }
+      const signer = await provider.getSigner();
+      const erc20Contract = new Contract(tokenAddress, erc20Abi, signer);
+      const decimals = await erc20Contract.decimals();
+      // const parsedAmount = ethers.parseUnits(
+      //   transaction.amount.toString(),
+      //   Number(decimals)
+      // );
+      //const parsedAmount = ethers.parseUnits('0.1', 18);
+      const tx = await erc20Contract
+        .transfer(polygonAddresses.P2P, 1)
+        .catch((err) => {
+          Notiflix.Notify.failure('Error:' + err);
+        });
 
-      if (step === 'Approving tokens') {
-        setTimeout(() => {
-          setStep('Creating transaction');
-        }, 15000);
-      }
+      const receipt = await tx.wait();
+      console.log(receipt, 'receipt hash');
+      const data = await provider.getTransactionReceipt(tx.hash);
 
-      if (step === '') {
-        setStep('Creating transaction');
-      }
+      if (data && data.logs.length > 0) {
+        const transferEventAbi = [
+          'event Transfer(address indexed from, address indexed to, uint256 value)',
+        ];
+        const iface = new ethers.Interface(transferEventAbi);
 
-      const dataEncoded = new Interface(ABI).encodeFunctionData(
-        'createTransaction',
-        [sellerAddress, BigInt(amount * 1000000 * 1000000)]
-      ) as `0x${string}`;
+        for (const log of data.logs) {
+          try {
+            const parsedLog = iface.parseLog(log);
 
-      const connections = getConnections(wagmiConfig);
+            if (parsedLog) {
+              const { from, to, value } = parsedLog.args;
 
-      const result = await sendTransaction(wagmiConfig, {
-        connector: connections[0]?.connector,
-        data: dataEncoded,
-        to: bscAddresses.P2P,
-        value: BigInt(0),
-      });
+              const transactionInfo = {
+                amount: ethers.formatUnits(value, Number(decimals)),
+                from: from,
+                to: to,
+                decimals: Number(decimals),
+                token: polygonAddresses.USDT,
+              };
 
-      console.log('result', result);
+              const txID = await updateBookingStatus({
+                bookingId: transaction?.id,
+                status: 'pending',
+                txHash: tx.hash,
+                chain: 'pol',
+                owner_id,
+                buyer_id,
+                owner_wallet,
+                buyer_wallet,
+                transactionInfo: transactionInfo,
+              });
 
-      console.log(result, 'result');
+              router.push(`/p2p/${txID}`);
+            }
+          } catch (err) {
+            console.error('Error parsing log:', err);
+          }
+        }
 
-      await waitForTransactionReceipt(wagmiConfig, {
-        hash: result,
-      });
-
-      await new Promise((resolve) => setTimeout(resolve, 10000));
-
-      if (Number(transactionCount) > 0) {
-        setActualId(Number(transactionCount));
-      }
-
-      setActualId(Number(transactionCount) + 1);
-
-      const txID = await updateBookingStatus(
-        transaction?.id,
-        'pending',
-        (Number(actualId) + 1).toString(),
-        'bsc',
-        owner_wallet,
-        buyer_wallet
-      );
-
-      Notiflix.Notify.success('Transaction created');
-
-      console.log(txID, 'txID');
-
-      if (txID) {
-        showConfetti();
-
-        router.push(`/p2p/${txID}`);
-        return txID;
+        Notiflix.Notify.success('Transaction created');
       }
     } catch (error) {
       console.error(error);
@@ -229,118 +150,67 @@ const ContractInteraction: FC<ContractInteractionProps> = ({
     } finally {
       setLoading(false);
     }
-  }, [ABI, amount, approveTokens, onTxError, onTxSent, sellerAddress, address]);
+  }
+  const token = TokensBase?.find((token) => token.name === tokenName);
+  const handleSend = async () => {
+    if (!publicKey) {
+      console.error('No se ha conectado a la billetera.');
+      return;
+    }
 
-  const approveTransaction = useCallback(
-    async (transactionId: number) => {
-      try {
-        setLoading(true);
-        setErrorMessage('');
+    const toAddress = 'C46KB5iG71zwaoQRyVtVEfZe95kaNRD6YYqeUnKcZWs';
+    const amount = 1000000;
+    const connection = new Connection(clusterApiUrl('devnet'), 'confirmed');
 
-        const dataEncoded = new Interface(ABI).encodeFunctionData(
-          'approveTransaction',
-          [transactionId]
-        ) as `0x${string}`;
+    const transactionSol = new Transaction().add(
+      SystemProgram.transfer({
+        fromPubkey: publicKey,
+        toPubkey: new PublicKey(toAddress),
+        lamports: amount,
+      })
+    );
 
-        const connections = getConnections(wagmiConfig);
+    try {
+      const signature = await sendTransaction(transactionSol, connection);
+      console.log('Transacción enviada con éxito. ID:', signature);
+      const transactionInfo = {
+        amount: ethers.formatUnits(amount, 9),
+        from: address as string,
+        to: toAddress,
+        decimals: 9,
+        token: 'native',
+      };
+      const txID = await updateBookingStatus({
+        bookingId: transaction?.id as string,
+        status: 'pending',
+        txHash: signature,
+        chain: 'sol',
+        owner_wallet,
+        buyer_wallet,
+        transactionInfo: transactionInfo,
+        buyer_id,
+        owner_id,
+      });
 
-        const hash = await sendTransaction(wagmiConfig, {
-          connector: connections[0]?.connector,
-          data: dataEncoded,
-          to: bscAddresses.P2P,
-          value: BigInt(0),
-        });
-
-        if (onTxSent) {
-          onTxSent(hash);
-          Notiflix.Notify.success('Transaction Approved');
-        }
-      } catch (error) {
-        console.error(error);
-        setErrorMessage('Transaction approval failed');
-
-        if (onTxError) {
-          onTxError(error);
-        }
-      } finally {
-        setLoading(false);
-      }
-    },
-    [ABI, onTxError, onTxSent]
-  );
-
-  const cancelTransaction = useCallback(
-    async (transactionId: number) => {
-      try {
-        setLoading(true);
-        setErrorMessage('');
-
-        const dataEncoded = new Interface(ABI).encodeFunctionData(
-          'cancelTransaction',
-          [transactionId]
-        ) as `0x${string}`;
-
-        const connections = getConnections(wagmiConfig);
-
-        const hash = await sendTransaction(wagmiConfig, {
-          connector: connections[0]?.connector,
-          data: dataEncoded,
-          to: bscAddresses.P2P,
-          value: BigInt(0),
-        });
-
-        if (onTxSent) {
-          onTxSent(hash);
-        }
-      } catch (error) {
-        console.error(error);
-        setErrorMessage('Transaction cancellation failed');
-        if (onTxError) {
-          onTxError(error);
-        }
-      } finally {
-        setLoading(false);
-      }
-    },
-    [ABI, onTxError, onTxSent]
-  );
-
-  console.log(loading, 'loading');
-
+      console.log(txID, 'txID');
+    } catch (error) {
+      console.error('Error al enviar SOL:', error);
+    }
+  };
   return (
     <>
-      {!transactionId && (
-        <ButtonPrimary
-          className="sm:w-full"
-          loading={loading}
-          onClick={CreateTransaction}
-        >
-          {step === ''
-            ? 'Pay with USDC'
-            : step === 'Approving tokens'
-            ? 'Approving tokens'
-            : 'Creating transaction'}
-        </ButtonPrimary>
+      {!transactionId && chain === 'evm' && (
+        <section onClick={CreateTransaction}>
+          <TokenChip token={token as Token} className="bg-none" />
+        </section>
       )}
-
-      {transactionId ? (
-        <>
-          <Button
-            className="w-full bg-blue-300 hover:bg-blue-600 text-black"
-            onClick={() => approveTransaction(transactionId)}
-          >
-            Approve Transaction
+      {chain === 'solana' && (
+        <section onClick={handleSend}>
+          <Button className="bg-violet-700 text-white rounded-3xl">
+            Buy with Sol
           </Button>
-
-          {/* <Button
-            className="w-full bg-blue-300 hover:bg-blue-600 text-black"
-            disabled={!isAuth || noFunds || disabled}
-            onClick={() => cancelTransaction(transactionId)}
-          >
-            Cancel Transaction
-          </Button> */}
-        </>
-      ) : null}
+        </section>
+      )}
 
       {!isConnected && (
         <h3 className="flex-grow text-left text-sm font-medium text-red-700 mt-1 sm:w-full sm:text-center sm:text-sm">
@@ -351,4 +221,4 @@ const ContractInteraction: FC<ContractInteractionProps> = ({
   );
 };
 
-export default ContractInteraction;
+export default BuyButton;

@@ -8,13 +8,10 @@ import 'rc-slider/assets/index.css';
 import Footer from '@/components/Footer';
 import FooterNav from '@/components/FooterNav';
 import { AuthProvider } from '@/contexts/AuthContext';
-import { Web3ModalProvider } from '@/contexts/Web3ModalProvider';
-import { cookieToInitialState } from '@wagmi/core';
-import { wagmiConfig as config } from '@/constants/wagmi-config';
-import { headers } from 'next/headers';
+import { AppKit } from '@/contexts/Web3ModalProvider';
 import { TransactionProvider } from '@/contexts/CheckoutProvider';
 import GTM from '@/components/GTM';
-
+import { headers } from 'next/headers';
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -29,12 +26,11 @@ export default function RootLayout({
   children: React.ReactNode;
   params: any;
 }) {
-  const initialState = cookieToInitialState(config, headers().get('cookie'));
-
+  const cookies = headers().get('cookie');
   return (
     <html lang="en" className={poppins.className}>
       <body className="bg-white text-base dark:bg-neutral-900 text-neutral-900 dark:text-neutral-200">
-        <Web3ModalProvider initialState={initialState}>
+        <AppKit cookies={cookies}>
           <AuthProvider>
             <ClientCommons />
             <SiteHeader />
@@ -42,7 +38,7 @@ export default function RootLayout({
             <FooterNav />
             <Footer />
           </AuthProvider>
-        </Web3ModalProvider>
+        </AppKit>
         <GTM />
       </body>
     </html>

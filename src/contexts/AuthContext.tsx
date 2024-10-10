@@ -1,14 +1,19 @@
-"use client";
+'use client';
 
-import React, { createContext, useCallback, useContext, useEffect, useState } from "react";
-import { useAccount } from "wagmi";
-import { authenticate, getChallenge } from "@/services/auth";
-import Cookies from "js-cookie";
-import { getUserData } from "@/services/users";
-import { useRouter } from "next/navigation";
-import { wagmiConfig } from "@/constants/wagmi-config";
-import { signMessage, getAccount } from "@wagmi/core";
-import { disconnect } from "@wagmi/core";
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
+import { useAccount } from 'wagmi';
+import { authenticate, getChallenge } from '@/services/auth';
+import Cookies from 'js-cookie';
+import { getUserData } from '@/services/users';
+import { useRouter } from 'next/navigation';
+import { signMessage, getAccount } from '@wagmi/core';
+import { disconnect } from '@wagmi/core';
 
 interface AuthContextType {
   isAuth: boolean;
@@ -24,7 +29,6 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const router = useRouter();
   const [isAuth, setIsAuth] = useState<boolean>(false);
   const [isAuthenticating, setIsAuthenticating] = useState<boolean>(false);
   const [error, setError] = useState<any>(null);
@@ -33,7 +37,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const auth = useCallback(async () => {
     try {
-      const jwtToken = Cookies.get("jwt");
+      const jwtToken = Cookies.get('jwt');
       if (jwtToken) {
         setIsAuthenticating(true);
 
@@ -49,19 +53,19 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       }
       const { token } = await getChallenge(address);
 
-      const { connector } = getAccount(wagmiConfig);
+      // const { connector } = getAccount(wagmiConfig);
 
-      const signature = await signMessage(wagmiConfig, {
-        message: "Your authentication token : " + token,
-        connector,
-      });
-      const { jwt } = await authenticate({
-        signature,
-        address,
-      });
+      // const signature = await signMessage(wagmiConfig, {
+      //   message: "Your authentication token : " + token,
+      //   connector,
+      // });
+      // const { jwt } = await authenticate({
+      //   signature,
+      //   address,
+      // });
 
-      Cookies.set("jwt", jwt);
-      setIsAuth(true);
+      // Cookies.set("jwt", jwt);
+      // setIsAuth(true);
     } catch (error) {
       setError(error);
       await logOut();
@@ -72,8 +76,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const logOut = async () => {
     try {
-      await disconnect(wagmiConfig);
-      Cookies.remove("jwt");
+      // await disconnect(wagmiConfig);
+      // Cookies.remove('jwt');
       setIsAuth(false);
     } catch (err) {
       setError(err);
@@ -89,7 +93,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, [isConnected, address]);
 
   useEffect(() => {
-    const jwt = Cookies.get("jwt");
+    const jwt = Cookies.get('jwt');
 
     if (jwt && address) {
       auth();
@@ -116,7 +120,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 export const useAuth = (): AuthContextType => {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error("useAuth must be used within an AuthProvider");
+    throw new Error('useAuth must be used within an AuthProvider');
   }
   return context;
 };

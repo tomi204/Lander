@@ -1,8 +1,8 @@
-import { TaxonomyType } from "@/data/types";
-import { StrapiPaginatedResult } from "@/interfaces/StrapiPaginatedResults";
-import { serverAxiosInstance } from "./axios/instanceServer";
-import { StrapiData } from "@/interfaces/Strapi";
-import { extractData } from "@/utils/strapiParser";
+import { TaxonomyType } from '@/data/types';
+import { StrapiPaginatedResult } from '@/interfaces/StrapiPaginatedResults';
+import { serverAxiosInstance } from './axios/instanceServer';
+import { StrapiData } from '@/interfaces/Strapi';
+import { extractData } from '@/utils/strapiParser';
 
 export const findTaxonomies = async (
   params?: Record<string, any>
@@ -10,7 +10,7 @@ export const findTaxonomies = async (
   const res = await serverAxiosInstance.get<
     StrapiPaginatedResult<TaxonomyType>
   >(
-    "/api/taxonomy-tpes?pagination[withCount]=true&populate=*&pagination[limit]=100",
+    '/api/taxonomy-tpes?pagination[withCount]=true&populate=*&pagination[limit]=100',
     {
       withCredentials: true,
       params,

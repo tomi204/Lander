@@ -4,39 +4,71 @@ import { serverAxiosInstance } from './axios/instanceServer';
 import { StrapiData } from '@/interfaces/Strapi';
 import { extractData } from '@/utils/strapiParser';
 import { Book, BookResponse } from '@/interfaces/Booking';
-import supabase from '@/supabase/client';
+import supabase from '@/utils/supabase/client';
 import { cache } from 'react';
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
 import { updateBookings, updateTrips } from '@/services/users';
 
-export const updateBookingStatus = async (
-  bookingId: string,
-  status: string,
-  txId: string,
-  chain: string,
-  owner_wallet: string,
-  buyer_wallet: string
-): Promise<any> => {
-  console.log(bookingId, status, txId, chain, 'bookingId, status, txId, chain');
+interface updateBookingProps {
+  bookingId: string;
+  status: string;
+  txHash: string;
+  owner_id: string;
+  buyer_id: string;
+  chain: string;
+  owner_wallet: string;
+  buyer_wallet: string;
+  transactionInfo: {
+    amount: string;
+    from: string;
+    to: string;
+    decimals: number;
+    token: string;
+  };
+}
 
-  const owner = await updateBookings(owner_wallet, bookingId);
-  const userId = await updateTrips(buyer_wallet, bookingId);
+export const updateBookingStatus = async ({
+  bookingId,
+  status,
+  txHash,
+  chain,
+  owner_wallet,
+  buyer_wallet,
+  owner_id,
+  buyer_id,
+  transactionInfo,
+}: updateBookingProps): Promise<any> => {
+  console.log(
+    bookingId,
+    status,
+    txHash,
+    chain,
+    transactionInfo,
+    'bookingId, status, txId, chain'
+  );
 
-  console.log(owner, userId, 'owner, userId');
+  const owner = await updateBookings(owner_id, bookingId);
+  const userId = await updateTrips(buyer_id, bookingId);
 
   const { data: tx, error } = await supabase
     .from('transactions')
     .update({
       status: status,
-      tx_id: txId,
+      tx_hash: txHash,
       chain: chain,
       updated_at: new Date().toISOString(),
-      buyer_id: userId,
+      decimals: transactionInfo.decimals,
+      token_address: transactionInfo.token,
+      from: transactionInfo.from,
+      to: transactionInfo.to,
+      token_amount: transactionInfo.amount,
     })
     .eq('id', bookingId)
     .select()
     .single();
+
+  console.log(tx);
 
   if (error) {
     throw new Error(`Failed to update booking status: ${error.message}`);
@@ -192,7 +224,7 @@ export const findBookById = cache(async (id: string): Promise<any> => {
         description,
         main_image
       )
-    
+
       )
     `
     )

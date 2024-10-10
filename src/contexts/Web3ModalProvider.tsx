@@ -1,33 +1,59 @@
-"use client";
+'use client';
 
-import React, { ReactNode } from "react";
+import { createAppKit } from '@reown/appkit/react';
+import { EthersAdapter } from '@reown/appkit-adapter-ethers';
+import { polygon } from '@reown/appkit/networks';
+import { wagmiAdapter } from '@/constants/wagmi-config';
+import { Config, cookieToInitialState, WagmiProvider } from 'wagmi';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactNode } from 'react';
+const projectId =
+  process.env.NEXT_PUBLIC_WALLET_CONNECT_ID ||
+  'ddddb6c7ffd11d2d6bae3dd88eff5f3a';
 
-import { createWeb3Modal } from "@web3modal/wagmi/react";
+// const polygon = {
+//   chainId: 137,
+//   name: 'Polygon',
+//   currency: 'MATIC',
+//   explorerUrl: 'https://polygonscan.com',
+//   rpcUrl: 'https://polygon-rpc.com',
+// };
 
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+const metadata = {
+  name: 'Lander',
+  description: 'Welcome to Lander',
+  url: 'https://mywebsite.com',
+  icons: ['https://avatars.mywebsite.com/'],
+};
 
-import { State, WagmiProvider } from "wagmi";
-import { projectId, wagmiConfig } from "@/constants/wagmi-config";
-
-// Setup queryClient
+createAppKit({
+  adapters: [new EthersAdapter(), wagmiAdapter],
+  metadata,
+  networks: [polygon],
+  projectId,
+  features: {
+    analytics: true, // Optional - defaults to your Cloud configuration
+  },
+});
 const queryClient = new QueryClient();
 
-// Create modal
-createWeb3Modal({
-  wagmiConfig,
-  projectId,
-  enableAnalytics: true, // Optional - defaults to your Cloud configuration
-});
-
-export function Web3ModalProvider({
+export function AppKit({
   children,
-  initialState,
+  cookies,
 }: {
   children: ReactNode;
-  initialState?: State;
+  cookies: string | null;
 }) {
+  const initialState = cookieToInitialState(
+    wagmiAdapter.wagmiConfig as Config,
+    cookies
+  );
+
   return (
-    <WagmiProvider config={wagmiConfig} initialState={initialState}>
+    <WagmiProvider
+      config={wagmiAdapter.wagmiConfig as Config}
+      initialState={initialState}
+    >
       <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
     </WagmiProvider>
   );
