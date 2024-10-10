@@ -12,6 +12,7 @@ import { useWallet } from '@solana/wallet-adapter-react';
 //import CoinBaseIdentity from './CoinBaseIdentity';
 import { useUser } from '@/contexts/UserContext';
 import { useAppKit } from '@reown/appkit/react';
+import CoinBaseIdentity from './CoinBaseIdentity';
 
 export default function AvatarDropdown({
   className = '',
@@ -78,17 +79,22 @@ export default function AvatarDropdown({
                 <div className="relative grid grid-cols-1 gap-6 bg-white dark:bg-neutral-800 py-7 px-6">
                   <div className="flex items-center m-auto w-full justify-center">
                     <div className="flex-grow">
-                      {/* {chain === 'evm' ? (
+                      {chain === 'evm' && address ? (
                         <CoinBaseIdentity />
                       ) : (
-                        <> */}
-                      <Avatar sizeClass="w-12 h-12" />
-                      <h4 className="font-semibold">USER</h4>
-                      <p className="text-xs mt-0.5" onClick={handleOpenModal}>
-                        <WalletAddressComponent address={address || ''} />
-                      </p>
-                      {/* </>
-                      )} */}
+                        <>
+                          <Avatar sizeClass="w-12 h-12" />
+                          <h4 className="font-semibold">USER</h4>
+                          <p
+                            className="text-xs mt-0.5"
+                            onClick={handleOpenModal}
+                          >
+                            {/* <WalletAddressComponent address={address || ''} /> */}
+                            {address &&
+                              address.slice(0, 6) + '...' + address.slice(-4)}
+                          </p>
+                        </>
+                      )}
 
                       {!isSolana ? (
                         <p

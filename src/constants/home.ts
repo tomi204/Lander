@@ -1,7 +1,7 @@
-import { StaticImageData } from "next/image";
+import { StaticImageData } from 'next/image';
 
-import bolImg from "@/images/hero-right3-bol-2.png";
-import argImg from "@/images/hero-right3-arg.png";
+import bolImg from '@/images/hero-right3-bol-2.png';
+import argImg from '@/images/hero-right3-arg.png';
 
 export interface HomeSettings {
   title: string;
@@ -17,28 +17,28 @@ export interface HomeSettingsLink {
 
 export const homeSettingsConst: Record<string, HomeSettings> = {
   DEFAULT: {
-    title: "The Web3 travel community",
+    title: 'The Web3 travel community',
     description:
-      "We are a decentralized and anonymous short-term rental protocol, over the BNB chain.",
+      'We are a decentralized and fast rental protocol, over the blockchain.',
     image: argImg,
   },
   AR: {
-    title: "Buenos Aires, Argentina",
-    description: "Argentina",
+    title: 'Buenos Aires, Argentina',
+    description: 'Argentina',
     image: argImg,
   },
   BO: {
-    title: "La Paz, Bolivia",
-    description: "Bolivia",
+    title: 'La Paz, Bolivia',
+    description: 'Bolivia',
     image: bolImg,
   },
-  "ETH-BO": {
-    title: "La Paz, Bolivia",
-    description: "UCB, La Paz",
+  'ETH-BO': {
+    title: 'La Paz, Bolivia',
+    description: 'UCB, La Paz',
     image: bolImg,
     link: {
-      name: "Event Site",
-      link: "https://ethbolivia.com/",
+      name: 'Event Site',
+      link: 'https://ethbolivia.com/',
     },
   },
 };

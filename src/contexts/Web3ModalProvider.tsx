@@ -7,6 +7,7 @@ import { wagmiAdapter } from '@/constants/wagmi-config';
 import { Config, cookieToInitialState, WagmiProvider } from 'wagmi';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactNode } from 'react';
+import { OnchainKitProvider } from '@coinbase/onchainkit';
 const projectId = 'ee0ce490d3a704e0950aa17edaf69837';
 const metadata = {
   name: 'Lander',
@@ -43,7 +44,27 @@ export function AppKit({
       config={wagmiAdapter.wagmiConfig as Config}
       initialState={initialState}
     >
-      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+      <QueryClientProvider client={queryClient}>
+        <OnchainKitProvider
+          apiKey="5ZREXMXAdVzQUQxyEPTD7LnRtgyWtCir"
+          chain={{
+            id: 8453,
+            name: 'Base',
+            nativeCurrency: {
+              name: 'Base',
+              symbol: 'ETH',
+              decimals: 18,
+            },
+            rpcUrls: {
+              default: {
+                http: ['https://base.rpc.infura.com/v3/YOUR-PROJECT-ID'],
+              },
+            },
+          }}
+        >
+          {children}
+        </OnchainKitProvider>
+      </QueryClientProvider>
     </WagmiProvider>
   );
 }
