@@ -1,126 +1,90 @@
 import { NextResponse } from 'next/server';
-import supabase from '@/supabase/client';
-import { createClient } from "@/supabase/server";
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
+import { createClient } from '@/utils/supabase/server';
 import { cookies } from 'next/headers';
 
-
 export async function GET(request) {
-  const { searchParams } = new URL(request.url);
-  const wallet = searchParams.get('wallet');
-
-  if (!wallet) {
-    return NextResponse.json({ error: 'Wallet address is required' }, { status: 400 });
-  }
-
   try {
-    const supabase = createServerComponentClient({ cookies });
+    const cookieStore = cookies();
+    const supabase = createClient(cookieStore);
 
-    // Step 1: Find the user by wallet address
-    let { data, error: userError } = await supabase
-      .from('users')
-      .select('trips')
-      .eq('wallet', wallet)
-      .single();
+    // Get the authenticated user
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser();
 
-    if (userError || !data.trips) {
-      throw new Error('User not found or error occurred.');
+    if (authError || !user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-  
+    console.log(user, 'user in trips');
 
-
-
-    const { data: transactions, error: txError } = await supabase
-      .from('transactions')
+    // Fetch bookings where user.id matches owner_id
+    const { data: trips, error: tripsError } = await supabase
+      .from('trips')
       .select(
         `
-      *,
-      property:property_id (
         id,
-        title,
-        location,
-        description,
-        main_image
-      )  
-    `
+        created_at,
+        tx:transactions!trips_tx_id_fkey (
+          id,
+          amount,
+          entrance_date,
+          departure_date,
+          buyer_wallet,
+          buyer_id,
+          main_image,
+          nights
+        ),
+        property:properties!trips_property_id_fkey (
+          id,
+          title,
+          location,
+          main_image
+        )
+      `
       )
-      .in('id', data.trips);
+      .eq('buyer_id', user.id)
+      .order('created_at', { ascending: false });
 
-    if (txError) {
-      throw new Error('Failed to fetch transactions.');
+    if (tripsError) {
+      console.error('Supabase error:', tripsError);
+      return NextResponse.json(
+        { error: 'Failed to fetch trips', details: tripsError },
+        { status: 500 }
+      );
+    }
+    console.log(trips, 'trips');
+    if (!trips || trips.length === 0) {
+      return NextResponse.json({ message: 'No trips found' }, { status: 404 });
     }
 
-    // Step 3: Return the transactions
-    return NextResponse.json(transactions);
+    // Return the trips
+    return NextResponse.json(trips);
   } catch (error) {
-    console.error('Error:', error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    console.error('Unexpected error:', error);
+    return NextResponse.json(
+      { error: 'An unexpected error occurred', details: error.message },
+      { status: 500 }
+    );
   }
 }
-
-
-// export async function GET(request) {
-//   const { searchParams } = new URL(request.url);
-//   const wallet = searchParams.get('wallet');
-//   console.log(wallet)
-//   if (!wallet) {
-//     return NextResponse.json({ error: 'Wallet address is required' }, { status: 400 });
-//   }
-
-//   try {
-
-//     let { data: user, error } = await supabase
-//       .from('users')
-//       .select('id')
-//       .eq('wallet', wallet)
-//       .single();
-
-//     if (error || !user) {
-//       throw new Error('Owner not found or error occurred.');
-//     }
-
-
-//     let { data: transactions, error: txError } = await supabase
-//       .from('transactions')
-//       .select('*')
-//       .eq('owner_id', user.id);
-
-//     if (txError) {
-//       throw new Error('Failed to fetch transactions.');
-//     }
-
-//     return NextResponse.json(transactions);
-//   } catch (error) {
-
-//     console.log(error)
-//     return NextResponse.json({ error: error.message }, { status: 500 });
-//   }
-// }
-
-
-// http://localhost:3000/api/transaction?wallet=0xd7ed1a1FC1295A0e7Ac16b5834F152F7B6306C0e
-
-
-
-
-
-
-
 export async function POST(req, res) {
-
   try {
     const supabase = createClient();
     const tx = await req.json();
 
-    const { data, error } = await supabase.from("transactions").insert(tx).select();
+    const { data, error } = await supabase
+      .from('transactions')
+      .insert(tx)
+      .select();
 
     if (error) {
       return NextResponse.json({
-        message: "Error inserting product",
+        message: 'Error inserting product',
         error: error.message,
       });
     } else {
-      console.log("Product inserted successfully", data);
+      console.log('Product inserted successfully', data);
     }
 
     return NextResponse.json({ data }, { status: 200 });
@@ -128,11 +92,6 @@ export async function POST(req, res) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
-
-
-
-
-
 
 // data:
 

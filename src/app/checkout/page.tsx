@@ -71,6 +71,7 @@ export default function StayDetailPage() {
                 <div className="flex flex-row gap-4">
                   {TokensPolygon.map((token, index) => (
                     <BuyButton
+                      property_id={tx?.property_id}
                       key={index}
                       buyer_id={tx?.buyer_id}
                       owner_id={tx?.owner_id}

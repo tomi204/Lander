@@ -1,8 +1,8 @@
 'use client';
 import { FC, useEffect, useState } from 'react';
 import ReserveCard from '@/components/ReserveCard';
-import { useAccount } from 'wagmi';
 import { LoadingSpinner2 } from '@/components/AnyReactComponent/loadingSpinner';
+import { useBlockchain } from '@/contexts/BlockchainContext';
 interface StayAttributes {
   title: string;
   location: string;
@@ -30,21 +30,22 @@ const ReservationsPage: FC = () => {
   const [reservations, setReservations] = useState<ReservationAttributes[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const { address } = useAccount();
-
-
+  const { address } = useBlockchain();
 
   useEffect(() => {
     const fetchReservations = async () => {
       try {
-        const response = await fetch(`/api/getBookings?wallet=${address}`);
-        const result = await response.json();
-
+        const response = await fetch('/api/getBookings');
+        if (!response.ok) {
+          throw new Error('Failed to fetch bookings');
+        }
+        const data = await response.json();
+        console.log(data, 'data');
         if (response.ok) {
-          setReservations(result);
+          setReservations(data);
           setError(null);
         } else {
-          setError(result.error);
+          setError(data.error);
           setReservations([]);
         }
       } catch (err) {
@@ -56,11 +57,7 @@ const ReservationsPage: FC = () => {
     };
 
     fetchReservations();
-  }, [reservations]);
-
-
-
-
+  }, []);
 
   if (loading) return <LoadingSpinner2 className="spinner-class" />; // Added className prop
   if (error) return <p>Error: {error}</p>;
@@ -70,7 +67,7 @@ const ReservationsPage: FC = () => {
       <h2 className="text-2xl font-bold mb-4">Your Bookings</h2>
       <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 gap-6">
         {reservations.map((reservation) => (
-          <ReserveCard key={reservation.id} reservation={reservation} />
+          <ReserveCard key={reservation?.id} reservation={reservation} />
         ))}
       </div>
     </div>

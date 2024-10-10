@@ -1,13 +1,18 @@
 import { User } from '@/data/types';
 import { serverAxiosInstance } from './axios/instanceServer';
 import supabase from '@/utils/supabase/client';
+import { cache } from 'react';
 
-export const updateBookings = async (owner_id: string, tx_id: string) => {
+export const updateBookings = async (
+  owner_id: string,
+  tx_id: string,
+  property_id: string
+) => {
   try {
     // Get user data
     const { data: booking, error: bookingError } = await supabase
       .from('bookings')
-      .insert({ owner_id, tx_id })
+      .insert({ owner_id, tx_id, property_id })
       .single();
 
     if (bookingError) {
@@ -23,11 +28,15 @@ export const updateBookings = async (owner_id: string, tx_id: string) => {
   }
 };
 
-export const updateTrips = async (buyer_id: string, tx_id: string) => {
+export const updateTrips = async (
+  buyer_id: string,
+  tx_id: string,
+  property_id: string
+) => {
   try {
     const { data: trip, error: tripError } = await supabase
       .from('trips')
-      .insert({ buyer_id, tx_id })
+      .insert({ buyer_id, tx_id, property_id })
       .single();
 
     if (tripError) {

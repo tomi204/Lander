@@ -39,9 +39,11 @@ interface ContractInteractionProps {
   buyer_id: string;
   tokenAddress: string;
   tokenName: string;
+  property_id: string;
 }
 
 const BuyButton: FC<ContractInteractionProps> = ({
+  property_id,
   onTxError,
   onTxSent,
   disabled,
@@ -121,6 +123,7 @@ const BuyButton: FC<ContractInteractionProps> = ({
                 buyer_id,
                 owner_wallet,
                 buyer_wallet,
+                property_id,
                 transactionInfo: transactionInfo,
               });
 

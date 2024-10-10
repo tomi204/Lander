@@ -1,61 +1,75 @@
 import { NextResponse } from 'next/server';
-import supabase from '@/supabase/client';
-import { createClient } from '@/supabase/server';
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
+import { createClient } from '@/utils/supabase/server';
 import { cookies } from 'next/headers';
 
-// TRANSACTIONS FOR OWNER
 export async function GET(request) {
-  const { searchParams } = new URL(request.url);
-  const wallet = searchParams.get('wallet');
-
-  if (!wallet) {
-    return NextResponse.json(
-      { error: 'Wallet address is required' },
-      { status: 400 }
-    );
-  }
-
   try {
-    const supabase = createServerComponentClient({ cookies });
+    const cookieStore = cookies();
+    const supabase = createClient(cookieStore);
 
-    // Step 1: Find the user by wallet address
-    let { data, error: userError } = await supabase
-      .from('users')
-      .select('bookings')
-      .eq('wallet', wallet)
-      .single();
+    // Get the authenticated user
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser();
 
-    if (userError || !data) {
-      throw new Error('User not found or error occurred.');
+    if (authError || !user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
+    console.log(user, 'user in bookings');
 
-
-    const { data: transactions, error: txError } = await supabase
-      .from('transactions')
+    // Fetch bookings where user.id matches owner_id
+    const { data: bookings, error: bookingsError } = await supabase
+      .from('bookings')
       .select(
         `
-      *,
-      property:property_id (
         id,
-        title,
-        location,
-        description,
-        main_image
-      )  
-    `
-      )
-      .in('id', data.bookings);
+        created_at,
+        tx:transactions!bookings_tx_id_fkey (
+          id,
+          amount,
+          entrance_date,
+          departure_date,
+          buyer_wallet,
+          buyer_id,
+          main_image,
+          nights
 
-    if (txError) {
-      throw new Error('Failed to fetch transactions.');
+        ),
+        property:properties!bookings_property_id_fkey (
+          id,
+          title,
+          location,
+          main_image
+        )
+      `
+      )
+      .eq('owner_id', user.id)
+      .order('created_at', { ascending: false });
+
+    if (bookingsError) {
+      console.error('Supabase error:', bookingsError);
+      return NextResponse.json(
+        { error: 'Failed to fetch bookings', details: bookingsError },
+        { status: 500 }
+      );
     }
 
-    // Step 3: Return the transactions
-    return NextResponse.json(transactions);
+    if (!bookings || bookings.length === 0) {
+      return NextResponse.json(
+        { message: 'No bookings found' },
+        { status: 404 }
+      );
+    }
+
+    // Return the bookings
+    return NextResponse.json(bookings);
   } catch (error) {
-    console.error('Error:', error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    console.error('Unexpected error:', error);
+    return NextResponse.json(
+      { error: 'An unexpected error occurred', details: error.message },
+      { status: 500 }
+    );
   }
 }
 

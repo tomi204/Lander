@@ -19,6 +19,7 @@ interface updateBookingProps {
   chain: string;
   owner_wallet: string;
   buyer_wallet: string;
+  property_id: string;
   transactionInfo: {
     amount: string;
     from: string;
@@ -33,8 +34,7 @@ export const updateBookingStatus = async ({
   status,
   txHash,
   chain,
-  owner_wallet,
-  buyer_wallet,
+  property_id,
   owner_id,
   buyer_id,
   transactionInfo,
@@ -48,8 +48,8 @@ export const updateBookingStatus = async ({
     'bookingId, status, txId, chain'
   );
 
-  const owner = await updateBookings(owner_id, bookingId);
-  const userId = await updateTrips(buyer_id, bookingId);
+  const owner = await updateBookings(owner_id, bookingId, property_id);
+  const userId = await updateTrips(buyer_id, bookingId, property_id);
 
   const { data: tx, error } = await supabase
     .from('transactions')
@@ -208,14 +208,16 @@ export const findBookById = cache(async (id: string): Promise<any> => {
         name,
         email,
         phone,
-        wallet
+        wallet_evm,
+        wallet_sol
       ),
       owner:owner_id (
         id,
         name,
         email,
         phone,
-        wallet
+        wallet_evm,
+        wallet_sol
       ),
       property:property_id (
         id,
