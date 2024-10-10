@@ -8,12 +8,14 @@ import { useRouter } from 'next/navigation';
 import { useBlockchain } from '@/contexts/BlockchainContext';
 import ConnectModal from '@/components/ConnectWalletModal';
 import { TokensPolygon } from '@/constants/Tokens';
+import { FundButton, getOnrampBuyUrl } from '@coinbase/onchainkit/fund';
 
 export default function StayDetailPage() {
   const router = useRouter();
   const { transaction, setTransaction } = useTransaction() || {};
   const tx = transaction;
   const { address, isConnected } = useBlockchain();
+  const projectId = process.env.NEXT_PUBLIC_CDP_API_KEY!;
 
   const [propData, setPropData] = useState<any | null>(null);
 
@@ -32,6 +34,13 @@ export default function StayDetailPage() {
     fetchUserData();
   }, [transaction, address]);
 
+  const onrampBuyUrl = getOnrampBuyUrl({
+    projectId,
+    addresses: { address: ['base'] },
+    assets: ['USDC'],
+    presetFiatAmount: tx?.amount,
+    fiatCurrency: 'USD',
+  });
   return (
     <div className="container mx-auto p-4 md:p-6 lg:p-8">
       {isConnected ? (
@@ -57,7 +66,7 @@ export default function StayDetailPage() {
               Back to Property Details
             </button>
 
-            <section className="gap-4 items-center flex">
+            <section className="gap-4 items-start flex  flex-col">
               {isConnected && (
                 <div className="flex flex-row gap-4">
                   {TokensPolygon.map((token, index) => (
@@ -75,6 +84,7 @@ export default function StayDetailPage() {
                   ))}
                 </div>
               )}
+              <FundButton text="Buy with Coinbase" fundingUrl={onrampBuyUrl} />
             </section>
 
             <div className="space-y-4">
