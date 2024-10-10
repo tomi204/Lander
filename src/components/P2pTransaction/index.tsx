@@ -14,7 +14,7 @@ import { Address, erc20Abi } from 'viem';
 import { useBlockchain } from '@/contexts/BlockchainContext';
 import { polygonAddresses } from '@/constants/addresses';
 import { Contract, ethers } from 'ethers';
-import { TokensBase } from '@/constants/Tokens';
+import { TokensBase, TokensPolygon } from '@/constants/Tokens';
 import { Token, TokenChip } from '@coinbase/onchainkit/token';
 import {
   Connection,
@@ -76,20 +76,20 @@ const BuyButton: FC<ContractInteractionProps> = ({
 
       const erc20Contract = new Contract(tokenAddress, erc20Abi, signer);
       const decimals = await erc20Contract.decimals();
-      // const parsedAmount = ethers.parseUnits(
-      //   transaction.amount.toString(),
-      //   Number(decimals)
-      // );
-      //const parsedAmount = ethers.parseUnits('0.1', 18);
+      console.log(decimals, 'decimals');
+      const parsedAmount = ethers.parseUnits(
+        transaction.amount.toString(),
+        Number(decimals)
+      );
+      console.log(parsedAmount, 'parsedAmount');
       const tx = await erc20Contract
-        .transfer(polygonAddresses.P2P, 1)
+        .transfer(polygonAddresses.P2P, parsedAmount)
         .catch((err) => {
           Notiflix.Notify.failure('Error:' + err);
         });
 
       const receipt = await tx.wait();
-      console.log(receipt, 'receipt hash');
-      const data = await provider?.getTransactionReceipt(tx.hash);
+      const data = await provider?.getTransactionReceipt(tx?.hash);
 
       if (data && data.logs.length > 0) {
         const transferEventAbi = [
@@ -144,7 +144,7 @@ const BuyButton: FC<ContractInteractionProps> = ({
       setLoading(false);
     }
   }
-  const token = TokensBase?.find((token) => token.name === tokenName);
+  const token = TokensPolygon?.find((token) => token.name === tokenName);
   // const handleSend = async () => {
   //   if (!publicKey) {
   //     console.error('No se ha conectado a la billetera.');

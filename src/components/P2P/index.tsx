@@ -12,30 +12,22 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { Badge } from '../ui/badge';
 import { Input } from '../ui/input';
-import { Textarea } from '../ui/textarea';
 import {
   Home,
   MessageCircle,
-  Bitcoin,
-  FileText,
   CheckCircle2,
   DollarSignIcon,
-  Loader,
-  PhoneIcon,
-  HelpCircle,
   HeadphonesIcon,
 } from 'lucide-react';
 import React from 'react';
-import { useTransactionInfo } from '../../hooks/useTransactionInfo';
-import { useAccount } from 'wagmi';
-import { format } from 'date-fns';
+
 import { LoadingSpinner2 } from '@/components/AnyReactComponent/loadingSpinner';
-import ContractInteraction from '@/components/P2pTransaction';
 import { ModalRanking } from '@/components/ModalRanking';
 import { useRouter } from 'next/navigation';
+import { useBlockchain } from '@/contexts/BlockchainContext';
 
-export default function P2PDetails({ data }) {
-  const { address } = useAccount();
+export default function P2PDetails({ data }: { data: any }) {
+  const { address } = useBlockchain();
   const router = useRouter();
   const [showDetails, setShowDetails] = useState(false);
   const [messages, setMessages] = useState([
@@ -56,14 +48,9 @@ export default function P2PDetails({ data }) {
       setNewMessage('');
     }
   };
-  const { transactionInfo, loading } = useTransactionInfo(data?.tx_id);
 
   if (data?.property?.title === undefined) {
-    return <LoadingSpinner2 />;
-  }
-
-  if (loading) {
-    return <LoadingSpinner2 />;
+    return <LoadingSpinner2 className="h-screen" />;
   }
 
   return (
@@ -71,8 +58,7 @@ export default function P2PDetails({ data }) {
       <header className="bg-white border-b border-gray-200 py-4">
         <div className="container mx-auto px-4">
           <h1 className="text-2xl font-bold text-gray-800">
-            {' '}
-            {address === data?.renter.wallet ? 'Your Booking' : 'Your Trip'}
+            {address === data?.renter?.wallet ? 'Your Booking' : 'Your Trip'}
           </h1>
         </div>
       </header>
@@ -127,69 +113,6 @@ export default function P2PDetails({ data }) {
                   >
                     Show Contract Details
                   </Button>
-                  {showDetails && (
-                    <div className="bg-gray-100 p-4 rounded-lg">
-                      <p className="text-sm text-black-600 mb-4 font-semibold">
-                        Withdraw {'  '}
-                        {transactionInfo?.isCompleted ? 'Completed' : 'Pending'}
-                      </p>
-
-                      <p className="text-sm text-black-600 mb-4">
-                        {transactionInfo?.buyer === address
-                          ? `Renter: ${transactionInfo?.seller.substring(
-                              0,
-                              6
-                            )}...${transactionInfo?.seller.substring(
-                              transactionInfo?.seller.length - 4
-                            )}`
-                          : `Owner: ${transactionInfo?.buyer.substring(
-                              0,
-                              6
-                            )}...${transactionInfo?.buyer.substring(
-                              transactionInfo?.buyer.length - 4
-                            )}`}
-                      </p>
-                      <p className="text-sm text-black-600 mb-4">
-                        {transactionInfo?.buyer !== address ? (
-                          <p>
-                            {' '}
-                            {transactionInfo?.ownerApproval
-                              ? 'Owner Approved'
-                              : 'Owner Approval Pending'}
-                          </p>
-                        ) : (
-                          <p>
-                            {' '}
-                            {transactionInfo?.buyerApproval
-                              ? 'Renter Approved'
-                              : 'Renter Approval Pending'}
-                          </p>
-                        )}
-                      </p>
-                    </div>
-                  )}
-
-                  {transactionInfo?.buyer === address &&
-                    transactionInfo?.buyerApproval === false && (
-                      <ContractInteraction
-                        amount={data?.amount}
-                        sellerAddress={data?.owner_wallet}
-                        owner_wallet={data?.owner_wallet}
-                        buyer_wallet={data?.buyer_wallet}
-                        transactionId={data?.tx_id}
-                      />
-                    )}
-
-                  {transactionInfo?.owner === address &&
-                    transactionInfo?.ownerApproval === false && (
-                      <ContractInteraction
-                        amount={data?.amount}
-                        sellerAddress={data?.owner_wallet}
-                        owner_wallet={data?.owner_wallet}
-                        buyer_wallet={data?.buyer_wallet}
-                        transactionId={data?.tx_id}
-                      />
-                    )}
                 </div>
               </CardContent>
             </Card>
@@ -232,13 +155,13 @@ export default function P2PDetails({ data }) {
                       <AvatarFallback>OP</AvatarFallback>
                     </Avatar>
                     <div>
-                      <p className="font-semibold">{data.owner.name}</p>
+                      <p className="font-semibold">{data?.owner?.name}</p>
                       <p className="text-sm text-gray-600">Owner</p>
                     </div>
                   </div>
                   <Badge variant="outline" className="flex items-center">
                     <CheckCircle2 className="w-4 h-4 mr-1" />
-                    Verified
+                    {data?.owner?.verified ? 'Verified' : 'Unverified'}
                   </Badge>
                 </div>
                 <div className="flex justify-between items-center">
@@ -251,13 +174,13 @@ export default function P2PDetails({ data }) {
                       <AvatarFallback>II</AvatarFallback>
                     </Avatar>
                     <div>
-                      <p className="font-semibold">{data.renter.name}</p>
+                      <p className="font-semibold">{data?.renter?.name}</p>
                       <p className="text-sm text-gray-600">Renter</p>
                     </div>
                   </div>
                   <Badge variant="outline" className="flex items-center">
                     <CheckCircle2 className="w-4 h-4 mr-1" />
-                    Verified
+                    {data?.renter?.verified ? 'Verified' : 'Unverified'}
                   </Badge>
                 </div>
               </CardContent>

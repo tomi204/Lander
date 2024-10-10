@@ -3,13 +3,11 @@ import Image from 'next/image';
 import React, { useState, useEffect } from 'react';
 import { useTransaction } from '@/contexts/CheckoutProvider';
 import BuyButton from '@/components/P2pTransaction';
-import { fetchRenterByTxAndWallet } from '@/services/account';
 import { findPropertyById } from '@/services/listings';
 import { useRouter } from 'next/navigation';
-import { useWeb3ModalAccount } from '@web3modal/ethers/react';
-import { polygonAddresses } from '@/constants/addresses';
 import { useBlockchain } from '@/contexts/BlockchainContext';
 import ConnectModal from '@/components/ConnectWalletModal';
+import { TokensPolygon } from '@/constants/Tokens';
 
 export default function StayDetailPage() {
   const router = useRouter();
@@ -18,7 +16,6 @@ export default function StayDetailPage() {
   const { address, isConnected } = useBlockchain();
 
   const [propData, setPropData] = useState<any | null>(null);
-  const [buyerData, setBuyerData] = useState<any | null>(null);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -62,16 +59,20 @@ export default function StayDetailPage() {
 
             <section className="gap-4 items-center flex">
               {isConnected && (
-                <BuyButton
-                  buyer_id={tx?.buyer_id}
-                  owner_id={tx?.owner_id}
-                  amount={tx?.amount}
-                  sellerAddress={tx?.owner_wallet}
-                  owner_wallet={tx?.owner_wallet}
-                  buyer_wallet={tx?.buyer_wallet}
-                  tokenAddress={polygonAddresses.USDT}
-                  tokenName={'USDC'}
-                />
+                <div className="flex flex-row gap-4">
+                  {TokensPolygon.map((token) => (
+                    <BuyButton
+                      buyer_id={tx?.buyer_id}
+                      owner_id={tx?.owner_id}
+                      amount={tx?.amount}
+                      sellerAddress={tx?.owner_wallet}
+                      owner_wallet={tx?.owner_wallet}
+                      buyer_wallet={tx?.buyer_wallet}
+                      tokenAddress={token.address}
+                      tokenName={token.name}
+                    />
+                  ))}
+                </div>
               )}
             </section>
 
