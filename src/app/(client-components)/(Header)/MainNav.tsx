@@ -48,10 +48,6 @@ const MainNav: FC<MainNavProps> = ({ className = '' }) => {
     };
   }, []);
 
-  const handleSignOut = async () => {
-    await supabase.auth.signOut();
-  };
-
   const showSearch = useMemo(
     () => PAGE_WITH_SEARCH.includes(pathname),
     [pathname]
@@ -86,12 +82,7 @@ const MainNav: FC<MainNavProps> = ({ className = '' }) => {
                   <Link href="/login">Log-in</Link>
                 </button>
               )}
-              <AvatarDropdown
-                show={connected}
-                onLogout={() => {
-                  handleSignOut();
-                }}
-              />
+              <AvatarDropdown show={connected} />
             </div>
           )}
         </div>

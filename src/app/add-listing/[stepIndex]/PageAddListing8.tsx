@@ -1,8 +1,8 @@
-import React, { FC } from "react";
-import Input from "@/shared/Input";
-import Select from "@/shared/Select";
-import FormItem from "../FormItem";
-import { PageAddListingProps } from "./StepsContainer";
+import React, { FC } from 'react';
+import Input from '@/shared/Input';
+import Select from '@/shared/Select';
+import FormItem from '../FormItem';
+import { PageAddListingProps } from './StepsContainer';
 
 const decimalRegex = /^\d+(\.\d{1,2})?$/;
 
@@ -22,8 +22,8 @@ const PageAddListing8: FC<PageAddListingProps> = ({ register }) => {
       <div className="space-y-8">
         {/* ITEM */}
         <FormItem label="Currency">
-          <Select {...register("preferredCoin", { required: true })}>
-            <option value="usdt">USDT</option>
+          <Select {...register('preferredCoin', { required: true })}>
+            <option value="usdt">USD</option>
             {/* <option value="dai">DAI</option> */}
           </Select>
         </FormItem>
@@ -35,11 +35,11 @@ const PageAddListing8: FC<PageAddListingProps> = ({ register }) => {
             <Input
               className="!pl-8 !pr-10"
               placeholder="0.00"
-              {...register("price", {
+              {...register('price', {
                 required: true,
                 pattern: {
                   value: decimalRegex,
-                  message: "The format must be 0.00",
+                  message: 'The format must be 0.00',
                 },
               })}
             />
@@ -53,11 +53,11 @@ const PageAddListing8: FC<PageAddListingProps> = ({ register }) => {
             <Input
               className="!pl-8 !pr-10"
               placeholder="0.00"
-              {...register("guarantyPrice", {
+              {...register('guarantyPrice', {
                 required: true,
                 pattern: {
                   value: decimalRegex,
-                  message: "The format must be 0.00",
+                  message: 'The format must be 0.00',
                 },
               })}
             />
@@ -71,11 +71,11 @@ const PageAddListing8: FC<PageAddListingProps> = ({ register }) => {
             <Input
               className="!pl-8 !pr-10"
               placeholder="0.00"
-              {...register("cleaningServiceFee", {
+              {...register('cleaningServiceFee', {
                 required: true,
                 pattern: {
                   value: decimalRegex,
-                  message: "The format must be 0.00",
+                  message: 'The format must be 0.00',
                 },
               })}
             />

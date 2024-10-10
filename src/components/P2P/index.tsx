@@ -12,11 +12,17 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { Badge } from '../ui/badge';
 import { Input } from '../ui/input';
+import { Textarea } from '../ui/textarea';
 import {
   Home,
   MessageCircle,
+  Bitcoin,
+  FileText,
   CheckCircle2,
   DollarSignIcon,
+  Loader,
+  PhoneIcon,
+  HelpCircle,
   HeadphonesIcon,
 } from 'lucide-react';
 import React from 'react';
@@ -52,6 +58,7 @@ export default function P2PDetails({ data }: { data: any }) {
   if (data?.property?.title === undefined) {
     return <LoadingSpinner2 className="h-screen" />;
   }
+  console.log(data, 'data');
 
   return (
     <div className="min-h-screen bg-white">

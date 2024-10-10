@@ -13,8 +13,8 @@ const TripCard = ({ reservation }: any) => {
   return (
     <div className="border rounded-lg overflow-hidden shadow-md">
       <Image
-        src={reservation?.main_image}
-        alt={reservation?.title}
+        src={reservation?.property?.main_image}
+        alt={reservation?.property?.title}
         width={400}
         height={200}
         className="w-full h-48 object-cover"
@@ -28,13 +28,12 @@ const TripCard = ({ reservation }: any) => {
           {reservation?.property?.description}
         </p>
         <p className="font-semibold">
-          {new Date(reservation?.entrance_date).toLocaleDateString()} -{' '}
-          {new Date(reservation?.departure_date).toLocaleDateString()}
+          {new Date(reservation?.tx?.entrance_date).toLocaleDateString()} -{' '}
+          {new Date(reservation?.tx?.departure_date).toLocaleDateString()}
         </p>
-        {/* <p>Total: ${reservation.totalPrice.toFixed(2)}</p> */}
-
+        <p>Total: ${reservation?.tx?.amount?.toFixed(2)}</p>{' '}
         <button
-          onClick={() => joinRoom(reservation?.id)}
+          onClick={() => joinRoom(reservation?.tx?.id)}
           className=" w-full  px-8 py-2 rounded-full relative bg-purple-900 text-white text-sm hover:shadow-2xl hover:shadow-white/[0.1] transition duration-200 border border-purple-600"
         >
           <span className="relative z-20">Contact</span>

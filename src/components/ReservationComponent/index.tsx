@@ -220,7 +220,7 @@ const ReservationComponent: any = ({ stay }: ReservationComponentProps) => {
                   <span className="text-3s font-semibold">
                     Deposit Guaranty:
                     <span className="ml-1 text-base font-normal text-neutral-500 dark:text-neutral-400">
-                      USDT {depositAmount}
+                      USD {depositAmount}
                     </span>
                   </span>
                 </div>
@@ -231,7 +231,7 @@ const ReservationComponent: any = ({ stay }: ReservationComponentProps) => {
                   <span className="text-3s font-semibold">
                     Cleaning Service:
                     <span className="ml-1 text-base font-normal text-neutral-500 dark:text-neutral-400">
-                      USDT {cleaningServiceFee}
+                      USD {cleaningServiceFee}
                     </span>
                   </span>
                 </div>
@@ -241,7 +241,7 @@ const ReservationComponent: any = ({ stay }: ReservationComponentProps) => {
                 <span className="text-3s font-semibold">
                   Total:
                   <span className="ml-1 text-base font-normal text-neutral-500 dark:text-neutral-400">
-                    USDT {totalPrice}
+                    USD {totalPrice}
                   </span>
                 </span>
               </div>

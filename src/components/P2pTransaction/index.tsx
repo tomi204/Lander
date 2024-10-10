@@ -110,7 +110,7 @@ const BuyButton: FC<ContractInteractionProps> = ({
                 from: from,
                 to: to,
                 decimals: Number(decimals),
-                token: polygonAddresses.USDT,
+                token: polygonAddresses.USD,
               };
 
               const txID = await updateBookingStatus({
