@@ -22,7 +22,7 @@ createAppKit({
   networks: [polygon],
   projectId,
   features: {
-    analytics: true, // Optional - defaults to your Cloud configuration
+    analytics: true,
   },
 });
 const queryClient = new QueryClient();
@@ -46,7 +46,7 @@ export function AppKit({
     >
       <QueryClientProvider client={queryClient}>
         <OnchainKitProvider
-          apiKey="5ZREXMXAdVzQUQxyEPTD7LnRtgyWtCir"
+          apiKey={process.env.NEXT_PUBLIC_ONCHAINKIT_API_KEY}
           chain={{
             id: 8453,
             name: 'Base',
@@ -57,7 +57,9 @@ export function AppKit({
             },
             rpcUrls: {
               default: {
-                http: ['https://base.rpc.infura.com/v3/YOUR-PROJECT-ID'],
+                http: [
+                  `https://base.rpc.infura.com/v3/${process.env.NEXT_PUBLIC_INFURA_API_KEY}`,
+                ],
               },
             },
           }}

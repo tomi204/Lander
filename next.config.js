@@ -42,8 +42,15 @@ const nextConfig = {
       'lh3.googleusercontent.com',
       'mvefftyequddnuhttftc.supabase.co',
       'mvefftyequddnuhttftc.supabase.co',
+      'pbs.twimg.com',
     ],
     remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'pbs.twimg.com',
+        port: '',
+        pathname: '/**',
+      },
       {
         protocol: 'https',
         hostname: 'googleusercontent.com',

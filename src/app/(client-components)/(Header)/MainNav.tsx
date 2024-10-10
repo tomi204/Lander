@@ -48,8 +48,6 @@ const MainNav: FC<MainNavProps> = ({ className = '' }) => {
     };
   }, []);
 
-  console.log(user, 'user');
-
   const handleSignOut = async () => {
     await supabase.auth.signOut();
   };

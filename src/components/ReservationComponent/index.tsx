@@ -11,11 +11,14 @@ import { useCreateBooking } from '@/hooks/useBooking';
 import { formatDateWithoutTime } from '@/utils/date';
 import ReservationPrice from './ReservationPrice';
 import ReservationMobileComponent from '../ReservationMobileComponent/ReservationMobileComponent';
-import { useAccount } from 'wagmi';
-import supabase from '@/supabase/client';
+import supabase from '@/utils/supabase/client';
 import { DatabaseBackup, TicketX } from 'lucide-react';
 import { useTransaction } from '@/contexts/CheckoutProvider';
 import { useRouter } from 'next/navigation';
+import { useWeb3ModalAccount } from '@web3modal/ethers/react';
+import { useBlockchain } from '@/contexts/BlockchainContext';
+import { useUser } from '@/contexts/UserContext';
+
 interface ReservationComponentProps {
   stay: any;
 }
@@ -27,6 +30,8 @@ const ReservationComponent: any = ({ stay }: ReservationComponentProps) => {
     formState: { errors },
   } = useForm<BookingPayload>();
   const { setTransaction } = useTransaction() || {};
+  const { isConnected, address: addressBlockchain } = useBlockchain();
+  const { user, refreshUser } = useUser();
 
   const router = useRouter();
 
@@ -34,7 +39,6 @@ const ReservationComponent: any = ({ stay }: ReservationComponentProps) => {
   const submitBtnReference = useRef<HTMLButtonElement>(null);
   const { isAuth, isAuthenticating } = useAuth();
   const [{ loading, error }] = useCreateBooking();
-  const { address } = useAccount();
 
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
@@ -47,24 +51,21 @@ const ReservationComponent: any = ({ stay }: ReservationComponentProps) => {
     price * nights + (cleaningServiceFee ?? 0) + (depositAmount ?? 0)
   );
 
-
-
   const handleCheckout = async () => {
-
     const transaction = {
-      main_image:stay.main_image ,
+      main_image: stay.main_image,
       amount: totalPrice,
-      entrance_date: startDate ? startDate.toISOString() : undefined,
-      departure_date: endDate ? endDate.toISOString() : undefined,
-      buyer_wallet: address,
+      entrance_date: startDate ? startDate.toISOString() : '',
+      departure_date: endDate ? endDate.toISOString() : '',
+      buyer_wallet: addressBlockchain,
       property_id: stay.id,
       nights: nights,
-      owner_wallet: stay.owner.wallet,
-      owner_id: stay.owner.id,
+      owner_wallet: stay.wallet_owner,
+      owner_id: stay.owner_id,
+      buyer_id: user?.id,
     };
 
-
-
+    console.log(transaction, stay);
     try {
       const response = await fetch('/api/createTx', {
         method: 'POST',
@@ -79,10 +80,9 @@ const ReservationComponent: any = ({ stay }: ReservationComponentProps) => {
       }
 
       const tx = await response.json();
-
+      console.log(tx, 'tx on details');
       let id = tx?.data[0]?.id;
       if (id) {
-
         setTransaction?.(tx?.data[0]);
       }
       router.push('/checkout');
@@ -111,15 +111,9 @@ const ReservationComponent: any = ({ stay }: ReservationComponentProps) => {
     setEndDate(to);
   };
 
-  const isSameOrigin = useMemo(
-    () => address === stay.owner.name,
-    [address, stay.owner.name]
-  );
+  const isSameOrigin = false;
 
-  const disabled = useMemo(
-    () => isAuthenticating || isSameOrigin || !isAuth,
-    [isAuthenticating, isSameOrigin, isAuth]
-  );
+  const disabled = useMemo(() => !isConnected, [isConnected]);
 
   const excludeDates = useMemo(() => {
     const excludeDates = stay?.excludeDates ?? [];
@@ -155,7 +149,7 @@ const ReservationComponent: any = ({ stay }: ReservationComponentProps) => {
     register('to', {
       required: { value: true, message: 'The ending date is required' },
     });
-  }, [address, register, stay.owner.name, stay.id]);
+  }, [register, stay.id]);
 
   const onChangeGuests = (guests: GuestsObject) => {
     setValue('guestAdults', guests.guestAdults);
@@ -164,7 +158,7 @@ const ReservationComponent: any = ({ stay }: ReservationComponentProps) => {
   };
 
   const errorMessage = useMemo(() => {
-    if (!isAuth) {
+    if (!isConnected) {
       return 'Please connect to wallet first.';
     }
 
@@ -179,7 +173,7 @@ const ReservationComponent: any = ({ stay }: ReservationComponentProps) => {
     if (error) {
       return 'Ops! Something went wrong. Try again later.';
     }
-  }, [error, isAuth]);
+  }, [error, isAuth, isConnected]);
 
   const dateRangeError = useMemo(() => {
     return errors.from || errors.to;
@@ -264,10 +258,10 @@ const ReservationComponent: any = ({ stay }: ReservationComponentProps) => {
               />
               <GuestsInput onChange={onChangeGuests} error={!!guestsError} />
             </div>
-            
+
             <div className="flex flex-col rounded-3xl pt-2 pb-2">
               <ButtonPrimary
-                disabled={disabled}
+                // disabled={disabled}
                 loading={loading}
                 onClick={handleCheckout}
               >

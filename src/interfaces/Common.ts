@@ -5,9 +5,7 @@ export interface CommonLayoutProps {
 }
 export interface AvatarDropdownProps {
   show: boolean | undefined;
-
   className?: string;
-  onLogout?: () => void;
 }
 export interface HeaderProps {
   className?: string;

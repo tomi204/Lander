@@ -12,13 +12,13 @@ const SUPABASE_REDIRECT = process.env.SUPABASE_CALLBACK_URL;
 export default function Providerbuttons() {
   return (
     <div className="grid grid-cols-2 pt-20 gap-6">
-      <Button
+      {/* <Button
         variant="outline"
         onClick={async () => await oAuthSignIn('github')}
       >
         {Icons.gitHub({ className: 'mr-2 h-4 w-4' })}
         Github
-      </Button>
+      </Button> */}
       <Button
         variant="outline"
         onClick={async () => await oAuthSignIn('google')}
@@ -33,13 +33,13 @@ export default function Providerbuttons() {
         {Icons.twitter({ className: 'mr-2 h-4 w-4' })}
         Twitter
       </Button>
-      <Button
+      {/* <Button
         variant="outline"
         onClick={async () => await oAuthSignIn('facebook')}
       >
         {Icons.facebook({ className: 'mr-2 h-4 w-4' })}
         Facebook
-      </Button>
+      </Button> */}
     </div>
   );
 }

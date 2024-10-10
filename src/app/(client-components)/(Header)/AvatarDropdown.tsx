@@ -13,11 +13,11 @@ import { useWallet } from '@solana/wallet-adapter-react';
 import { useUser } from '@/contexts/UserContext';
 import { useAppKit } from '@reown/appkit/react';
 import CoinBaseIdentity from './CoinBaseIdentity';
+import supabase from '@/supabase/client';
 
 export default function AvatarDropdown({
   className = '',
   show,
-  onLogout,
 }: AvatarDropdownProps) {
   const { user, loading, error, refreshUser } = useUser();
 
@@ -49,6 +49,9 @@ export default function AvatarDropdown({
     }
   };
 
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+  };
   console.log(chain, 'chain');
   return (
     <Popover className={`relative flex ${className}`}>
@@ -264,10 +267,7 @@ export default function AvatarDropdown({
                         />
                       </svg>
                     </div>
-                    <div
-                      className="ml-4"
-                      onClick={() => onLogout && onLogout()}
-                    >
+                    <div className="ml-4" onClick={() => handleSignOut()}>
                       <p className="text-sm font-medium ">{'Log out'}</p>
                     </div>
                   </Link>

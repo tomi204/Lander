@@ -85,7 +85,7 @@ export default function StayDetailPage() {
                   ))}
                 </div>
               )}
-              <FundButton text="Buy with Coinbase" fundingUrl={onrampBuyUrl} />
+              {/* <FundButton text="Buy with Coinbase" fundingUrl={onrampBuyUrl} /> */}
             </section>
 
             <div className="space-y-4">
@@ -211,7 +211,6 @@ export default function StayDetailPage() {
                       0,
                       8
                     )} */}
-                    ...
                     {/* {'C46KB5iG71zwaoQRyVtVEfZe95kaNRD6YYqeUnKcZWs'.substring(
                       'C46KB5iG71zwaoQRyVtVEfZe95kaNRD6YYqeUnKcZWs'.length - 5,
                       'C46KB5iG71zwaoQRyVtVEfZe95kaNRD6YYqeUnKcZWs'.length

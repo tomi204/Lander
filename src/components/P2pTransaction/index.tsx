@@ -78,7 +78,6 @@ const BuyButton: FC<ContractInteractionProps> = ({
 
       const erc20Contract = new Contract(tokenAddress, erc20Abi, signer);
       const decimals = await erc20Contract.decimals();
-      console.log(decimals, 'decimals');
       const parsedAmount = ethers.parseUnits(
         transaction.amount.toString(),
         Number(decimals)
