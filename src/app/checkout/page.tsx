@@ -43,7 +43,7 @@ export default function StayDetailPage() {
   });
   return (
     <div className="container mx-auto p-4 md:p-6 lg:p-8">
-      {isConnected ? (
+      {isConnected && tx ? (
         <div className="flex flex-row lg:flex-row gap-8">
           {/* Left Column */}
           <div className="w-full lg:w-2/3 space-y-6">
@@ -228,10 +228,16 @@ export default function StayDetailPage() {
         </div>
       ) : (
         <section>
-          <div className="flex justify-center items-center h-screen flex-col">
-            <p className="text-2xl font-bold">Please connect your wallet</p>
-            <ConnectModal />
-          </div>
+          {!isConnected ? (
+            <div className="flex justify-center items-center h-screen flex-col">
+              <p className="text-2xl font-bold">Please connect your wallet</p>
+              <ConnectModal />
+            </div>
+          ) : (
+            <p className="text-2xl font-bold m-auto text-center w-full">
+              Please enter from the property page
+            </p>
+          )}
         </section>
       )}
     </div>
