@@ -66,7 +66,7 @@ const ConnectModal = () => {
                   <WalletMultiButton />
                 </p>
               )} */}
-              <WalletDefault />
+              {/* <WalletDefault /> */}
 
               {selectedNetwork === '' && (
                 <Button
