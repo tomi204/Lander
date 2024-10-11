@@ -12,7 +12,6 @@ import {
   Icon,
 } from '@chakra-ui/react';
 import { BaseIcon, BNBIcon, EthereumIcon, SolanaIcon } from '@/icons';
-import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 import { useBlockchain } from '@/contexts/BlockchainContext';
 import { useAppKit } from '@reown/appkit/react';
 
@@ -29,7 +28,6 @@ const ConnectModal = () => {
       onClose();
     } else if (chain === 'ETH') {
       setSelectedNetwork('');
-      console.log(selectedNetwork);
       onClose();
       open({
         view: 'Connect',
@@ -49,7 +47,7 @@ const ConnectModal = () => {
           <ModalBody p={4}>
             {/* <Text>Select a network to connect:</Text> */}
             <HStack mt={4} spacing={2} justifyContent={'center'}>
-              {selectedNetwork === '' && (
+              {/* {selectedNetwork === '' && (
                 <Button
                   flex={1}
                   //  colorScheme={selectedNetwork === 'SOL' ? 'blue' : 'gray'}
@@ -58,21 +56,24 @@ const ConnectModal = () => {
                   <SolanaIcon />
                   SOL
                 </Button>
-              )}
-              {selectedNetwork === 'SOL' && (
+              )} */}
+              {/* {selectedNetwork === 'SOL' && (
                 <p
                   className="m-auto w-11/12"
                   onClick={() => HandleConnectWallet('SOL')}
                 >
                   <WalletMultiButton />
                 </p>
-              )}
+              )} */}
 
               {selectedNetwork === '' && (
                 <Button
                   flex={1}
                   onClick={() => {
-                    HandleConnectWallet('ETH');
+                    onClose();
+                    open({
+                      view: 'Connect',
+                    });
                   }}
                 >
                   <EthereumIcon />

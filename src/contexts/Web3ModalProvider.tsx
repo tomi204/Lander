@@ -2,7 +2,7 @@
 
 import { createAppKit } from '@reown/appkit/react';
 import { EthersAdapter } from '@reown/appkit-adapter-ethers';
-import { polygon } from '@reown/appkit/networks';
+import { base } from '@reown/appkit/networks';
 import { wagmiAdapter } from '@/constants/wagmi-config';
 import { Config, cookieToInitialState, WagmiProvider } from 'wagmi';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -19,7 +19,7 @@ const metadata = {
 createAppKit({
   adapters: [new EthersAdapter(), wagmiAdapter],
   metadata,
-  networks: [polygon],
+  networks: [base],
   projectId,
   features: {
     analytics: true,
