@@ -50,19 +50,23 @@ export async function GET(request: Request) {
         return NextResponse.redirect(`${origin}/auth/auth-code-error`);
       }
 
-      // Redirect after successful login
-     const forwardedHost = request.headers.get('x-forwarded-host');
-     const isLocalEnv = process.env.NODE_ENV === 'development';
-     const productionOrigin =
-       process.env.NEXT_PUBLIC_SITE_URL || 'http://lander-dev.vercel.app';
+      // Updated redirect logic
+      const forwardedHost = request.headers.get('x-forwarded-host');
+      const forwardedProto = request.headers.get('x-forwarded-proto');
+      const isLocalEnv = process.env.NODE_ENV === 'development';
+      const productionOrigin = process.env.NEXT_PUBLIC_SITE_URL || 'https://lander-dev.vercel.app';
 
-     if (isLocalEnv) {
-       return NextResponse.redirect(`${origin}${next}`);
-     } else if (forwardedHost) {
-       return NextResponse.redirect(`https://${forwardedHost}${next}`);
-     } else {
-       return NextResponse.redirect(`${productionOrigin}${next}`);
-     }
+      let redirectUrl;
+      if (isLocalEnv) {
+        redirectUrl = `${origin}${next}`;
+      } else if (forwardedHost && forwardedProto) {
+        redirectUrl = `${forwardedProto}://${forwardedHost}${next}`;
+      } else {
+        redirectUrl = `${productionOrigin}${next}`;
+      }
+
+      console.log('Redirecting to:', redirectUrl); // For debugging
+      return NextResponse.redirect(redirectUrl);
     }
   }
 
