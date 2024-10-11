@@ -14,13 +14,14 @@ import {
 import { BaseIcon, BNBIcon, EthereumIcon, SolanaIcon } from '@/icons';
 import { useBlockchain } from '@/contexts/BlockchainContext';
 import { useAppKit } from '@reown/appkit/react';
+import { WalletDefault } from '@coinbase/onchainkit/wallet';
 
 const ConnectModal = () => {
   const [selectedNetwork, setSelectedNetwork] = useState('');
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { isConnected } = useBlockchain();
+  const { isConnected, address } = useBlockchain();
   const { open } = useAppKit();
-
+  console.log(isConnected, address, 'dadatatata isConnected');
   function HandleConnectWallet(chain: string) {
     if (chain === 'SOL' && selectedNetwork === 'SOL') {
       setSelectedNetwork('');
@@ -65,6 +66,7 @@ const ConnectModal = () => {
                   <WalletMultiButton />
                 </p>
               )} */}
+              <WalletDefault />
 
               {selectedNetwork === '' && (
                 <Button

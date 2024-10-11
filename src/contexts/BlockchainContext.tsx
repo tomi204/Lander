@@ -15,6 +15,7 @@ import {
   useAppKitAccount,
   useAppKitProvider,
 } from '@reown/appkit/react';
+import { useAccount } from 'wagmi';
 
 interface BlockchainContextProps {
   chain: string | null | undefined;
@@ -42,12 +43,13 @@ export const BlockchainProvider = ({ children }: { children: ReactNode }) => {
   const [chain, setChain] = useState<string | null | undefined>();
 
   const { isConnected: connectedEVM, address: addressEVM } = useAppKitAccount();
-  const { publicKey: addressSOL, connected: connectedSOL } = useWallet();
+  // const { publicKey: addressSOL, connected: connectedSOL } = useWallet();
+
+  const { address: addressFromWagmi, isConnected: isConnectedWagmi } =
+    useAccount();
 
   const [isConnected, setIsConnected] = useState(false);
   const [chainId, setChainId] = useState<number | null | undefined>();
-
-  const { walletProvider } = useAppKitProvider('eip155');
 
   async function getChainId() {
     //  const chain = await walletProvider?.request({ method: 'eth_chainId' });
@@ -61,7 +63,7 @@ export const BlockchainProvider = ({ children }: { children: ReactNode }) => {
     setIsConnected(connectedEVM);
     setChain('evm');
     getChainId();
-  }, [connectedEVM, addressEVM]);
+  }, [connectedEVM, addressEVM, isConnectedWagmi, addressFromWagmi]);
 
   ///onchage chain
   //   useEffect(() => {
@@ -81,14 +83,14 @@ export const BlockchainProvider = ({ children }: { children: ReactNode }) => {
 
   //create a context user
 
-  useEffect(() => {
-    if (addressSOL) {
-      updateUserWallet(addressSOL?.toString() || '', 'solana');
-      setAddress(addressSOL?.toString());
-      setIsConnected(connectedSOL);
-      setChain('solana');
-    }
-  }, [addressSOL, connectedSOL]);
+  // useEffect(() => {
+  //   if (addressSOL) {
+  //     updateUserWallet(addressSOL?.toString() || '', 'solana');
+  //     setAddress(addressSOL?.toString());
+  //     setIsConnected(connectedSOL);
+  //     setChain('solana');
+  //   }
+  // }, [addressSOL, connectedSOL]);
 
   return (
     <BlockchainContext.Provider
