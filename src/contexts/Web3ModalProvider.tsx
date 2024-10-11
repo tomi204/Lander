@@ -2,12 +2,13 @@
 
 import { createAppKit } from '@reown/appkit/react';
 import { EthersAdapter } from '@reown/appkit-adapter-ethers';
-import { base } from '@reown/appkit/networks';
+import { base, polygon } from '@reown/appkit/networks';
 import { wagmiAdapter } from '@/constants/wagmi-config';
 import { Config, cookieToInitialState, WagmiProvider } from 'wagmi';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactNode } from 'react';
 import { OnchainKitProvider } from '@coinbase/onchainkit';
+import { base as baseFixed } from '@/constants/Chain';
 const projectId = 'ee0ce490d3a704e0950aa17edaf69837';
 const metadata = {
   name: 'Lander',
@@ -19,7 +20,8 @@ const metadata = {
 createAppKit({
   adapters: [new EthersAdapter(), wagmiAdapter],
   metadata,
-  networks: [base],
+  networks: [base, polygon],
+  defaultNetwork: base,
   projectId,
   features: {
     analytics: true,
@@ -47,22 +49,7 @@ export function AppKit({
       <QueryClientProvider client={queryClient}>
         <OnchainKitProvider
           apiKey={process.env.NEXT_PUBLIC_ONCHAINKIT_API_KEY}
-          chain={{
-            id: 8453,
-            name: 'Base',
-            nativeCurrency: {
-              name: 'Base',
-              symbol: 'ETH',
-              decimals: 18,
-            },
-            rpcUrls: {
-              default: {
-                http: [
-                  `https://base.rpc.infura.com/v3/${process.env.NEXT_PUBLIC_INFURA_API_KEY}`,
-                ],
-              },
-            },
-          }}
+          chain={baseFixed}
         >
           {children}
         </OnchainKitProvider>
