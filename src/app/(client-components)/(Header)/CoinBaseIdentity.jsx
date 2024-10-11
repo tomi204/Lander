@@ -1,7 +1,6 @@
 import WalletAddressComponent from '@/components/WalletAddressComponent';
 import { useBlockchain } from '@/contexts/BlockchainContext';
-//import { base } from 'viem/chains';
-import { base } from '@/constants/Chain';
+import { base } from 'viem/chains';
 import { Avatar, Identity, Name, Badge } from '@coinbase/onchainkit/identity';
 import { useAppKit } from '@reown/appkit/react';
 import { Spinner } from '@chakra-ui/react';
