@@ -85,7 +85,7 @@ export default function AvatarDropdown({
                   <div className="flex items-center m-auto w-full justify-center">
                     <div className="flex-grow">
                       {chain === 'evm' && address ? (
-                        <CoinBaseIdentity />
+                        <CoinBaseIdentity address={address} />
                       ) : (
                         <>
                           <Avatar sizeClass="w-12 h-12" />

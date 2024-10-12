@@ -4,8 +4,7 @@ import { base } from 'viem/chains';
 import { Avatar, Identity, Name, Badge } from '@coinbase/onchainkit/identity';
 import { useAppKit } from '@reown/appkit/react';
 import { Spinner } from '@chakra-ui/react';
-export default function CoinBaseIdentity() {
-  const { address } = useBlockchain();
+export default function CoinBaseIdentity({ address }) {
   const { open } = useAppKit();
 
   return (
