@@ -29,6 +29,7 @@ import { Badge, Spinner } from '@chakra-ui/react';
 import { TalentSocials } from '@/interfaces/account.interface';
 import { useUser } from '@/contexts/UserContext';
 import { Avatar } from '@coinbase/onchainkit/identity';
+import { ConnectButton } from '@rainbow-me/rainbowkit';
 
 export default function Component() {
   const { address } = useBlockchain();
@@ -73,6 +74,13 @@ export default function Component() {
     };
     getTalent();
   }, [address]);
+
+  if (!address)
+    return (
+      <section className="flex justify-center items-center h-6/12">
+        <ConnectButton />
+      </section>
+    );
 
   if (!talent) return <Spinner />;
 

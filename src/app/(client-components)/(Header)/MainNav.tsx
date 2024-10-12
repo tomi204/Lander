@@ -75,7 +75,7 @@ const MainNav: FC<MainNavProps> = ({ className = '' }) => {
 
         <div className="flex  flex-shrink-0  justify-end flex-1 text-neutral-700 dark:text-neutral-100">
           {useHydrated() && (
-            <div className="flex justify-around space-x-2 gap-10 items-center ">
+            <div className="flex justify-around space-x-0.5 gap-6 items-center ">
               {/* {!isConnected && <ConnectModal />} */}
               {!isConnected && <ConnectButton />}
               <div className="px-10" />
