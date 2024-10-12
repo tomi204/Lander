@@ -25,19 +25,8 @@ import { useEffect, useState } from 'react';
 import { getTalentByWallet } from '@/services/talent';
 import { useBlockchain } from '@/contexts/BlockchainContext';
 import { GithubIcon } from '@/icons';
-
-interface TalentSocials {
-  disconnected: boolean;
-  follower_count: number;
-  following_count: number;
-  location: string;
-  profile_bio: string;
-  profile_display_name: string;
-  profile_image_url: string;
-  profile_name: string;
-  profile_url: string;
-  source: string;
-}
+import { Badge, Spinner } from '@chakra-ui/react';
+import { TalentSocials } from '@/interfaces/account.interface';
 
 export default function Component() {
   const { address } = useBlockchain();
@@ -81,7 +70,7 @@ export default function Component() {
     getTalent();
   }, [address]);
 
-  console.log(talent, 'talent setted');
+  if (!talent) return <Spinner />;
 
   return (
     <div className="flex flex-col md:flex-row min-h-screen text-black">
@@ -149,7 +138,9 @@ export default function Component() {
               <p className="text-neutral-500">
                 {talent?.passport_profile?.bio}
               </p>
-              <p className="text-neutral-500">Buenos Aires</p>
+              <p className="text-neutral-500">
+                {talent?.passport_profile?.location}
+              </p>
             </div>
           </div>
           <Button
@@ -163,6 +154,11 @@ export default function Component() {
           >
             Talent Passport
           </Button>
+        </div>
+        <div className="flex items-center space-x-4">
+          {talent?.passport_profile?.tags.map((tag: string) => (
+            <Badge key={tag}>{tag}</Badge>
+          ))}
         </div>
         <div>
           <a href="#" className="text-blue-500 hover:underline">
