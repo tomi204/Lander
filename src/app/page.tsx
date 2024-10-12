@@ -31,6 +31,7 @@ export const metadata: Metadata = CryptoBedSeo;
 
 async function PageHome({ searchParams }: PageHomeProps) {
   let items: Stay[] = [];
+
   const supabase = createClient();
   const { data: properties } = await supabase.from('properties').select();
 

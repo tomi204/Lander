@@ -13,6 +13,7 @@ import { useHydrated } from '@/hooks/useHydrated';
 import Link from 'next/link';
 import supabase from '@/utils/supabase/client';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
+import { getTalentByWallet } from '@/services/talent';
 
 const PAGE_WITH_SEARCH: string[] = ['/'];
 
@@ -25,6 +26,7 @@ const MainNav: FC<MainNavProps> = ({ className = '' }) => {
   const pathname = usePathname();
 
   const connected = user !== null ? true : false;
+  const { isConnected, address } = useBlockchain();
 
   useEffect(() => {
     const getUser = async () => {
@@ -50,7 +52,7 @@ const MainNav: FC<MainNavProps> = ({ className = '' }) => {
     () => PAGE_WITH_SEARCH.includes(pathname),
     [pathname]
   );
-  const { isConnected, address } = useBlockchain();
+
   return (
     <div className={`flex nc-MainNav1 relative z-10 ${className}`}>
       <div className="px-4 container h-20 relative flex justify-between">
