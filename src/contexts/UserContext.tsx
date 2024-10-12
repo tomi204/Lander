@@ -13,8 +13,6 @@ interface User {
   id: string;
   name: string;
   email: string;
-  bookings: string[];
-  trips: string[];
   avatar_url: string;
   wallet_evm: string | null;
   wallet_sol: string | null;
@@ -52,11 +50,11 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
       if (user) {
         const { data, error } = await supabase
           .from('users')
-          .select(
-            'id, name, email ,bookings, trips , avatar_url, wallet_evm, wallet_sol'
-          )
+          .select('id, name, email, avatar_url, wallet_evm, wallet_sol')
           .eq('id', user.id)
           .single();
+
+        console.log(data, 'data userssdasjdajdajkdajksd ');
 
         if (error) throw error;
         setUser(data);

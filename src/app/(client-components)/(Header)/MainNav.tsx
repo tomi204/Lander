@@ -14,6 +14,7 @@ import Link from 'next/link';
 import supabase from '@/utils/supabase/client';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { getTalentByWallet } from '@/services/talent';
+import { useUser } from '@/contexts/UserContext';
 
 const PAGE_WITH_SEARCH: string[] = ['/'];
 
@@ -53,6 +54,7 @@ const MainNav: FC<MainNavProps> = ({ className = '' }) => {
     [pathname]
   );
 
+  console.log(user, 'user');
   return (
     <div className={`flex nc-MainNav1 relative z-10 ${className}`}>
       <div className="px-4 container h-20 relative flex justify-between">
