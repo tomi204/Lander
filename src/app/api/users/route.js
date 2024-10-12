@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import supabase from '@/supabase/client';
-import { NextApiRequest, NextApiResponse } from "next";
-import { createSuperbaseServerClient } from "@/supabase/server";
+
 
 
 

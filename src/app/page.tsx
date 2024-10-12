@@ -35,6 +35,12 @@ async function PageHome({ searchParams }: PageHomeProps) {
   const supabase = createClient();
   const { data: properties } = await supabase.from('properties').select();
 
+
+  const { data: users } = await supabase.from( 'users' ).select( );
+
+  console.log( users, "users" );
+
+
   const settings = homeSettingsConst['DEFAULT'];
 
   if (!properties)

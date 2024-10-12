@@ -80,6 +80,18 @@ export async function updateUserWallet(
     };
   }
 
+  const { data: wallets, error: walletsError } = await supabase
+    .from('wallets')
+    .insert({ main_wallet: wallet, chain, user_id: user.id })
+    .select();
+
+  if (walletsError) {
+    return {
+      message: 'Error inserting wallet',
+      error: walletsError.message,
+    };
+  }
+
   // Fetch current user data
   const { data: userData, error: fetchError } = await supabase
     .from('users')

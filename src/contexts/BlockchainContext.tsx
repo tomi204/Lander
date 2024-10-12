@@ -58,11 +58,18 @@ export const BlockchainProvider = ({ children }: { children: ReactNode }) => {
     setChainId(137);
   }
   useEffect(() => {
-    updateUserWallet(addressEVM?.toString() || '', 'evm');
+  
     setAddress(addressEVM || null);
     setIsConnected(connectedEVM);
     setChain('evm');
     getChainId();
+
+
+    if (addressEVM) {
+      updateUserWallet(addressEVM, 'evm');
+
+      
+    }
   }, [connectedEVM, addressEVM, isConnectedWagmi, addressFromWagmi]);
 
   ///onchage chain
