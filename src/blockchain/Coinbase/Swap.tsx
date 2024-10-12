@@ -10,14 +10,22 @@ import {
 import type { Token } from '@coinbase/onchainkit/token';
 import { TokensBase } from '@/constants/Tokens';
 
-export default function SwapComponents() {
+interface SwapComponentsProps {
+  tokens: Token[];
+}
+
+export default function SwapComponents({ tokens }: SwapComponentsProps) {
   const swappableTokens = TokensBase as Token[];
+  let tokensToUse = tokens;
+  if (!tokens) {
+    tokensToUse = TokensBase as Token[];
+  }
   return (
     <Swap className="w-8/12 m-auto flex flex-col items-center justify-center bg-white">
       <SwapAmountInput
         label="Sell"
         className="rounded-3xl"
-        swappableTokens={swappableTokens}
+        swappableTokens={tokensToUse}
         type="from"
       />
       <SwapToggleButton />

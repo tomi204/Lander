@@ -4,5 +4,6 @@ export interface Token {
   decimals: number;
   image: string;
   name: string;
+  payable: boolean;
   symbol: string;
 }

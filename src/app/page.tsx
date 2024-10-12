@@ -18,49 +18,6 @@ import SectionSubscribe2 from '@/components/SectionSubscribe2';
 
 export const revalidate = 2;
 
-const query = gql`
-  query StaysHome($address: String, $guests: Int) {
-    stays(
-      filters: { address: { containsi: $address }, maxGuests: { gte: $guests } }
-      pagination: { page: 1, pageSize: 100 }
-    ) {
-      data {
-        id
-        attributes {
-          price
-          name
-          address
-          maxGuests
-          listingCategory {
-            data {
-              id
-              attributes {
-                name
-              }
-            }
-          }
-          galleryImgs {
-            data {
-              attributes {
-                url
-                formats
-              }
-            }
-          }
-        }
-      }
-      meta {
-        pagination {
-          page
-          pageSize
-          pageCount
-          total
-        }
-      }
-    }
-  }
-`;
-
 interface PageHomeProps {
   searchParams: {
     location: string;
@@ -79,29 +36,12 @@ async function PageHome({ searchParams }: PageHomeProps) {
 
   const settings = homeSettingsConst['DEFAULT'];
 
-  // const client = getClient();
-
-  // const { data: properties, error } = useSWR( '/api/properties', fetcher );
-
-  // if ( error ) return <h1 className="flex justify-center items-center h-screen p-5">Failed to load</h1>;
-
   if (!properties)
     return (
       <div className="flex justify-center items-center h-screen p-5">
         <LoadingSpinner2 className="" />
       </div>
     );
-
-  // try {
-  //   const res = await client.query({
-  //     query,
-  //     variables: { address: searchParams.location, guests: searchParams.guests },
-  //   });
-
-  //   items = covertApolloResponseToStays(res);
-  // } catch (error) {
-  //   console.log("error", error);
-  // }
 
   return (
     <main className="relative overflow-hidden">
@@ -110,8 +50,6 @@ async function PageHome({ searchParams }: PageHomeProps) {
 
       <div className="container relative space-y-8 mb-24 lg:space-y-28 lg:mb-28">
         {/* SECTION HERO */}
-        {/* <SectionHome className="pt-10 lg:pt-16 lg:pb-16" /> */}
-
         <div className="container pt-10 pb-0">
           <SectionHeroArchivePage settings={settings} />
         </div>
