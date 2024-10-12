@@ -28,7 +28,10 @@ import { GithubIcon } from '@/icons';
 import { Badge, Spinner } from '@chakra-ui/react';
 import { TalentSocials } from '@/interfaces/account.interface';
 import { useUser } from '@/contexts/UserContext';
-import { Avatar } from '@coinbase/onchainkit/identity';
+import { Avatar, Identity, Name } from '@coinbase/onchainkit/identity';
+import { ConnectButton } from '@rainbow-me/rainbowkit';
+import WalletAddressComponent from '@/components/WalletAddressComponent';
+import { base } from 'viem/chains';
 
 export default function Component() {
   const { address } = useBlockchain();
@@ -74,6 +77,13 @@ export default function Component() {
     getTalent();
   }, [address]);
 
+  if (!address)
+    return (
+      <section className="flex justify-center items-center h-6/12">
+        <ConnectButton />
+      </section>
+    );
+
   if (!talent) return <Spinner />;
 
   return (
@@ -109,7 +119,7 @@ export default function Component() {
       <div className="flex-1 p-4 md:p-8 space-y-8">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center space-y-4 md:space-y-0">
           <div className="flex items-center space-x-4">
-            {user?.avatar_url ? (
+            {/* {user?.avatar_url ? (
               <Image
                 src={user?.avatar_url}
                 alt="Profile picture"
@@ -117,9 +127,34 @@ export default function Component() {
                 height={80}
                 className="rounded-full"
               />
-            ) : (
-              <Avatar address={address as `0x${string}`} />
-            )}
+            ) : ( */}
+
+            <Avatar
+              chain={base}
+              className="w-44 h-44"
+              address={address as `0x${string}`}
+              sizes="100%"
+              loadingComponent={<Spinner className="m-auto" />}
+              defaultComponent={
+                <div className="h-8 w-8">
+                  <svg
+                    width="100%"
+                    height="100%"
+                    viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <polygon
+                      points="6,1 14,1 19,6 19,14 14,19 6,19 1,14 1,6"
+                      fill="green"
+                      stroke="green"
+                      stroke-width="1"
+                    />
+                  </svg>
+                </div>
+              }
+            />
+
+            {/* )} */}
             <div>
               <h2 className="text-2xl font-bold">
                 {talent?.passport_profile.display_name}
@@ -183,6 +218,7 @@ export default function Component() {
           <div className="flex space-x-4">
             {talent?.passport_socials.map((social: TalentSocials) => (
               <a
+                key={social.source}
                 href={social.profile_url}
                 className="text-gray-400 hover:text-black transition-colors duration-200"
               >
