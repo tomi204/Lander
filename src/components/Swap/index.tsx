@@ -24,7 +24,6 @@ export const Swap = () => {
   const handleChange = useCallback((value: string) => {
     async function getData(value: string) {
       const response = await getTokens({ search: value });
-      //  setTokens(response);
       setTokens(response as Token[]);
       console.log(response);
       if ('tokens' in response) {

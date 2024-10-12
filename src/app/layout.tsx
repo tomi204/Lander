@@ -17,6 +17,8 @@ import { UserProvider } from '@/contexts/UserContext';
 import { ChakraProvider } from '@chakra-ui/react';
 import { OnchainKitProvider } from '@coinbase/onchainkit';
 import { base } from 'viem/chains';
+import '@rainbow-me/rainbowkit/styles.css';
+
 const poppins = Poppins({
   subsets: ['latin'],
   display: 'swap',
