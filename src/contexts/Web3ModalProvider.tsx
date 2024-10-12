@@ -9,7 +9,12 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactNode } from 'react';
 import { OnchainKitProvider } from '@coinbase/onchainkit';
 import { base as baseFixed } from '@/constants/Chain';
-const projectId = 'ee0ce490d3a704e0950aa17edaf69837';
+import { RainbowKitProvider } from '@rainbow-me/rainbowkit';
+
+const projectId = process.env.NEXT_PUBLIC_REOWN_PROJECT_ID;
+if (!projectId) {
+  throw new Error('NEXT_PUBLIC_REOWN_PROJECT_ID is not set');
+}
 const metadata = {
   name: 'Lander',
   description: 'Welcome to Lander',
@@ -51,7 +56,7 @@ export function AppKit({
           apiKey={process.env.NEXT_PUBLIC_ONCHAINKIT_API_KEY}
           chain={baseFixed}
         >
-          {children}
+          <RainbowKitProvider>{children}</RainbowKitProvider>
         </OnchainKitProvider>
       </QueryClientProvider>
     </WagmiProvider>

@@ -1,34 +1,34 @@
-"use client";
+'use client';
 
 import React, { useState } from 'react';
-import { Label } from "@/components/ui/label";
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { Textarea } from "@/components/ui/textarea";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Slider } from "@/components/ui/slider";
+import { Label } from '@/components/ui/label';
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from '@/components/ui/select';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import { Textarea } from '@/components/ui/textarea';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Slider } from '@/components/ui/slider';
 import { useMutation } from 'react-query';
 // import { useWeb3ModalAccount } from '@web3modal/ethers/react';
 // import Label from "@/components/Label";
-import { User } from "@/data/types";
-import { useEditUserData } from "@/hooks/useUser";
-import ButtonPrimary from "@/shared/ButtonPrimary";
+import { User } from '@/data/types';
+import { useEditUserData } from '@/hooks/useUser';
+import ButtonPrimary from '@/shared/ButtonPrimary';
 // import Input from "@/shared/Input";
 // import Textarea from "@/shared/Textarea";
-import { FC } from "react";
-import { useForm } from "react-hook-form";
-
-export interface AccountContainerProps {
-  user: Partial<User>;
-}
-
-export interface AccountDataRequest {
-  email: string;
-  phoneNumber: string;
-  about: string;
-}
+import { FC } from 'react';
+import { useForm } from 'react-hook-form';
+import {
+  AccountContainerProps,
+  AccountDataRequest,
+} from '@/interfaces/account.interface';
 
 const AccountContainer: FC<AccountContainerProps> = ({ user }) => {
   const [{ data, loading, error }, execute] = useEditUserData();
@@ -38,7 +38,7 @@ const AccountContainer: FC<AccountContainerProps> = ({ user }) => {
   });
 
   const checkKeyDown = (e: any) => {
-    if (e.key === "Enter") e.preventDefault();
+    if (e.key === 'Enter') e.preventDefault();
   };
 
   const onSubmit = (data: Partial<AccountDataRequest>) => {
@@ -51,7 +51,9 @@ const AccountContainer: FC<AccountContainerProps> = ({ user }) => {
     <div className="space-y-6 sm:space-y-8">
       <form onSubmit={handleSubmit(onSubmit)} onKeyDown={checkKeyDown}>
         {/* HEADING */}
-        <h2 className="text-3xl font-semibold sm:hidden">Account Information</h2>
+        <h2 className="text-3xl font-semibold sm:hidden">
+          Account Information
+        </h2>
         <div className="w-14 border-b border-neutral-200 dark:border-neutral-700 mt-4 sm:hidden"></div>
         <div className="flex flex-col md:flex-row pt-10 sm:pt-2">
           <div className="flex-grow md:mt-0 md:pl-16 max-w-3xl space-y-6">
@@ -60,7 +62,7 @@ const AccountContainer: FC<AccountContainerProps> = ({ user }) => {
               <Input
                 className="mt-1.5"
                 placeholder="add your mail"
-                {...register("email", { required: false })}
+                {...register('email', { required: false })}
               />
             </div>
             {/* ---- */}
@@ -69,12 +71,15 @@ const AccountContainer: FC<AccountContainerProps> = ({ user }) => {
               <Input
                 className="mt-1.5"
                 placeholder="example: +549123123123"
-                {...register("phoneNumber", { required: false })}
+                {...register('phoneNumber', { required: false })}
               />
             </div>
             <div>
               <Label>About you</Label>
-              <Textarea className="mt-1.5" {...register("about", { required: false })} />
+              <Textarea
+                className="mt-1.5"
+                {...register('about', { required: false })}
+              />
             </div>
             <div className="pt-2">
               <ButtonPrimary loading={loading} disabled={loading}>
@@ -82,8 +87,11 @@ const AccountContainer: FC<AccountContainerProps> = ({ user }) => {
               </ButtonPrimary>
             </div>
             <div className="text-center">
-              <div className="text-red-700 px-4 py-3 rounded relative" role="alert">
-                {error?.message ? "Ops! Someone is not ok." : null}
+              <div
+                className="text-red-700 px-4 py-3 rounded relative"
+                role="alert"
+              >
+                {error?.message ? 'Ops! Someone is not ok.' : null}
               </div>
             </div>
           </div>

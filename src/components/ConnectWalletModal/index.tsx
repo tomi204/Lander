@@ -15,6 +15,7 @@ import { BaseIcon, BNBIcon, EthereumIcon, SolanaIcon } from '@/icons';
 import { useBlockchain } from '@/contexts/BlockchainContext';
 import { useAppKit } from '@reown/appkit/react';
 import { WalletDefault } from '@coinbase/onchainkit/wallet';
+import { ConnectButton } from '@rainbow-me/rainbowkit';
 
 const ConnectModal = () => {
   const [selectedNetwork, setSelectedNetwork] = useState('');
@@ -84,6 +85,7 @@ const ConnectModal = () => {
                 </Button>
               )}
             </HStack>
+            <ConnectButton />
           </ModalBody>
         </ModalContent>
       </Modal>

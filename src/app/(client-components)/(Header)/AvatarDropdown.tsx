@@ -53,6 +53,8 @@ export default function AvatarDropdown({
     await supabase.auth.signOut();
   };
   console.log(chain, 'chain');
+
+  console.log(memoizedUser, 'memoizedUser');
   return (
     <Popover className={`relative flex ${className}`}>
       {({ open, close }) => (

@@ -64,7 +64,6 @@ const BuyButton: FC<ContractInteractionProps> = ({
   const { address, isConnected, chain } = useBlockchain();
   const { transaction, setTransaction } = useTransaction() || {};
   const router = useRouter();
-  // const { publicKey, sendTransaction } = useWallet();
   const provider = useEthersProvider();
   const signer = useEthersSigner();
   async function CreateTransaction() {
@@ -75,9 +74,13 @@ const BuyButton: FC<ContractInteractionProps> = ({
       if (!address) {
         throw new Error('Invalid Address');
       }
+      console.log(signer, 'signer');
 
       const erc20Contract = new Contract(tokenAddress, erc20Abi, signer);
+      console.log(erc20Contract, 'adsdds');
+
       const decimals = await erc20Contract.decimals();
+      console.log(decimals, 'decimals');
       const parsedAmount = ethers.parseUnits(
         transaction.amount.toString(),
         Number(decimals)

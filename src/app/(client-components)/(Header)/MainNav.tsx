@@ -1,7 +1,6 @@
-import React, { FC, useEffect, useCallback, useMemo, useState } from 'react';
+import React, { FC, useEffect, useMemo, useState } from 'react';
 import Logo from '@/shared/Logo';
 import Navigation from '@/shared/Navigation/Navigation';
-import ButtonPrimary from '@/shared/ButtonPrimary';
 import AvatarDropdown from './AvatarDropdown';
 import { useAuth } from '@/contexts/AuthContext';
 import { usePathname } from 'next/navigation';
@@ -11,10 +10,11 @@ import { MainNavProps } from '@/interfaces/Common';
 import ConnectModal from '@/components/ConnectWalletModal';
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 import { useHydrated } from '@/hooks/useHydrated';
-import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-
 import supabase from '@/utils/supabase/client';
+import { ConnectButton } from '@rainbow-me/rainbowkit';
+import { getTalentByWallet } from '@/services/talent';
+import { useUser } from '@/contexts/UserContext';
 
 const PAGE_WITH_SEARCH: string[] = ['/'];
 
@@ -27,6 +27,7 @@ const MainNav: FC<MainNavProps> = ({ className = '' }) => {
   const pathname = usePathname();
 
   const connected = user !== null ? true : false;
+  const { isConnected, address } = useBlockchain();
 
   useEffect(() => {
     const getUser = async () => {
@@ -52,7 +53,7 @@ const MainNav: FC<MainNavProps> = ({ className = '' }) => {
     () => PAGE_WITH_SEARCH.includes(pathname),
     [pathname]
   );
-  const { isConnected, address } = useBlockchain();
+
   return (
     <div className={`flex nc-MainNav1 relative z-10 ${className}`}>
       <div className="px-4 container h-20 relative flex justify-between">
@@ -75,7 +76,8 @@ const MainNav: FC<MainNavProps> = ({ className = '' }) => {
         <div className="flex  flex-shrink-0  justify-end flex-1 text-neutral-700 dark:text-neutral-100">
           {useHydrated() && (
             <div className="flex justify-around space-x-0.5 items-center ">
-              {!isConnected && <ConnectModal />}
+              {/* {!isConnected && <ConnectModal />} */}
+              {!isConnected && <ConnectButton />}
               <div className="px-10" />
               {!user && (
                 <button className="shadow-[inset_0_0_0_2px_#2935db] text-black px-8 py-2 rounded-full tracking-widest uppercase font-bold bg-transparent hover:bg-[#2935db] hover:text-white dark:text-neutral-200 transition duration-200">
