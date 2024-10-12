@@ -7,6 +7,7 @@ import { Spinner } from '@chakra-ui/react';
 export default function CoinBaseIdentity() {
   const { address } = useBlockchain();
   const { open } = useAppKit();
+
   return (
     <div
       className="m-auto w-7/12 rounded-3xl mr-20"

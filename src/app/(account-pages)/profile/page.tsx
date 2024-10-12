@@ -27,10 +27,14 @@ import { useBlockchain } from '@/contexts/BlockchainContext';
 import { GithubIcon } from '@/icons';
 import { Badge, Spinner } from '@chakra-ui/react';
 import { TalentSocials } from '@/interfaces/account.interface';
+import { useUser } from '@/contexts/UserContext';
+import { Avatar } from '@coinbase/onchainkit/identity';
 
 export default function Component() {
   const { address } = useBlockchain();
   const [talent, setTalent] = useState<any>(null);
+
+  const { user } = useUser();
   const favoriteCities = [
     { name: 'New York', image: nyc, width: 300, height: 200 },
     { name: 'Tokyo', image: tokyo, width: 300, height: 200 },
@@ -105,13 +109,17 @@ export default function Component() {
       <div className="flex-1 p-4 md:p-8 space-y-8">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center space-y-4 md:space-y-0">
           <div className="flex items-center space-x-4">
-            <Image
-              src={profilePicture}
-              alt="Profile picture"
-              width={80}
-              height={80}
-              className="rounded-full"
-            />
+            {user?.avatar_url ? (
+              <Image
+                src={user?.avatar_url}
+                alt="Profile picture"
+                width={80}
+                height={80}
+                className="rounded-full"
+              />
+            ) : (
+              <Avatar address={address as `0x${string}`} />
+            )}
             <div>
               <h2 className="text-2xl font-bold">
                 {talent?.passport_profile.display_name}
