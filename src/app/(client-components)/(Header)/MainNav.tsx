@@ -54,7 +54,6 @@ const MainNav: FC<MainNavProps> = ({ className = '' }) => {
     [pathname]
   );
 
-  console.log(user, 'user');
   return (
     <div className={`flex nc-MainNav1 relative z-10 ${className}`}>
       <div className="px-4 container h-20 relative flex justify-between">
