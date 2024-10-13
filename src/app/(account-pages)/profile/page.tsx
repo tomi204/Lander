@@ -80,7 +80,11 @@ export default function Component() {
   if (!address)
     return (
       <section className="flex justify-center items-center h-6/12">
-        <ConnectButton />
+        <ConnectButton
+          accountStatus={'address'}
+          showBalance={false}
+          chainStatus={'none'}
+        />
       </section>
     );
 

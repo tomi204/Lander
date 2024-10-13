@@ -77,7 +77,13 @@ const MainNav: FC<MainNavProps> = ({ className = '' }) => {
           {useHydrated() && (
             <div className="flex justify-around space-x-0.5 gap-6 items-center ">
               {/* {!isConnected && <ConnectModal />} */}
-              {!isConnected && <ConnectButton />}
+              {!isConnected && (
+                <ConnectButton
+                  accountStatus={'address'}
+                  showBalance={false}
+                  chainStatus={'none'}
+                />
+              )}
               <div className="px-10" />
               {!user && (
                 <button className="shadow-[inset_0_0_0_2px_#2935db] text-black px-8 py-2 rounded-full tracking-widest uppercase font-bold bg-transparent hover:bg-[#2935db] hover:text-white dark:text-neutral-200 transition duration-200">
