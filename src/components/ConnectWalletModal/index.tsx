@@ -85,7 +85,11 @@ const ConnectModal = () => {
                 </Button>
               )}
             </HStack>
-            <ConnectButton />
+            <ConnectButton
+              accountStatus={'address'}
+              showBalance={false}
+              chainStatus={'none'}
+            />
           </ModalBody>
         </ModalContent>
       </Modal>
