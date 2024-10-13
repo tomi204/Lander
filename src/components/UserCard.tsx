@@ -5,16 +5,14 @@ import {
   CardFooter,
   CardHeader,
 } from '@/components/ui/card';
-import { MapPin, Star, User } from 'lucide-react';
-import { Avatar, Identity, Name, Badge } from '@coinbase/onchainkit/identity';
+import { MapPin } from 'lucide-react';
+import { Avatar, Identity } from '@coinbase/onchainkit/identity';
 import { base } from 'viem/chains';
-import WalletAddressComponent from './WalletAddressComponent';
 import { Button } from './ui/button';
 
 export default function UserCard({ passport }: any) {
-  console.log(passport, 'passport');
   return (
-    <Card className="">
+    <Card className="flex flex-col justify-between h-full min-h-[350px]">
       <CardHeader className="flex flex-col items-center justify-center gap-4 pb-2">
         <Identity
           className="rounded-3xl justify-center"
@@ -54,7 +52,7 @@ export default function UserCard({ passport }: any) {
           </div>
         </div>
       </CardHeader>
-      <CardContent className="flex flex-col items-center justify-center">
+      <CardContent className="flex flex-col items-center justify-center flex-grow">
         <p className="text-muted-foreground mb-4 text-center">
           {passport.passport_profile.bio}
         </p>

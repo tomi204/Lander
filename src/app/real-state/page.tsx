@@ -13,8 +13,6 @@ import { IRealState } from '@/data/types';
 import RealStateCard from '@/components/RealStateCard';
 import __realState from '@/data/jsons/__realState.json';
 export default function RealState() {
-  console.log(__realState);
-
   return (
     <div className="flex flex-col min-h-screen">
       <main className="flex-1">

@@ -54,8 +54,6 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
           .eq('id', user.id)
           .single();
 
-        console.log(data, 'data userssdasjdajdajkdajksd ');
-
         if (error) throw error;
         setUser(data);
       } else {

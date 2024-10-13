@@ -40,7 +40,6 @@ const ReservationsPage: FC = () => {
           throw new Error('Failed to fetch bookings');
         }
         const data = await response.json();
-        console.log(data, 'data');
         if (response.ok) {
           setReservations(data);
           setError(null);

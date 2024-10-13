@@ -16,7 +16,6 @@ export async function GET(request) {
     if (authError || !user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-    console.log(user, 'user in trips');
 
     // Fetch bookings where user.id matches owner_id
     const { data: trips, error: tripsError } = await supabase
