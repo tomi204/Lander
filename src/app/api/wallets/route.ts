@@ -7,6 +7,8 @@ export async function GET() {
   if (error) {
     console.error('Error fetching users:', NextResponse.json(error));
   } else {
+
+    
     console.log(data, 'data');
     return NextResponse.json(data);
   }
