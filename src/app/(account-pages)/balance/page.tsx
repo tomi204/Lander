@@ -10,7 +10,7 @@ import UnderConstruction from '@/components/UnderConstruction';
 
 export const metadata: Metadata = {
   ...CryptoBedSeo,
-  title: 'CryptoBed - Balance',
+  title: 'Lander - Balance',
   description: 'Check your balance and make withdrawals',
 };
 
