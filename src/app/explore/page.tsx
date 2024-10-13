@@ -33,15 +33,15 @@ function Explore() {
     }
   };
 
-  const loadOurUsers = async () => {
-    const ourUsers = await fetch('/api/users/wallets');
-    console.log(ourUsers, 'ourUsers');
-    //setOurUsers(ourUsers as []);
-  };
+  //   const loadOurUsers = async () => {
+  //     const ourUsers = await fetch('/api/users/wallets');
+  //     console.log(ourUsers, 'ourUsers');
+  //     //setOurUsers(ourUsers as []);
+  //   };
 
-  useEffect(() => {
-    loadOurUsers();
-  }, []);
+  //   useEffect(() => {
+  //     loadOurUsers();
+  //   }, []);
 
   return (
     <section className=" w-11/12 m-auto mt-10">
