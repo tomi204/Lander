@@ -1,9 +1,6 @@
 import { NextResponse } from 'next/server';
 import supabase from '@/supabase/client';
 
-
-
-
 export async function GET() {
   let { data: users, error } = await supabase.from('users').select('*');
 
