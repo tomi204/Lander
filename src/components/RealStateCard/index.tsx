@@ -35,8 +35,6 @@ const RealStateCard: FC<RealStateCardProps> = ({
     location,
   } = data;
 
-  console.log(data);
-
   return (
     <Card>
       <CardHeader>

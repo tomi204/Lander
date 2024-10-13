@@ -52,9 +52,7 @@ export default function AvatarDropdown({
   const handleSignOut = async () => {
     await supabase.auth.signOut();
   };
-  console.log(chain, 'chain');
 
-  console.log(memoizedUser, 'memoizedUser');
   return (
     <Popover className={`relative flex ${className}`}>
       {({ open, close }) => (
@@ -85,7 +83,7 @@ export default function AvatarDropdown({
                   <div className="flex items-center m-auto w-full justify-center">
                     <div className="flex-grow">
                       {chain === 'evm' && address ? (
-                        <CoinBaseIdentity />
+                        <CoinBaseIdentity address={address} />
                       ) : (
                         <>
                           <Avatar sizeClass="w-12 h-12" />

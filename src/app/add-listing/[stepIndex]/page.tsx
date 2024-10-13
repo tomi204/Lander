@@ -1,11 +1,11 @@
-import React from "react";
-import { cookies } from "next/headers";
-import { notFound, redirect } from "next/navigation";
-import { findTaxonomies } from "@/services/taxonomy";
-import { findCountries } from "@/services/country";
-import { findAmenities } from "@/services/amenities";
-import StayStepperContainer from "./StepsContainer";
-import { RedirectType } from "next/dist/client/components/redirect";
+import React from 'react';
+import { cookies } from 'next/headers';
+import { notFound, redirect } from 'next/navigation';
+import { findTaxonomies } from '@/services/taxonomy';
+import { findCountries } from '@/services/country';
+import { findAmenities } from '@/services/amenities';
+import StayStepperContainer from './StepsContainer';
+import { RedirectType } from 'next/dist/client/components/redirect';
 
 export interface AddListingPageProps {
   params: { stepIndex: string };
@@ -23,10 +23,10 @@ export default async function AddListingPage({
   searchParams,
 }: AddListingPageProps) {
   const cookieStore = cookies();
-  const jwt = cookieStore.get("jwt");
+  const jwt = cookieStore.get('jwt');
 
   if (!jwt) {
-    redirect("/", RedirectType.replace);
+    redirect('/', RedirectType.replace);
   }
   try {
     const taxonomies = await findTaxonomies();
@@ -44,7 +44,6 @@ export default async function AddListingPage({
       />
     );
   } catch (error) {
-    console.log(error);
     notFound();
   }
 }

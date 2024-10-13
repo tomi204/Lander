@@ -74,10 +74,8 @@ const BuyButton: FC<ContractInteractionProps> = ({
       if (!address) {
         throw new Error('Invalid Address');
       }
-      console.log(signer, 'signer');
 
       const erc20Contract = new Contract(tokenAddress, erc20Abi, signer);
-      console.log(erc20Contract, 'adsdds');
 
       const decimals = await erc20Contract.decimals();
       console.log(decimals, 'decimals');
@@ -85,7 +83,6 @@ const BuyButton: FC<ContractInteractionProps> = ({
         transaction.amount.toString(),
         Number(decimals)
       );
-      console.log(parsedAmount, 'parsedAmount');
       const tx = await erc20Contract
         .transfer(polygonAddresses.P2P, parsedAmount)
         .catch((err) => {

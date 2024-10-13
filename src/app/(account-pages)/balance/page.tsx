@@ -36,7 +36,6 @@ const AccountBilling = async () => {
       <UnderConstruction />
     );
   } catch (error) {
-    console.log(error);
     notFound();
   }
 };
