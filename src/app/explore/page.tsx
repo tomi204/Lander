@@ -3,6 +3,8 @@ import UserCard from '@/components/UserCard';
 import { getAllTalent } from '@/services/talent';
 import { useEffect, useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Spinner } from '@chakra-ui/react';
+import { LoadingSpinner } from '@/components/LoadingSpinner';
 
 function Explore() {
   const [passports, setPassports] = useState([]);
@@ -42,6 +44,8 @@ function Explore() {
   //   useEffect(() => {
   //     loadOurUsers();
   //   }, []);
+
+  if (!passports || passports.length === 0) return <LoadingSpinner />;
 
   return (
     <section className=" w-11/12 m-auto mt-10">
