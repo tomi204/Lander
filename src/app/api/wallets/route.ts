@@ -5,9 +5,9 @@ export async function GET() {
   const { data, error } = await supabase.from('wallets').select('*');
 
   if (error) {
-    console.error('Error fetching users:', NextResponse.json(error));
+    console.error('Error fetching wallets:', NextResponse.json(error));
   } else {
-    console.log(data, 'data');
+    console.log(data, 'wallets');
     return NextResponse.json(data);
   }
 }
