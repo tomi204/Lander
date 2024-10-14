@@ -5,6 +5,7 @@ import { fetchRenterByTxAndWallet } from '@/services/account';
 import TripCard from '@/components/TripCard';
 import { useBlockchain } from '@/contexts/BlockchainContext';
 import { Spinner } from '@chakra-ui/react';
+import { LoadingSpinner } from '@/components/LoadingSpinner';
 
 const ReservationsPage: FC = () => {
   const [reservations, setReservations] = useState<any>([]);
@@ -36,7 +37,7 @@ const ReservationsPage: FC = () => {
     fetchReservations();
   }, []);
 
-  if (loading) return <Spinner size={'xl'} />;
+  if (loading) return <LoadingSpinner />;
   if (error) return <p>Error: {error}</p>;
 
   return (

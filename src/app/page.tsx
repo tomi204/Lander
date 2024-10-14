@@ -5,16 +5,11 @@ import SectionGridHasMap from './listing/SectionGridHasMap';
 import SectionHeroArchivePage from './(server-components)/SectionHeroArchivePage';
 import CryptoBedSeo from '@/constants/seo';
 import { Metadata } from 'next';
-import { gql } from '@apollo/client';
-// import { getClient } from "@/utils/apollo";
 import { homeSettingsConst } from '@/constants/home';
-import { covertApolloResponseToStays } from '@/adapters/stay.adapters';
-import useSWR from 'swr';
-import { fetcher } from '@/utils/fetcher';
 import { createClient } from '@/supabase/server';
 import SectionOurFeatures from '@/components/SectionOurFeatures';
 import SectionSubscribe2 from '@/components/SectionSubscribe2';
-import { Spinner } from '@chakra-ui/react';
+import { LoadingSpinner } from '@/components/LoadingSpinner';
 
 export const revalidate = 2;
 
@@ -39,12 +34,7 @@ async function PageHome({ searchParams }: PageHomeProps) {
 
   const settings = homeSettingsConst['DEFAULT'];
 
-  if (!properties)
-    return (
-      <div className="flex justify-center items-center h-screen p-5">
-        <Spinner size={'xl'} className="" />
-      </div>
-    );
+  if (!properties) return <LoadingSpinner />;
 
   return (
     <main className="relative overflow-hidden">

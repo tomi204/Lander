@@ -31,6 +31,7 @@ import { ModalRanking } from '@/components/ModalRanking';
 import { useRouter } from 'next/navigation';
 import { useBlockchain } from '@/contexts/BlockchainContext';
 import { Spinner } from '@chakra-ui/react';
+import { LoadingSpinner } from '../LoadingSpinner';
 
 export default function P2PDetails({ data }: { data: any }) {
   const { address } = useBlockchain();
@@ -56,7 +57,7 @@ export default function P2PDetails({ data }: { data: any }) {
   };
 
   if (data?.property?.title === undefined) {
-    return <Spinner size={'xl'} />;
+    return <LoadingSpinner />;
   }
   console.log(data, 'data');
 
