@@ -26,6 +26,8 @@ import {
 
 import { useEthersSigner, useEthersProvider } from '@/blockchain';
 import { config } from '@/constants/wagmi-config';
+import { useChainId } from 'wagmi';
+import { useChainContract } from '@/hooks/useChainContract';
 interface ContractInteractionProps {
   disabled?: boolean;
   amount: number;
@@ -66,6 +68,8 @@ const BuyButton: FC<ContractInteractionProps> = ({
   const router = useRouter();
   const provider = useEthersProvider();
   const signer = useEthersSigner();
+  const chainId = useChainId();
+  const landerContract = useChainContract(chainId);
   async function CreateTransaction() {
     try {
       setLoading(true);
@@ -78,13 +82,12 @@ const BuyButton: FC<ContractInteractionProps> = ({
       const erc20Contract = new Contract(tokenAddress, erc20Abi, signer);
 
       const decimals = await erc20Contract.decimals();
-      console.log(decimals, 'decimals');
       const parsedAmount = ethers.parseUnits(
         transaction.amount.toString(),
         Number(decimals)
       );
       const tx = await erc20Contract
-        .transfer(polygonAddresses.P2P, parsedAmount)
+        .transfer(landerContract, parsedAmount)
         .catch((err) => {
           Notiflix.Notify.failure('Error:' + err);
         });
