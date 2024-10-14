@@ -12,12 +12,15 @@ import { TokenSearch } from '@coinbase/onchainkit/token';
 import { getTokens } from '@coinbase/onchainkit/api';
 import type { Token } from '@coinbase/onchainkit/token';
 import { useCallback } from 'react';
+import { useAppKit } from '@reown/appkit/react';
 export const Swap = () => {
   const [tokens, setTokens] = useState<Token[]>([]);
   const { address } = useBlockchain();
+  const { open } = useAppKit();
   const config = {
     appearance: 'light',
     toChain: 56,
+    hiddenUI: ['poweredBy', 'walletMenu', 'drawerCloseButton'],
     theme: {},
   } as Partial<WidgetConfig>;
 

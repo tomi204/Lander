@@ -4,17 +4,13 @@ import Navigation from '@/shared/Navigation/Navigation';
 import AvatarDropdown from './AvatarDropdown';
 import { useAuth } from '@/contexts/AuthContext';
 import { usePathname } from 'next/navigation';
-import SearchFormMobile from '../(HeroSearchFormMobile)/SearchFormMobile';
 import { useBlockchain } from '@/contexts/BlockchainContext';
 import { MainNavProps } from '@/interfaces/Common';
-import ConnectModal from '@/components/ConnectWalletModal';
-import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 import { useHydrated } from '@/hooks/useHydrated';
 import Link from 'next/link';
 import supabase from '@/utils/supabase/client';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
-import { getTalentByWallet } from '@/services/talent';
-import { useUser } from '@/contexts/UserContext';
+import MobileNav from './MobileNav';
 
 const PAGE_WITH_SEARCH: string[] = ['/'];
 
@@ -65,25 +61,27 @@ const MainNav: FC<MainNavProps> = ({ className = '' }) => {
           <Logo className="w-24 self-center sm:hidden hidden md:block lg:block xl:block 2xl:block" />
         </div>
         <Navigation />
-        {showSearch && (
+        {/* {showSearch && (
           <div className="flex lg:hidden flex-[3] max-w-lg !mx-auto md:px-3 ">
             <div className="self-center flex-1">
               <SearchFormMobile />
             </div>
           </div>
-        )}
-
-        <div className="flex  flex-shrink-0  justify-end flex-1 text-neutral-700 dark:text-neutral-100">
+        )} */}
+        <div className="flex  flex-shrink-0  justify-end flex-1 text-neutral-700 dark:text-neutral-100 ">
           {useHydrated() && (
             <div className="flex justify-around space-x-0.5 gap-6 items-center ">
-              {/* {!isConnected && <ConnectModal />} */}
-              {!isConnected && (
-                <ConnectButton
-                  accountStatus={'address'}
-                  showBalance={false}
-                  chainStatus={'none'}
-                />
-              )}
+              <div className="sm:hidden">
+                {!isConnected && (
+                  <ConnectButton
+                    accountStatus={'avatar'}
+                    showBalance={false}
+                    chainStatus={'none'}
+                    label="Connect"
+                  />
+                )}
+              </div>
+
               <div className="px-10" />
               {!user && (
                 <button className="shadow-[inset_0_0_0_2px_#2935db] text-black px-8 py-2 rounded-full tracking-widest uppercase font-bold bg-transparent hover:bg-[#2935db] hover:text-white dark:text-neutral-200 transition duration-200">
@@ -94,6 +92,7 @@ const MainNav: FC<MainNavProps> = ({ className = '' }) => {
             </div>
           )}
         </div>
+        <MobileNav />
       </div>
     </div>
   );

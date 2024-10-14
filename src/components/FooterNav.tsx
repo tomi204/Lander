@@ -1,22 +1,23 @@
-"use client";
+'use client';
 
 import {
   HeartIcon,
   MagnifyingGlassIcon,
   HomeIcon,
   UserCircleIcon,
-} from "@heroicons/react/24/outline";
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import { PathName } from "@/routers/types";
-import MenuBar from "@/shared/MenuBar";
-import isInViewport from "@/utils/isInViewport";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useAuth } from "@/contexts/AuthContext";
-import { set } from "js-cookie";
+} from '@heroicons/react/24/outline';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { PathName } from '@/routers/types';
+import MenuBar from '@/shared/MenuBar';
+import isInViewport from '@/utils/isInViewport';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { useAuth } from '@/contexts/AuthContext';
+import { set } from 'js-cookie';
+import SearchFormMobile from '@/app/(client-components)/(HeroSearchFormMobile)/SearchFormMobile';
 
 let WIN_PREV_POSITION = 0;
-if (typeof window !== "undefined") {
+if (typeof window !== 'undefined') {
   WIN_PREV_POSITION = window.pageYOffset;
 }
 
@@ -33,8 +34,8 @@ const FooterNav = () => {
   const pathname = usePathname();
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      window.addEventListener("scroll", handleEvent);
+    if (typeof window !== 'undefined') {
+      window.addEventListener('scroll', handleEvent);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -44,19 +45,19 @@ const FooterNav = () => {
     if (isAuth) {
       return [
         {
-          name: "Explore",
-          link: "/",
+          name: 'Explore',
+          link: '/',
           icon: MagnifyingGlassIcon,
         },
         {
-          name: "Be a host",
+          name: 'Be a host',
           // @ts-ignore
-          link: "/add-listing/1",
+          link: '/add-listing/1',
           icon: HomeIcon,
         },
         {
-          name: "Bookings",
-          link: "/my-bookings",
+          name: 'Bookings',
+          link: '/my-bookings',
           icon: HeartIcon,
         },
       ];
@@ -66,7 +67,7 @@ const FooterNav = () => {
   }, [isAuth]);
 
   const handleEvent = () => {
-    if (typeof window !== "undefined") {
+    if (typeof window !== 'undefined') {
       window.requestAnimationFrame(showHideHeaderMenu);
     }
   };
@@ -88,7 +89,7 @@ const FooterNav = () => {
         return;
       }
 
-      containerRef.current.classList.add("FooterNav--hide");
+      containerRef.current.classList.add('FooterNav--hide');
     } else {
       if (
         !isInViewport(containerRef.current) &&
@@ -96,7 +97,7 @@ const FooterNav = () => {
       ) {
         return;
       }
-      containerRef.current.classList.remove("FooterNav--hide");
+      containerRef.current.classList.remove('FooterNav--hide');
     }
 
     WIN_PREV_POSITION = currentScrollPos;
@@ -110,13 +111,13 @@ const FooterNav = () => {
         key={index}
         href={item.link}
         className={`flex flex-col items-center justify-between text-neutral-500 dark:text-neutral-300/90 ${
-          isActive ? "text-neutral-900 dark:text-neutral-100" : ""
+          isActive ? 'text-neutral-900 dark:text-neutral-100' : ''
         }`}
       >
-        <item.icon className={`w-6 h-6 ${isActive ? "text-red-600" : ""}`} />
+        <item.icon className={`w-6 h-6 ${isActive ? 'text-red-600' : ''}`} />
         <span
           className={`text-[11px] leading-none mt-1 ${
-            isActive ? "text-red-600" : ""
+            isActive ? 'text-red-600' : ''
           }`}
         >
           {item.name}
@@ -126,7 +127,7 @@ const FooterNav = () => {
       <div
         key={index}
         className={`flex flex-col items-center justify-between text-neutral-500 dark:text-neutral-300/90 ${
-          isActive ? "text-neutral-900 dark:text-neutral-100" : ""
+          isActive ? 'text-neutral-900 dark:text-neutral-100' : ''
         }`}
       >
         <item.icon iconClassName="w-6 h-6" className={``} />
@@ -142,11 +143,11 @@ const FooterNav = () => {
       transition-transform duration-300 ease-in-out"
     >
       <div className="w-full max-w-lg flex justify-around mx-auto text-sm text-center ">
-        {/* MENU */}
-        {navigationItems.map(renderItem)}
-        {!navigationItems.length && (
-          <span className="text-regular">Connect your wallet to start.</span>
-        )}
+        <div className="flex lg:hidden flex-[3] max-w-lg !mx-auto md:px-3 ">
+          <div className="self-center flex-1">
+            <SearchFormMobile />
+          </div>
+        </div>
       </div>
     </div>
   );

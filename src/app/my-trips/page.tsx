@@ -3,8 +3,8 @@ import { FC, useEffect, useState } from 'react';
 import ReserveCard from '@/components/ReserveCard';
 import { fetchRenterByTxAndWallet } from '@/services/account';
 import TripCard from '@/components/TripCard';
-import { LoadingSpinner2 } from '@/components/AnyReactComponent/loadingSpinner';
 import { useBlockchain } from '@/contexts/BlockchainContext';
+import { Spinner } from '@chakra-ui/react';
 
 const ReservationsPage: FC = () => {
   const [reservations, setReservations] = useState<any>([]);
@@ -36,7 +36,7 @@ const ReservationsPage: FC = () => {
     fetchReservations();
   }, []);
 
-  if (loading) return <LoadingSpinner2 className="spinner-class" />;
+  if (loading) return <Spinner size={'xl'} />;
   if (error) return <p>Error: {error}</p>;
 
   return (

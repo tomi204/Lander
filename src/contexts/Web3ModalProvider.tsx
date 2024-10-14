@@ -9,7 +9,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactNode } from 'react';
 import { OnchainKitProvider } from '@coinbase/onchainkit';
 import { base as baseFixed } from '@/constants/Chain';
-import { RainbowKitProvider } from '@rainbow-me/rainbowkit';
+import { darkTheme, RainbowKitProvider } from '@rainbow-me/rainbowkit';
 
 const projectId = process.env.NEXT_PUBLIC_REOWN_PROJECT_ID;
 if (!projectId) {
@@ -56,7 +56,18 @@ export function AppKit({
           apiKey={process.env.NEXT_PUBLIC_ONCHAINKIT_API_KEY}
           chain={baseFixed}
         >
-          <RainbowKitProvider>{children}</RainbowKitProvider>
+          <RainbowKitProvider
+            initialChain={base}
+            theme={darkTheme({
+              accentColor: '#7b3fe4',
+              accentColorForeground: 'white',
+              borderRadius: 'medium',
+              fontStack: 'system',
+              overlayBlur: 'small',
+            })}
+          >
+            {children}
+          </RainbowKitProvider>
         </OnchainKitProvider>
       </QueryClientProvider>
     </WagmiProvider>

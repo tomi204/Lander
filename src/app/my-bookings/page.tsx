@@ -1,8 +1,8 @@
 'use client';
 import { FC, useEffect, useState } from 'react';
 import ReserveCard from '@/components/ReserveCard';
-import { LoadingSpinner2 } from '@/components/AnyReactComponent/loadingSpinner';
 import { useBlockchain } from '@/contexts/BlockchainContext';
+import { Spinner } from '@chakra-ui/react';
 interface StayAttributes {
   title: string;
   location: string;
@@ -58,7 +58,7 @@ const ReservationsPage: FC = () => {
     fetchReservations();
   }, []);
 
-  if (loading) return <LoadingSpinner2 className="spinner-class" />; // Added className prop
+  if (loading) return <Spinner size={'xl'} />; // Added className prop
   if (error) return <p>Error: {error}</p>;
 
   return (
