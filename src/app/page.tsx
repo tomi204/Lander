@@ -11,10 +11,10 @@ import { homeSettingsConst } from '@/constants/home';
 import { covertApolloResponseToStays } from '@/adapters/stay.adapters';
 import useSWR from 'swr';
 import { fetcher } from '@/utils/fetcher';
-import { LoadingSpinner2 } from '@/components/AnyReactComponent/loadingSpinner';
 import { createClient } from '@/supabase/server';
 import SectionOurFeatures from '@/components/SectionOurFeatures';
 import SectionSubscribe2 from '@/components/SectionSubscribe2';
+import { Spinner } from '@chakra-ui/react';
 
 export const revalidate = 2;
 
@@ -42,7 +42,7 @@ async function PageHome({ searchParams }: PageHomeProps) {
   if (!properties)
     return (
       <div className="flex justify-center items-center h-screen p-5">
-        <LoadingSpinner2 className="" />
+        <Spinner size={'xl'} className="" />
       </div>
     );
 

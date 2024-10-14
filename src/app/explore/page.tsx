@@ -4,7 +4,6 @@ import { getAllTalent, getTalentByWallet } from '@/services/talent';
 import { useEffect, useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Spinner } from '@chakra-ui/react';
-import { LoadingSpinner } from '@/components/LoadingSpinner';
 interface OurUsers {
   chain: string;
   createdAt: string;
@@ -64,7 +63,7 @@ function Explore() {
   useEffect(() => {
     loadOurUsers();
   }, []);
-  if (!passports || passports.length === 0) return <LoadingSpinner />;
+  if (!passports || passports.length === 0) return <Spinner size={'xl'} />;
 
   return (
     <section className=" w-11/12 m-auto mt-10">

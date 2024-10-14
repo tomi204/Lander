@@ -27,10 +27,10 @@ import {
 } from 'lucide-react';
 import React from 'react';
 
-import { LoadingSpinner2 } from '@/components/AnyReactComponent/loadingSpinner';
 import { ModalRanking } from '@/components/ModalRanking';
 import { useRouter } from 'next/navigation';
 import { useBlockchain } from '@/contexts/BlockchainContext';
+import { Spinner } from '@chakra-ui/react';
 
 export default function P2PDetails({ data }: { data: any }) {
   const { address } = useBlockchain();
@@ -56,7 +56,7 @@ export default function P2PDetails({ data }: { data: any }) {
   };
 
   if (data?.property?.title === undefined) {
-    return <LoadingSpinner2 className="h-screen" />;
+    return <Spinner size={'xl'} />;
   }
   console.log(data, 'data');
 
