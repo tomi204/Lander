@@ -1,20 +1,10 @@
 'use client';
 import Image from 'next/image';
-import {
-  Bell,
-  Briefcase,
-  Calendar,
-  MapPin,
-  Search,
-  Star,
-  User,
-  Wallet,
-} from 'lucide-react';
+import { Calendar, MapPin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 import placeholderLarge from '/src/images/placeholder-large-h.png';
-import profilePicture from '/src/images/dex.jpg';
 import tokyo from '/src/images/tokyo.jpg';
 import nyc from '/src/images/nyc.jpg';
 import london from '/src/images/london.jpg';
@@ -28,10 +18,10 @@ import { GithubIcon } from '@/icons';
 import { Badge, Spinner } from '@chakra-ui/react';
 import { TalentSocials } from '@/interfaces/account.interface';
 import { useUser } from '@/contexts/UserContext';
-import { Avatar, Identity, Name } from '@coinbase/onchainkit/identity';
+import { Avatar, Name } from '@coinbase/onchainkit/identity';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
-import WalletAddressComponent from '@/components/WalletAddressComponent';
 import { base } from 'viem/chains';
+import { LoadingSpinner } from '@/components/LoadingSpinner';
 
 export default function Component() {
   const { address } = useBlockchain();
@@ -88,7 +78,7 @@ export default function Component() {
       </section>
     );
 
-  if (!talent) return <Spinner />;
+  if (!talent) return <LoadingSpinner />;
 
   return (
     <div className="flex flex-col md:flex-row min-h-screen text-black">

@@ -56,7 +56,7 @@ export const TokensBase: Token[] = [
     name: 'USDbC',
     payable: true,
     symbol: 'USDbC',
-    image: '',
+    image: 'https://basescan.org/token/images/usdbc_ofc_32.png',
   },
   {
     address: '0xc1CBa3fCea344f92D9239c08C0568f6F2F0ee452',

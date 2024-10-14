@@ -1,4 +1,5 @@
 import { PathName } from '@/routers/types';
+import { LucideIcon } from 'lucide-react';
 
 export interface CommonLayoutProps {
   children?: React.ReactNode;
@@ -31,4 +32,13 @@ export interface ButtonSubmitListingProps {
   className?: string;
   onClick?: () => void;
   href?: PathName;
+}
+
+export interface NavItem {
+  name: string;
+  icon: LucideIcon;
+  href: {
+    pathname: string;
+  };
+  function?: () => void;
 }
