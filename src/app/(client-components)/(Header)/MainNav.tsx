@@ -85,7 +85,7 @@ const MainNav: FC<MainNavProps> = ({ className = '' }) => {
               <div className="px-10" />
               {!user && (
                 <button className="shadow-[inset_0_0_0_2px_#2935db] text-black px-8 py-2 rounded-full tracking-widest uppercase font-bold bg-transparent hover:bg-[#2935db] hover:text-white dark:text-neutral-200 transition duration-200">
-                  <Link href="/login">Log-in</Link>
+                  <Link href="/login">Log in</Link>
                 </button>
               )}
               <AvatarDropdown show={connected} />

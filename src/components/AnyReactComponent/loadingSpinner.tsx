@@ -1,6 +1,6 @@
-import { cn } from "@/lib/utils"
+import { cn } from '@/lib/utils';
 
-export const LoadingSpinner = ( { className }: { className: any; } ) => {
+export const LoadingSpinner = ({ className }: { className: any }) => {
   return (
     <div className="flex justify-center items-center h-screen">
       <svg

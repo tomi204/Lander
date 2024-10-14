@@ -3,6 +3,7 @@ import { FC, useEffect, useState } from 'react';
 import ReserveCard from '@/components/ReserveCard';
 import { useBlockchain } from '@/contexts/BlockchainContext';
 import { Spinner } from '@chakra-ui/react';
+import { LoadingSpinner } from '@/components/LoadingSpinner';
 interface StayAttributes {
   title: string;
   location: string;
@@ -58,7 +59,7 @@ const ReservationsPage: FC = () => {
     fetchReservations();
   }, []);
 
-  if (loading) return <Spinner size={'xl'} />; // Added className prop
+  if (loading) return <LoadingSpinner />; // Added className prop
   if (error) return <p>Error: {error}</p>;
 
   return (
