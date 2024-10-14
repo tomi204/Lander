@@ -1,106 +1,168 @@
-'use client';
-
 import Logo from '@/shared/Logo';
-//import SocialsList1 from "@/shared/SocialsList1";
-import { CustomLink } from '@/data/types';
-import React from 'react';
-import FooterNav from './FooterNav';
 
-export interface WidgetFooterMenu {
-  id: string;
-  title: string;
-  menus: CustomLink[];
-}
-
-const widgetMenus: WidgetFooterMenu[] = [
-  // {
-  //   id: "5",
-  //   title: "Getting started",
-  //   menus: [
-  //     { href: "#", label: "Installation" },
-  //     { href: "#", label: "Release Notes" },
-  //     { href: "#", label: "Upgrade Guide" },
-  //     { href: "#", label: "Browser Support" },
-  //     { href: "#", label: "Editor Support" },
-  //   ],
-  // },
-  // {
-  //   id: "1",
-  //   title: "Explore",
-  //   menus: [
-  //     { href: "#", label: "Design features" },
-  //     { href: "#", label: "Prototyping" },
-  //     { href: "#", label: "Design systems" },
-  //     { href: "#", label: "Pricing" },
-  //     { href: "#", label: "Security" },
-  //   ],
-  // },
-  // {
-  //   id: "2",
-  //   title: "Resources",
-  //   menus: [
-  //     { href: "#", label: "Best practices" },
-  //     { href: "#", label: "Support" },
-  //     { href: "#", label: "Developers" },
-  //     { href: "#", label: "Learn design" },
-  //     { href: "#", label: "Releases" },
-  //   ],
-  // },
-  // {
-  //   id: "4",
-  //   title: "Community",
-  //   menus: [
-  //     { href: "#", label: "Discussion Forums" },
-  //     { href: "#", label: "Code of Conduct" },
-  //     { href: "#", label: "Community Resources" },
-  //     { href: "#", label: "Contributing" },
-  //     { href: "#", label: "Concurrent Mode" },
-  //   ],
-  // },
-];
-
-const Footer: React.FC = () => {
-  const renderWidgetMenuItem = (menu: WidgetFooterMenu, index: number) => {
-    return (
-      <div key={index} className="text-sm">
-        <h2 className="font-semibold text-neutral-700 dark:text-neutral-200">
-          {menu.title}
-        </h2>
-        <ul className="mt-5 space-y-4">
-          {menu.menus.map((item, index) => (
-            <li key={index}>
-              <a
-                key={index}
-                className="text-neutral-6000 dark:text-neutral-300 hover:text-black dark:hover:text-white"
-                href={item.href}
-              >
-                {item.label}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </div>
-    );
-  };
-
+ const Footer = () => {
   return (
-    <>
-      <FooterNav />
+    <footer id="footer">
+      <hr className="w-11/12 mx-auto" />
 
-      <div className="nc-Footer relative pt-24 sm:pb-20 sm:pt-6 lg:py-28 border-t border-neutral-200 dark:border-neutral-700 sm:hidden">
-        <div className="container grid grid-cols-2 gap-y-10 gap-x-5 sm:gap-x-8 md:grid-cols-4 lg:grid-cols-5 lg:gap-x-10 ">
-          <div className="grid grid-cols-4 gap-5 col-span-2 md:col-span-4 lg:md:col-span-1 lg:flex lg:flex-col">
-            <div className="col-span-2 md:col-span-1 sm:hidden">
-              <Logo /> <p>By SmartBlocks</p>
-            </div>
-            {/* <div className="col-span-2 flex items-center md:col-span-3">
-              <SocialsList1 className="flex items-center space-x-3 lg:space-x-0 lg:flex-col lg:space-y-2.5 lg:items-start" />
-            </div> */}
-          </div>
-          {/* {widgetMenus.map(renderWidgetMenuItem)} */}
+      <section className="container py-20 grid grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-x-12 gap-y-8">
+        <div className="col-span-full xl:col-span-2">
+          <a
+            rel="noreferrer noopener"
+            href="/"
+            className="font-bold text-xl flex"
+          >
+            <Logo />
+          </a>
         </div>
-      </div>
-    </>
+
+        <div className="flex flex-col gap-2">
+          <h3 className="font-bold text-lg">Follow US</h3>
+          <div>
+            <a
+              rel="noreferrer noopener"
+              href="#"
+              className="opacity-60 hover:opacity-100"
+            >
+              Github
+            </a>
+          </div>
+
+          <div>
+            <a
+              rel="noreferrer noopener"
+              href="#"
+              className="opacity-60 hover:opacity-100"
+            >
+              Twitter
+            </a>
+          </div>
+
+          <div>
+            <a
+              rel="noreferrer noopener"
+              href="#"
+              className="opacity-60 hover:opacity-100"
+            >
+              Dribbble
+            </a>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <h3 className="font-bold text-lg">Platforms</h3>
+          <div>
+            <a
+              rel="noreferrer noopener"
+              href="#"
+              className="opacity-60 hover:opacity-100"
+            >
+              Web
+            </a>
+          </div>
+
+          <div>
+            <a
+              rel="noreferrer noopener"
+              href="#"
+              className="opacity-60 hover:opacity-100"
+            >
+              Mobile
+            </a>
+          </div>
+
+          <div>
+            <a
+              rel="noreferrer noopener"
+              href="#"
+              className="opacity-60 hover:opacity-100"
+            >
+              Desktop
+            </a>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <h3 className="font-bold text-lg">About</h3>
+          <div>
+            <a
+              rel="noreferrer noopener"
+              href="#"
+              className="opacity-60 hover:opacity-100"
+            >
+              Features
+            </a>
+          </div>
+
+          <div>
+            <a
+              rel="noreferrer noopener"
+              href="#"
+              className="opacity-60 hover:opacity-100"
+            >
+              Pricing
+            </a>
+          </div>
+
+          <div>
+            <a
+              rel="noreferrer noopener"
+              href="#"
+              className="opacity-60 hover:opacity-100"
+            >
+              FAQ
+            </a>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <h3 className="font-bold text-lg">Community</h3>
+          <div>
+            <a
+              rel="noreferrer noopener"
+              href="#"
+              className="opacity-60 hover:opacity-100"
+            >
+              Youtube
+            </a>
+          </div>
+
+          <div>
+            <a
+              rel="noreferrer noopener"
+              href="#"
+              className="opacity-60 hover:opacity-100"
+            >
+              Discord
+            </a>
+          </div>
+
+          <div>
+            <a
+              rel="noreferrer noopener"
+              href="#"
+              className="opacity-60 hover:opacity-100"
+            >
+              Twitch
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section className="container pb-14 text-center">
+        <h3>
+          &copy; 2024 Landing page made by{" "}
+          <a
+            rel="noreferrer noopener"
+            target="_blank"
+            href="https://www.linkedin.com/in/leopoldo-miranda/"
+            className="text-primary transition-all border-primary hover:border-b-2"
+          >
+            Leo Miranda
+          </a>
+        </h3>
+      </section>
+    </footer>
   );
 };
 
