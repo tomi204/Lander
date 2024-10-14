@@ -70,26 +70,27 @@ const ConnectModal = () => {
               {/* <WalletDefault /> */}
 
               {selectedNetwork === '' && (
-                <Button
-                  flex={1}
-                  onClick={() => {
-                    onClose();
-                    open({
-                      view: 'Connect',
-                    });
-                  }}
-                >
-                  <EthereumIcon />
+                // <Button
+                //   flex={1}
+                //   onClick={() => {
+                //     onClose();
+                //     open({
+                //       view: 'Connect',
+                //     });
+                //   }}
+                // >
+                //   <EthereumIcon />
 
-                  <Text>EVM</Text>
-                </Button>
+                //   <Text>EVM</Text>
+                // </Button>
+                <ConnectButton
+                  accountStatus={'avatar'}
+                  showBalance={false}
+                  label="Connect"
+                  chainStatus={'none'}
+                />
               )}
             </HStack>
-            <ConnectButton
-              accountStatus={'address'}
-              showBalance={false}
-              chainStatus={'none'}
-            />
           </ModalBody>
         </ModalContent>
       </Modal>
