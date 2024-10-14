@@ -3,23 +3,22 @@ import { Popover, Transition } from '@headlessui/react';
 import { Fragment, useEffect, useState, useMemo } from 'react';
 import Avatar from '@/shared/Avatar';
 import Link from 'next/link';
-import WalletAddressComponent from '@/components/WalletAddressComponent';
+import { User, Calendar, Map, Zap, Wallet } from 'lucide-react';
 import { LogOut, User2Icon } from 'lucide-react';
 import { AvatarDropdownProps } from '@/interfaces/Common';
 import { useBlockchain } from '@/contexts/BlockchainContext';
 import { useWallet } from '@solana/wallet-adapter-react';
-import { Calendar, Map } from 'lucide-react';
 import { useUser } from '@/contexts/UserContext';
 import { useAppKit } from '@reown/appkit/react';
 import CoinBaseIdentity from './CoinBaseIdentity';
 import supabase from '@/supabase/client';
-import { WalletModal } from '@/components/WalletModal';
-
+import { NavItem } from '@/interfaces/Common';
 export default function AvatarDropdown({
   className = '',
   show,
 }: AvatarDropdownProps) {
   const { user, loading, error, refreshUser } = useUser();
+  const { open } = useAppKit();
 
   const memoizedUser = useMemo(() => user, [user]);
 
@@ -31,8 +30,28 @@ export default function AvatarDropdown({
 
   const [isSolana, setIsSolana] = useState(false);
   const { address, chain } = useBlockchain();
-  const { open } = useAppKit();
   const { disconnect, select } = useWallet();
+
+  const navItems: NavItem[] = [
+    { name: 'Account', icon: User, href: { pathname: '/profile' } },
+    {
+      name: 'Wallet',
+      icon: Wallet,
+      href: { pathname: '' },
+      function: () => {
+        open({ view: 'Account' });
+      },
+    },
+    { name: 'Trips', icon: Map, href: { pathname: '/my-trips' } },
+    { name: 'Bookings', icon: Calendar, href: { pathname: '/my-bookings' } },
+    // { name: 'Swap', icon: Zap, href: { pathname: '/swap' } },
+    {
+      name: 'Log out',
+      icon: LogOut,
+      href: { pathname: '' },
+      function: () => handleSignOut(),
+    },
+  ];
 
   if (!show) {
     return null;
@@ -115,78 +134,22 @@ export default function AvatarDropdown({
                   </div>
 
                   <div className="w-full border-b border-neutral-200 dark:border-neutral-700" />
-
-                  {/* ------------------ 1 --------------------- */}
-                  <Link
-                    href={'/profile'}
-                    className="flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
-                    onClick={() => close()}
-                  >
-                    <div className="flex items-center justify-center flex-shrink-0 text-neutral-500 dark:text-neutral-300">
-                      <User2Icon className="mr-2 h-5 w-5" />
-                    </div>
-                    <div className="ml-4">
-                      <p className="text-sm font-medium ">{'Account'}</p>
-                    </div>
-                  </Link>
-                  <WalletModal />
-
-                  {/* ------------------ 2 --------------------- */}
-                  {/* <Link
-                    href={'/my-listing-stays'}
-                    className="flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
-                    onClick={() => close()}
-                  >
-                    <div className="flex items-center justify-center flex-shrink-0 text-neutral-500 dark:text-neutral-300">
-                      <Map className="mr-2 h-5 w-5" />
-                    </div>
-                    <div className="ml-4">
-                      <p className="text-sm font-medium ">{'Listings'}</p>
-                    </div>
-                  </Link> */}
-                  {/* ------------------ Bookings --------------------- */}
-                  <Link
-                    href={'/my-bookings'}
-                    className="flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
-                    onClick={() => close()}
-                  >
-                    <div className="flex items-center justify-center flex-shrink-0 text-neutral-500 dark:text-neutral-300">
-                      <Calendar className="mr-2 h-5 w-5" />
-                    </div>
-                    <div className="ml-4">
-                      <p className="text-sm font-medium ">{'Bookings'}</p>
-                    </div>
-                  </Link>
-                  {/* ------------------ Trips --------------------- */}
-                  <Link
-                    href={'/my-trips'}
-                    className="flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
-                    onClick={() => close()}
-                  >
-                    <div className="flex items-center justify-center flex-shrink-0 text-neutral-500 dark:text-neutral-300">
-                      <Map className="w-6 h-6" />
-                      {/* Nuevo icono de maleta */}
-                    </div>
-                    <div className="ml-4">
-                      <p className="text-sm font-medium ">{'Trips'}</p>
-                    </div>
-                  </Link>
-
-                  <div className="w-full border-b border-neutral-200 dark:border-neutral-700" />
-
-                  {/* ------------------ 2 --------------------- */}
-                  <Link
-                    href={'/#'}
-                    className="flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
-                    onClick={() => close()}
-                  >
-                    <div className="flex items-center justify-center flex-shrink-0 text-neutral-500 dark:text-neutral-300">
-                      <LogOut className="mr-2 h-5 w-5" />
-                    </div>
-                    <div className="ml-4" onClick={() => handleSignOut()}>
-                      <p className="text-sm font-medium ">{'Log out'}</p>
-                    </div>
-                  </Link>
+                  {navItems.map((item) => (
+                    <Link
+                      key={item.name}
+                      href={item.href}
+                      className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                      onClick={() => close()}
+                    >
+                      <div
+                        className="flex items-center"
+                        onClick={item?.function}
+                      >
+                        <item.icon className="mr-2 h-5 w-5" />
+                        {item.name}
+                      </div>
+                    </Link>
+                  ))}
                 </div>
               </div>
             </Popover.Panel>

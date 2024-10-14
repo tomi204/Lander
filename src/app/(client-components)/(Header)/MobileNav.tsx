@@ -13,19 +13,31 @@ import {
   TrendingUp,
   Zap,
   Wallet,
+  LucideIcon,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useBlockchain } from '@/contexts/BlockchainContext';
 import CoinBaseIdentity from './CoinBaseIdentity';
+import { useAppKit } from '@reown/appkit/react';
+import { NavItem } from '@/interfaces/Common';
 export default function MobileNav() {
   const [isOpen, setIsOpen] = useState(false);
   const { isConnected, address } = useBlockchain();
+  const { open } = useAppKit();
 
-  const navItems = [
+  const navItems: NavItem[] = [
     { name: 'Home', icon: Home, href: { pathname: '/' } },
     { name: 'Account', icon: User, href: { pathname: '/profile' } },
+    {
+      name: 'Wallet',
+      icon: Wallet,
+      href: { pathname: '/' },
+      function: () => {
+        open({ view: 'Account' });
+      },
+    },
     { name: 'Trips', icon: Map, href: { pathname: '/my-trips' } },
     { name: 'Swap', icon: Zap, href: { pathname: '/swap' } },
     { name: 'Bookings', icon: Calendar, href: { pathname: '/my-bookings' } },
@@ -57,7 +69,7 @@ export default function MobileNav() {
                     className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                     onClick={() => setIsOpen(false)}
                   >
-                    <div className="flex items-center">
+                    <div className="flex items-center" onClick={item?.function}>
                       <item.icon className="mr-2 h-5 w-5" />
                       {item.name}
                     </div>
