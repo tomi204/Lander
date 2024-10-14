@@ -1,18 +1,23 @@
 'use client';
 import UserCard from '@/components/UserCard';
-import { getAllTalent } from '@/services/talent';
+import { getAllTalent, getTalentByWallet } from '@/services/talent';
 import { useEffect, useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Spinner } from '@chakra-ui/react';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
+interface OurUsers {
+  chain: string;
+  createdAt: string;
+  id: string;
+  main_wallet: string;
+  userId: string;
+}
 
 function Explore() {
   const [passports, setPassports] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [ourUsers, setOurUsers] = useState([]);
-
-  // Función para cargar los pasaportes paginados
+  const [ourUsers, setOurUsers] = useState<any[]>([]);
   const loadPassports = async (page: number) => {
     const talent = await getAllTalent(page);
     setPassports(talent.passports);
@@ -34,17 +39,31 @@ function Explore() {
       setCurrentPage(currentPage - 1);
     }
   };
+  const loadOurUsers = async () => {
+    try {
+      const data = await fetch('/api/wallets');
+      const users = await data.json();
 
-  //   const loadOurUsers = async () => {
-  //     const ourUsers = await fetch('/api/users/wallets');
-  //     console.log(ourUsers, 'ourUsers');
-  //     //setOurUsers(ourUsers as []);
-  //   };
+      const usersWithPassports = await Promise.all(
+        users.map(async (user: OurUsers) => {
+          const passport = await getTalentByWallet(user.main_wallet);
 
-  //   useEffect(() => {
-  //     loadOurUsers();
-  //   }, []);
+          return { ...user, passport };
+        })
+      );
 
+      const ourUsers = usersWithPassports.filter(
+        (user) => user.passport?.passport
+      );
+      setOurUsers(ourUsers);
+    } catch (error) {
+      console.error('Error loading users:', error);
+    }
+  };
+
+  useEffect(() => {
+    loadOurUsers();
+  }, []);
   if (!passports || passports.length === 0) return <LoadingSpinner />;
 
   return (
@@ -80,7 +99,19 @@ function Explore() {
             </button>
           </div>
         </TabsContent>
-        <TabsContent value="New"></TabsContent>
+        <TabsContent value="New">
+          {ourUsers.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {ourUsers.map((user, index) => (
+                <UserCard key={index} passport={user?.passport?.passport} />
+              ))}
+            </div>
+          ) : (
+            <div className="flex justify-center items-center">
+              <Spinner size="lg" />
+            </div>
+          )}
+        </TabsContent>
       </Tabs>
     </section>
   );
