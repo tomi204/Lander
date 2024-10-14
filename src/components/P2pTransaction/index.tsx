@@ -26,6 +26,8 @@ import {
 
 import { useEthersSigner, useEthersProvider } from '@/blockchain';
 import { config } from '@/constants/wagmi-config';
+import { useChainId } from 'wagmi';
+import { useChainContract } from '@/hooks/useChainContract';
 interface ContractInteractionProps {
   disabled?: boolean;
   amount: number;
@@ -57,15 +59,15 @@ const BuyButton: FC<ContractInteractionProps> = ({
   tokenName,
   tokenAddress,
 }) => {
-  const [symbol, setSymbol] = useState('--');
-  const [noFunds, setNoFunds] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(false);
-  const { address, isConnected, chain } = useBlockchain();
-  const { transaction, setTransaction } = useTransaction() || {};
+  const { address, chain } = useBlockchain();
+  const { transaction } = useTransaction() || {};
   const router = useRouter();
   const provider = useEthersProvider();
   const signer = useEthersSigner();
+  const chainId = useChainId();
+  const landerContract = useChainContract(chainId);
   async function CreateTransaction() {
     try {
       setLoading(true);
@@ -78,13 +80,12 @@ const BuyButton: FC<ContractInteractionProps> = ({
       const erc20Contract = new Contract(tokenAddress, erc20Abi, signer);
 
       const decimals = await erc20Contract.decimals();
-      console.log(decimals, 'decimals');
       const parsedAmount = ethers.parseUnits(
         transaction.amount.toString(),
         Number(decimals)
       );
       const tx = await erc20Contract
-        .transfer(polygonAddresses.P2P, parsedAmount)
+        .transfer(landerContract, parsedAmount)
         .catch((err) => {
           Notiflix.Notify.failure('Error:' + err);
         });
@@ -146,7 +147,10 @@ const BuyButton: FC<ContractInteractionProps> = ({
       setLoading(false);
     }
   }
-  const token = TokensPolygon?.find((token) => token.name === tokenName);
+  const token =
+    chainId === 8453
+      ? TokensBase?.find((token) => token.name === tokenName)
+      : TokensPolygon?.find((token) => token.name === tokenName);
   // const handleSend = async () => {
   //   if (!publicKey) {
   //     console.error('No se ha conectado a la billetera.');
@@ -192,6 +196,7 @@ const BuyButton: FC<ContractInteractionProps> = ({
   //     console.error('Error al enviar SOL:', error);
   //   }
   // };
+  console.log(token, 'token');
   return (
     <>
       {!transactionId && chain === 'evm' && (

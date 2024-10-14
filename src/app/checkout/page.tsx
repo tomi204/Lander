@@ -7,8 +7,9 @@ import { findPropertyById } from '@/services/listings';
 import { useRouter } from 'next/navigation';
 import { useBlockchain } from '@/contexts/BlockchainContext';
 import ConnectModal from '@/components/ConnectWalletModal';
-import { TokensPolygon } from '@/constants/Tokens';
+import { TokensBase, TokensPolygon } from '@/constants/Tokens';
 import { FundButton, getOnrampBuyUrl } from '@coinbase/onchainkit/fund';
+import { useChainId } from 'wagmi';
 
 export default function StayDetailPage() {
   const router = useRouter();
@@ -17,6 +18,10 @@ export default function StayDetailPage() {
   const { address, isConnected } = useBlockchain();
   const projectId = process.env.NEXT_PUBLIC_CDP_API_KEY!;
 
+  const chainId = useChainId();
+  const tokensChainPay = chainId === 8453 ? TokensBase : TokensPolygon;
+  const tokensPay = tokensChainPay.filter((token) => token.payable === true);
+  console.log(tokensPay, 'tokensFilter');
   const [propData, setPropData] = useState<any | null>(null);
 
   useEffect(() => {
@@ -41,6 +46,7 @@ export default function StayDetailPage() {
     presetFiatAmount: tx?.amount,
     fiatCurrency: 'USD',
   });
+
   return (
     <div className="container mx-auto p-4 md:p-6 lg:p-8">
       {isConnected && tx ? (
@@ -69,7 +75,7 @@ export default function StayDetailPage() {
             <section className="gap-4 items-start flex  flex-col">
               {isConnected && (
                 <div className="flex flex-row gap-4">
-                  {TokensPolygon.map((token, index) => (
+                  {tokensPay.map((token, index) => (
                     <BuyButton
                       property_id={tx?.property_id}
                       key={index}
