@@ -11,17 +11,23 @@ import {
   Map,
   Home,
   TrendingUp,
+  Zap,
+  Wallet,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
+import { useBlockchain } from '@/contexts/BlockchainContext';
+import CoinBaseIdentity from './CoinBaseIdentity';
 export default function MobileNav() {
   const [isOpen, setIsOpen] = useState(false);
+  const { isConnected, address } = useBlockchain();
 
   const navItems = [
     { name: 'Home', icon: Home, href: { pathname: '/' } },
-    { name: 'Profile', icon: User, href: { pathname: '/profile' } },
+    { name: 'Account', icon: User, href: { pathname: '/profile' } },
     { name: 'Trips', icon: Map, href: { pathname: '/my-trips' } },
+    { name: 'Swap', icon: Zap, href: { pathname: '/swap' } },
     { name: 'Bookings', icon: Calendar, href: { pathname: '/my-bookings' } },
     { name: 'Explore', icon: Compass, href: { pathname: '/explore' } },
     { name: 'Invest', icon: TrendingUp, href: { pathname: '/real-state' } },
@@ -60,12 +66,16 @@ export default function MobileNav() {
               </div>
             </div>
           </div>
-          <div
-            className="flex justify-center items-center bg-violet-600 rounded-xl p-2 text-white"
-            onClick={() => setIsOpen(false)}
-          >
-            <ConnectButton accountStatus={'avatar'} showBalance={false} />
-          </div>
+          {!isConnected ? (
+            <div
+              className="flex justify-center items-center bg-violet-600 rounded-xl p-2 text-white"
+              onClick={() => setIsOpen(false)}
+            >
+              <ConnectButton accountStatus={'avatar'} showBalance={false} />
+            </div>
+          ) : (
+            <CoinBaseIdentity address={address} />
+          )}
         </SheetContent>
       </Sheet>
     </div>

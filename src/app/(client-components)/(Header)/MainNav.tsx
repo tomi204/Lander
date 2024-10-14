@@ -16,7 +16,6 @@ const PAGE_WITH_SEARCH: string[] = ['/'];
 
 const MainNav: FC<MainNavProps> = ({ className = '' }) => {
   const [user, setUser] = useState<any>(null);
-  const { logOut, isAuth } = useAuth();
 
   const [session, setSession] = useState<any>(null);
 
@@ -61,13 +60,7 @@ const MainNav: FC<MainNavProps> = ({ className = '' }) => {
           <Logo className="w-24 self-center sm:hidden hidden md:block lg:block xl:block 2xl:block" />
         </div>
         <Navigation />
-        {/* {showSearch && (
-          <div className="flex lg:hidden flex-[3] max-w-lg !mx-auto md:px-3 ">
-            <div className="self-center flex-1">
-              <SearchFormMobile />
-            </div>
-          </div>
-        )} */}
+
         <div className="flex  flex-shrink-0  justify-end flex-1 text-neutral-700 dark:text-neutral-100 ">
           {useHydrated() && (
             <div className="flex justify-around space-x-0.5 gap-6 items-center ">
