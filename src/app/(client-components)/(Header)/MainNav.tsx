@@ -62,7 +62,7 @@ const MainNav: FC<MainNavProps> = ({ className = '' }) => {
             showSearch ? 'sm:hidden' : ''
           } flex justify-start flex-1 space-x-4 sm:space-x-10`}
         >
-          <Logo className="w-24 self-center sm:hidden hidden lg:block md:block xl:block 2xl:block" />
+          <Logo className="w-24 self-center sm:hidden hidden md:block lg:block xl:block 2xl:block" />
         </div>
         <Navigation />
         {showSearch && (
