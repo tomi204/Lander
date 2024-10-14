@@ -11,6 +11,9 @@ export async function GET() {
       { status: 500 }
     );
   }
+  if (data.length === 0) {
+    return NextResponse.json({ error: 'No wallets found' }, { status: 404 });
+  }
 
   return NextResponse.json(data);
 }
