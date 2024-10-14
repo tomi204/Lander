@@ -18,7 +18,7 @@ import Logo from '@/shared/Logo';
 
         <div className="flex flex-col gap-2">
           <h3 className="font-bold text-lg">Follow US</h3>
-          <div>
+          {/* <div>
             <a
               rel="noreferrer noopener"
               href="#"
@@ -26,7 +26,7 @@ import Logo from '@/shared/Logo';
             >
               Github
             </a>
-          </div>
+          </div> */}
 
           <div>
             <a
@@ -44,20 +44,20 @@ import Logo from '@/shared/Logo';
               href="#"
               className="opacity-60 hover:opacity-100"
             >
-              Dribbble
+              Instagram
             </a>
           </div>
         </div>
 
         <div className="flex flex-col gap-2">
-          <h3 className="font-bold text-lg">Platforms</h3>
+          <h3 className="font-bold text-lg">Terms of Service</h3>
           <div>
             <a
               rel="noreferrer noopener"
               href="#"
               className="opacity-60 hover:opacity-100"
             >
-              Web
+              Disclaimer
             </a>
           </div>
 
@@ -67,7 +67,7 @@ import Logo from '@/shared/Logo';
               href="#"
               className="opacity-60 hover:opacity-100"
             >
-              Mobile
+            Terms of Use
             </a>
           </div>
 
@@ -77,7 +77,7 @@ import Logo from '@/shared/Logo';
               href="#"
               className="opacity-60 hover:opacity-100"
             >
-              Desktop
+            Privacy Policy
             </a>
           </div>
         </div>
@@ -100,7 +100,16 @@ import Logo from '@/shared/Logo';
               href="#"
               className="opacity-60 hover:opacity-100"
             >
-              Pricing
+              Investors 
+            </a>
+          </div>
+            <div>
+            <a
+              rel="noreferrer noopener"
+              href="#"
+              className="opacity-60 hover:opacity-100"
+            >
+              Careers 
             </a>
           </div>
 
