@@ -4,17 +4,12 @@ import Navigation from '@/shared/Navigation/Navigation';
 import AvatarDropdown from './AvatarDropdown';
 import { useAuth } from '@/contexts/AuthContext';
 import { usePathname } from 'next/navigation';
-import SearchFormMobile from '../(HeroSearchFormMobile)/SearchFormMobile';
 import { useBlockchain } from '@/contexts/BlockchainContext';
 import { MainNavProps } from '@/interfaces/Common';
-import ConnectModal from '@/components/ConnectWalletModal';
-import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 import { useHydrated } from '@/hooks/useHydrated';
 import Link from 'next/link';
 import supabase from '@/utils/supabase/client';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
-import { getTalentByWallet } from '@/services/talent';
-import { useUser } from '@/contexts/UserContext';
 
 const PAGE_WITH_SEARCH: string[] = ['/'];
 

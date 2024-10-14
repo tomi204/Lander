@@ -60,7 +60,7 @@ export default function UserCard({ passport }: any) {
           />
         </Identity>
         <div className="flex xl:flex-row lg:flex-row 2xl:flex-row md:flex-col sm:flex-col  justify-center gap-1 items-center w-10/12">
-          <h2 className="text-xl font-bold text-center ">
+          <h2 className="text-xl font-bold text-center w-11/12 sm:w-full">
             {passport?.passport_profile?.display_name}
           </h2>
           <div className="flex items-center">
@@ -71,7 +71,7 @@ export default function UserCard({ passport }: any) {
         </div>
       </CardHeader>
       <CardContent className="flex flex-col items-center justify-center flex-grow">
-        <p className="text-muted-foreground mb-4 text-lg text-center">
+        <p className="text-muted-foreground mb-4 text-lg text-center w-11/12 sm:w-full">
           {passport?.passport_profile?.bio}
         </p>
         {passport?.passport_profile?.location && (
