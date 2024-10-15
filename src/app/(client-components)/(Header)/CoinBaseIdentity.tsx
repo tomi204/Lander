@@ -1,10 +1,13 @@
 import WalletAddressComponent from '@/components/WalletAddressComponent';
-import { useBlockchain } from '@/contexts/BlockchainContext';
 import { base } from 'viem/chains';
 import { Avatar, Identity, Name, Badge } from '@coinbase/onchainkit/identity';
 import { useAppKit } from '@reown/appkit/react';
 import { Spinner } from '@chakra-ui/react';
-export default function CoinBaseIdentity({ address }) {
+export default function CoinBaseIdentity({
+  address,
+}: {
+  address: string | undefined;
+}) {
   const { open } = useAppKit();
 
   return (
@@ -16,7 +19,7 @@ export default function CoinBaseIdentity({ address }) {
     >
       <Identity
         className="rounded-3xl bg-white"
-        address={address}
+        address={address as `0x${string}`}
         chain={base}
         schemaId="0xf8b05c79f090979bf4a80270aba232dff11a10d9ca55c4f88de95317970f0de9"
       >
