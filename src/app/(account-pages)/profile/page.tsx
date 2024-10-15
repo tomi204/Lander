@@ -3,11 +3,7 @@ import Image from 'next/image';
 import { Calendar, MapPin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-
 import placeholderLarge from '/src/images/placeholder-large-h.png';
-import tokyo from '/src/images/tokyo.jpg';
-import nyc from '/src/images/nyc.jpg';
-import london from '/src/images/london.jpg';
 import techConf from '/src/images/devcon.png';
 import hackaThon from '/src/images/base-hackathon.jpg';
 import meetUp from '/src/images/local-meetup.jpg';
@@ -16,66 +12,46 @@ import { getTalentByWallet } from '@/services/talent';
 import { useBlockchain } from '@/contexts/BlockchainContext';
 import { GithubIcon } from '@/icons';
 import { Badge, Spinner } from '@chakra-ui/react';
-import { TalentSocials } from '@/interfaces/account.interface';
 import { useUser } from '@/contexts/UserContext';
 import { Avatar } from '@coinbase/onchainkit/identity';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { base } from 'viem/chains';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
 import { EventCard, EventsCards } from '@/components/Events/EventsCards';
+import { TalentSocials, TalentUser } from '@/interfaces/Talent';
 
 export default function Profile() {
   const { address } = useBlockchain();
-  const [talent, setTalent] = useState<any>(null);
+  const [talent, setTalent] = useState<TalentUser | null>(null);
 
   const { user } = useUser();
   const favoriteCities: EventCard[] = [
     {
       name: 'Hackathon Next Month',
+      description: 'Join us for a hackathon in Buenos Aires',
       image: '/images/nyc.jpg',
       city: 'Buenos Aires',
       date: '2024-11-12',
       link: 'https://www.google.com',
     },
     {
-      name: 'Tokyo',
+      name: 'Base Hackathon',
       image: '/images/tokyo.jpg',
+      description: 'Join us for a hackathon in Tokyo',
       link: 'https://www.google.com',
       city: 'Tokyo',
       date: '2024-11-12',
     },
     {
-      name: 'London',
+      name: 'Base Meetup',
       image: '/images/london.jpg',
+      description: 'Join us for a hackathon in London',
       link: 'https://www.google.com',
       city: 'London',
       date: '2024-11-12',
     },
   ];
 
-  const upcomingEvents = [
-    {
-      name: 'DevCon 2024',
-      image: techConf,
-      width: 300,
-      height: 200,
-      date: '2024-11-12',
-    },
-    {
-      name: 'Hackathon Next Month',
-      image: hackaThon,
-      width: 300,
-      height: 200,
-      date: '2023-10-01',
-    },
-    {
-      name: 'Local Meetup',
-      image: meetUp,
-      width: 300,
-      height: 200,
-      date: '2023-08-30',
-    },
-  ];
   useEffect(() => {
     if (!address) return;
 
@@ -166,7 +142,7 @@ export default function Profile() {
           </Button>
         </div>
         <div className="flex items-center space-x-4">
-          {talent?.passport_profile?.tags.map((tag: string) => (
+          {talent?.passport_profile?.tags?.map((tag: string) => (
             <Badge key={tag}>{tag}</Badge>
           ))}
         </div>
@@ -177,11 +153,10 @@ export default function Profile() {
           </p>
         </div>
 
-        {/* Social */}
         <div>
           <h3 className="text-xl font-semibold mb-4">Social Media</h3>
           <div className="flex space-x-4">
-            {talent?.passport_socials.map((social: TalentSocials) => (
+            {talent?.passport_socials?.map((social: TalentSocials) => (
               <a
                 key={social.source}
                 href={social.profile_url}
@@ -195,14 +170,14 @@ export default function Profile() {
 
         <div className="space-y-8">
           <div>
-            <h3 className="text-xl font-semibold mb-4">Favorite Cities</h3>
+            <h3 className="text-xl font-semibold mb-4">Events</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {favoriteCities.map((event) => (
                 <EventsCards key={event.name} {...event} />
               ))}
             </div>
           </div>
-          <div>
+          {/* <div>
             <h3 className="text-xl font-semibold mb-4">Upcoming Events</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {upcomingEvents.map((event) => (
@@ -235,7 +210,7 @@ export default function Profile() {
                 </Card>
               ))}
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

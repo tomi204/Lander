@@ -50,3 +50,12 @@ export interface OurUsers {
   main_wallet: string;
   userId: string;
 }
+
+export interface EventCard {
+  name: string;
+  description: string;
+  image: string;
+  city: string;
+  date: string;
+  link: string;
+}

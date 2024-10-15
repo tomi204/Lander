@@ -10,7 +10,7 @@ import Image from 'next/image';
 import { Avatar, Identity } from '@coinbase/onchainkit/identity';
 import { base } from 'viem/chains';
 import { Button } from './ui/button';
-import { TalentPassport, TalentUser } from '@/interfaces/Talent';
+import { TalentUser } from '@/interfaces/Talent';
 
 export default function UserCard({ passport }: { passport: TalentUser }) {
   return (

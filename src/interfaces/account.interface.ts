@@ -16,16 +16,3 @@ export interface AccountDataRequest {
   phoneNumber: string;
   about: string;
 }
-
-export interface TalentSocials {
-  disconnected: boolean;
-  follower_count: number;
-  following_count: number;
-  location: string;
-  profile_bio: string;
-  profile_display_name: string;
-  profile_image_url: string;
-  profile_name: string;
-  profile_url: string;
-  source: string;
-}

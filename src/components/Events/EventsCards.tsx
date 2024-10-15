@@ -1,13 +1,15 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Calendar, MapPin } from 'lucide-react';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import { CalendarIcon, MapPinIcon } from 'lucide-react';
 import Image from 'next/image';
-export interface EventCard {
-  name: string;
-  image: string;
-  city: string;
-  date: string;
-  link: string;
-}
+import { Button } from '../ui/button';
+import { EventCard } from '@/interfaces/Common';
 
 export const EventsCards = (event: EventCard) => {
   console.log(event.image, event.name, event.city, event.date);
@@ -17,11 +19,11 @@ export const EventsCards = (event: EventCard) => {
       onClick={() => {
         window.open(event.link, '_blank');
       }}
-      className="bg-gray-200 overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-105"
+      className="bg-gray-100 overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-105"
     >
       <CardHeader className="p-0">
         <Image
-          src={event.image}
+          src={'/base-hackathon.jpg'}
           alt={event.name}
           width={300}
           height={200}
@@ -32,18 +34,26 @@ export const EventsCards = (event: EventCard) => {
         <CardTitle className="text-lg font-semibold mb-2">
           {event.name}
         </CardTitle>
-        <p className="text-sm text-gray-400 flex items-center">
-          <Calendar size={14} className="mr-2" />
-          {new Date(event.date).toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-          })}
-        </p>
-        <p className="ftext-sm text-gray-600 flex items-center font-semibold ">
-          <MapPin size={18} className="mr-1 text-blue-400" />
-          {event.city}
-        </p>
+        <div className="flex items-center mt-2 text-sm text-muted-foreground">
+          <CalendarIcon className="mr-2 h-4 w-4" />
+          <span>{event.date}</span>
+        </div>
+        <div className="flex items-center mt-2 text-sm text-muted-foreground">
+          <MapPinIcon className="mr-2 h-4 w-4" />
+          <span>{event.city}</span>
+        </div>
+        <CardDescription className="mt-4">{event.description}</CardDescription>
+        <CardFooter className="flex justify-around gap-3 mt-5">
+          <Button
+            className="w-full"
+            onClick={() => {
+              window.open(event.link, '_blank');
+            }}
+          >
+            Get Tickets
+          </Button>
+          <Button className="w-full">Search friends</Button>
+        </CardFooter>
       </CardContent>
     </Card>
   );
