@@ -30,7 +30,7 @@ async function PageHome({ searchParams }: PageHomeProps) {
   const supabase = createClient();
   const { data: properties } = await supabase.from('properties').select();
 
-  const { data: users } = await supabase.from('users').select();
+
 
   const settings = homeSettingsConst['DEFAULT'];
 
@@ -60,7 +60,7 @@ async function PageHome({ searchParams }: PageHomeProps) {
 
         <SectionOurFeatures />
 
-        {/* 
+        {/*
 
 
 {/*

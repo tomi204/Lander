@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -21,7 +23,7 @@ const placeholderSections: Section[] = [
   },
   {
     id: "user-rights",
-    title: "3. User Rights and Responsibilities",
+    title: "3. User Rights & Responsibilities",
     content: "This section outlines what users can and cannot do, as well as their rights when using the service."
   },
   {
@@ -36,7 +38,7 @@ const placeholderSections: Section[] = [
   }
 ];
 
-export default function TermsOfUse( { title = "Legal Document" }: { title?: string; } ) {
+export function TermsOfUse( { title = "Terms of Use" }: { title?: string; } ) {
   const [activeSection, setActiveSection] = useState( placeholderSections[0].id );
 
   const handleSectionClick = ( sectionId: string ) => {
@@ -51,35 +53,38 @@ export default function TermsOfUse( { title = "Legal Document" }: { title?: stri
     <div className="container mx-auto px-4 py-8 max-w-4xl">
       <h1 className="text-3xl font-bold mb-6">{title}</h1>
       <div className="flex flex-col md:flex-row gap-8">
-        <aside className="md:w-1/4">
-          <nav className="sticky top-4">
+        <aside className="md:w-1/4 ">
+          <nav className="sticky top-4 ">
             <h2 className="text-lg font-semibold mb-2">Table of Contents</h2>
             <ScrollArea className="h-[calc(100vh-100px)]">
-              <ul className="space-y-2">
-                {placeholderSections.map( ( section ) => (
+              <ul className="space-y-2 ">
+                {placeholderSections.map((section) => (
                   <li key={section.id}>
                     <Button
                       variant="ghost"
-                      className={`w-full justify-start ${activeSection === section.id ? "bg-secondary" : ""
-                        }`}
-                      onClick={() => handleSectionClick( section.id )}
+                      className={`w-full justify-start whitespace-nowrap ${
+                        activeSection === section.id ? 'bg-secondary' : ''
+                      }`}
+                      onClick={() => handleSectionClick(section.id)}
                     >
                       {section.title}
                     </Button>
                   </li>
-                ) )}
+                ))}
               </ul>
             </ScrollArea>
           </nav>
         </aside>
-        <main className="md:w-3/4">
+        <main className="md:w-3/4 pl-4">
           <ScrollArea className="h-[calc(100vh-100px)]">
-            {placeholderSections.map( ( section ) => (
+            {placeholderSections.map((section) => (
               <section key={section.id} id={section.id} className="mb-8">
-                <h2 className="text-2xl font-semibold mb-4">{section.title}</h2>
+                <h2 className="text-2xl font-semibold mb-4 ">
+                  {section.title}
+                </h2>
                 <p className="text-muted-foreground">{section.content}</p>
               </section>
-            ) )}
+            ))}
           </ScrollArea>
         </main>
       </div>
