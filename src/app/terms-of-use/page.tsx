@@ -38,7 +38,7 @@ const placeholderSections: Section[] = [
   }
 ];
 
-export function TermsOfUse( { title = "Terms of Use" }: { title?: string; } ) {
+export default function TermsOfUse() {
   const [activeSection, setActiveSection] = useState( placeholderSections[0].id );
 
   const handleSectionClick = ( sectionId: string ) => {
@@ -51,7 +51,7 @@ export function TermsOfUse( { title = "Terms of Use" }: { title?: string; } ) {
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-4xl">
-      <h1 className="text-3xl font-bold mb-6">{title}</h1>
+      <h1 className="text-3xl font-bold mb-6">Terms of Use</h1>
       <div className="flex flex-col md:flex-row gap-8">
         <aside className="md:w-1/4 ">
           <nav className="sticky top-4 ">
