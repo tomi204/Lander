@@ -5,16 +5,15 @@ import { useEffect, useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
 import { OurUsers } from '@/interfaces/Common';
-import { TalentPassport, TalentUser } from '@/interfaces/Talent';
+import { TalentUser } from '@/interfaces/Talent';
 
 function Explore() {
   const [passports, setPassports] = useState<TalentUser[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [ourUsers, setOurUsers] = useState<TalentPassport[]>([]);
+  const [ourUsers, setOurUsers] = useState<TalentUser[]>([]);
   const loadPassports = async (page: number) => {
     const talent = await getAllTalent(page);
-    console.log(talent, 'talent');
     setPassports(talent.passports);
     setTotalPages(talent.pagination.last_page);
   };
@@ -42,24 +41,25 @@ function Explore() {
       const usersWithPassports = await Promise.all(
         users.map(async (user: OurUsers) => {
           const passport = await getTalentByWallet(user.main_wallet);
-
-          return { ...user, passport };
+          console.log(passport.passport, 'passport');
+          return { passport: passport.passport };
         })
       );
 
-      const ourUsers = usersWithPassports.filter(
-        (user) => user.passport?.passport
-      );
-      setOurUsers(ourUsers);
+      const ourUsers = usersWithPassports.filter((user) => user.passport);
+      setOurUsers(ourUsers.map((user) => user.passport));
     } catch (error) {
       console.error('Error loading users:', error);
     }
   };
+  console.log(ourUsers, 'ourUsers');
 
   useEffect(() => {
     loadOurUsers();
   }, []);
   if (!passports || passports.length === 0) return <LoadingSpinner />;
+
+  console.log(ourUsers, 'passportsssss');
 
   return (
     <section className=" w-11/12 m-auto mt-10">
@@ -98,7 +98,7 @@ function Explore() {
           {ourUsers.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {ourUsers.map((user, index) => (
-                <UserCard key={index} passport={user.passport} />
+                <UserCard key={index} passport={user} />
               ))}
             </div>
           ) : (

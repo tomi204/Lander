@@ -13,11 +13,11 @@ import { Button } from './ui/button';
 import { TalentPassport, TalentUser } from '@/interfaces/Talent';
 
 export default function UserCard({ passport }: { passport: TalentUser }) {
-  console.log(passport, 'passport in usercard');
   return (
     <Card className="flex flex-col justify-between h-full min-h-[350px]">
       <CardHeader className="flex flex-col items-center justify-center gap-4 pb-2">
-        {passport?.passport_profile?.image_url ? (
+        {passport?.passport_profile?.image_url !== null &&
+        passport?.passport_profile?.image_url !== 'talent_protocol' ? (
           <Image
             src={passport?.passport_profile?.image_url as string}
             alt={'Profile'}
@@ -52,7 +52,7 @@ export default function UserCard({ passport }: { passport: TalentUser }) {
                 </div>
               }
               defaultComponent={
-                <div className="h-8 w-8">
+                <div className="w-20 h-20">
                   <svg
                     width="100%"
                     height="100%"
@@ -61,8 +61,8 @@ export default function UserCard({ passport }: { passport: TalentUser }) {
                   >
                     <polygon
                       points="6,1 14,1 19,6 19,14 14,19 6,19 1,14 1,6"
-                      fill="green"
-                      stroke="green"
+                      fill="yellow"
+                      stroke="yellow"
                       stroke-width="1"
                     />
                   </svg>
