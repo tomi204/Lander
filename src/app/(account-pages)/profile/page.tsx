@@ -17,8 +17,9 @@ import { Avatar } from '@coinbase/onchainkit/identity';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { base } from 'viem/chains';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
-import { EventCard, EventsCards } from '@/components/Events/EventsCards';
+import { EventsCards } from '@/components/Events/EventsCards';
 import { TalentSocials, TalentUser } from '@/interfaces/Talent';
+import { EventCard } from '@/interfaces/Common';
 
 export default function Profile() {
   const { address } = useBlockchain();
