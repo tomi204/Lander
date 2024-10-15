@@ -30,7 +30,7 @@ export default function AvatarDropdown({
 
   const [isSolana, setIsSolana] = useState(false);
   const { address, chain } = useBlockchain();
-  const { disconnect, select } = useWallet();
+  const { disconnect } = useWallet();
 
   const navItems: NavItem[] = [
     { name: 'Account', icon: User, href: { pathname: '/profile' } },
