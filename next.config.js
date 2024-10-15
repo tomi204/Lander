@@ -129,17 +129,33 @@ const nextConfig = {
         port: '',
         pathname: '/**',
       },
-      //far.quest
       {
         protocol: 'https',
         hostname: 'far.quest',
         port: '',
         pathname: '/**',
       },
-      //ipfs.io
       {
         protocol: 'https',
         hostname: 'ipfs.io',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'highlight-creator-assets.highlight.xyz',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 's3.ap-southeast-1.amazonaws.com',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'ipfs.infura.io',
         port: '',
         pathname: '/**',
       },
