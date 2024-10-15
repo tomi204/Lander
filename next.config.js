@@ -99,6 +99,50 @@ const nextConfig = {
         port: '1337',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'i.imgur.com',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'imagedelivery.net',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'i.seadn.io',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'beb-public.s3.us-west-1.amazonaws.com',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'ipfs.decentralized-content.com',
+        port: '',
+        pathname: '/**',
+      },
+      //far.quest
+      {
+        protocol: 'https',
+        hostname: 'far.quest',
+        port: '',
+        pathname: '/**',
+      },
+      //ipfs.io
+      {
+        protocol: 'https',
+        hostname: 'ipfs.io',
+        port: '',
+        pathname: '/**',
+      },
     ],
   },
 };

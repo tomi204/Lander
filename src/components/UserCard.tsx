@@ -6,59 +6,71 @@ import {
   CardHeader,
 } from '@/components/ui/card';
 import { MapPin } from 'lucide-react';
+import Image from 'next/image';
 import { Avatar, Identity } from '@coinbase/onchainkit/identity';
 import { base } from 'viem/chains';
 import { Button } from './ui/button';
+import { TalentPassport, TalentUser } from '@/interfaces/Talent';
 
-export default function UserCard({ passport }: any) {
-  console.log(passport.main_wallet, 'passsport in usercard');
+export default function UserCard({ passport }: { passport: TalentUser }) {
+  console.log(passport, 'passport in usercard');
   return (
     <Card className="flex flex-col justify-between h-full min-h-[350px]">
       <CardHeader className="flex flex-col items-center justify-center gap-4 pb-2">
-        <Identity
-          className="rounded-3xl justify-center"
-          address={passport?.main_wallet}
-          chain={base}
-          schemaId="0xf8b05c79f090979bf4a80270aba232dff11a10d9ca55c4f88de95317970f0de9"
-        >
-          <Avatar
+        {passport?.passport_profile?.image_url ? (
+          <Image
+            src={passport?.passport_profile?.image_url as string}
+            alt={'Profile'}
+            width={80}
+            height={80}
             className="w-20 h-20 rounded-full bg-white"
-            loadingComponent={
-              <div className="w-20 h-20">
-                <svg
-                  width="100%"
-                  height="100%"
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <polygon
-                    points="6,1 14,1 19,6 19,14 14,19 6,19 1,14 1,6"
-                    fill="yellow"
-                    stroke="yellow"
-                    stroke-width="1"
-                  />
-                </svg>
-              </div>
-            }
-            defaultComponent={
-              <div className="w-20 h-20">
-                <svg
-                  width="100%"
-                  height="100%"
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <polygon
-                    points="6,1 14,1 19,6 19,14 14,19 6,19 1,14 1,6"
-                    fill="green"
-                    stroke="green"
-                    stroke-width="1"
-                  />
-                </svg>
-              </div>
-            }
           />
-        </Identity>
+        ) : (
+          <Identity
+            className="rounded-3xl justify-center"
+            address={passport?.main_wallet as `0x${string}`}
+            chain={base}
+            schemaId="0xf8b05c79f090979bf4a80270aba232dff11a10d9ca55c4f88de95317970f0de9"
+          >
+            <Avatar
+              className="w-20 h-20 rounded-full bg-white"
+              loadingComponent={
+                <div className="w-20 h-20">
+                  <svg
+                    width="100%"
+                    height="100%"
+                    viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <polygon
+                      points="6,1 14,1 19,6 19,14 14,19 6,19 1,14 1,6"
+                      fill="yellow"
+                      stroke="yellow"
+                      stroke-width="1"
+                    />
+                  </svg>
+                </div>
+              }
+              defaultComponent={
+                <div className="h-8 w-8">
+                  <svg
+                    width="100%"
+                    height="100%"
+                    viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <polygon
+                      points="6,1 14,1 19,6 19,14 14,19 6,19 1,14 1,6"
+                      fill="green"
+                      stroke="green"
+                      stroke-width="1"
+                    />
+                  </svg>
+                </div>
+              }
+            />
+          </Identity>
+        )}
         <div className="flex xl:flex-row lg:flex-row 2xl:flex-row md:flex-col sm:flex-col  justify-center gap-1 items-center w-10/12">
           <h2 className="text-xl font-bold text-center w-11/12 sm:w-full">
             {passport?.passport_profile?.display_name}

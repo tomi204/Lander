@@ -42,3 +42,11 @@ export interface NavItem {
   };
   function?: () => void;
 }
+
+export interface OurUsers {
+  chain: string;
+  createdAt: string;
+  id: string;
+  main_wallet: string;
+  userId: string;
+}

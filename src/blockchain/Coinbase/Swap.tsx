@@ -33,7 +33,7 @@ export default function SwapComponents({
   console.log(tokensToUse, 'tokensToUse');
 
   return (
-    <Swap className="w-8/12 md:w-full sm:w-full m-auto flex flex-col items-center justify-center bg-white">
+    <Swap className="w-8/12 md:w-10/12 sm:w-full m-auto flex flex-col items-center justify-center bg-white">
       <SwapAmountInput
         label="Sell"
         className="rounded-3xl"
