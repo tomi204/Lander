@@ -31,7 +31,7 @@ import Logo from '@/shared/Logo';
           <div>
             <a
               rel="noreferrer noopener"
-              href="#"
+              href="https://x.com/app_lander"
               className="opacity-60 hover:opacity-100"
             >
               Twitter
@@ -50,8 +50,8 @@ import Logo from '@/shared/Logo';
         </div>
 
         <div className="flex flex-col gap-2">
-          <h3 className="font-bold text-lg">Terms of Service</h3>
-          <div>
+          <h3 className="font-bold text-lg">Legal Terms</h3>
+          {/* <div>
             <a
               rel="noreferrer noopener"
               href="#"
@@ -59,19 +59,19 @@ import Logo from '@/shared/Logo';
             >
               Disclaimer
             </a>
-          </div>
+          </div> */}
 
           <div>
             <a
               rel="noreferrer noopener"
-              href="#"
+              href="/terms-of-use"
               className="opacity-60 hover:opacity-100"
             >
             Terms of Use
             </a>
           </div>
 
-          <div>
+          {/* <div>
             <a
               rel="noreferrer noopener"
               href="#"
@@ -79,7 +79,7 @@ import Logo from '@/shared/Logo';
             >
             Privacy Policy
             </a>
-          </div>
+          </div> */}
         </div>
 
         <div className="flex flex-col gap-2">
