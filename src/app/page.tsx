@@ -13,18 +13,9 @@ import { LoadingSpinner } from '@/components/LoadingSpinner';
 
 export const revalidate = 2;
 
-interface PageHomeProps {
-  searchParams: {
-    location: string;
-    from: string;
-    to: string;
-    guests: string;
-  };
-}
-
 export const metadata: Metadata = CryptoBedSeo;
 
-async function PageHome({ searchParams }: PageHomeProps) {
+async function PageHome() {
   let items: Stay[] = [];
 
   const supabase = createClient();
@@ -38,11 +29,9 @@ async function PageHome({ searchParams }: PageHomeProps) {
 
   return (
     <main className="relative overflow-hidden">
-      {/* GLASSMOPHIN */}
       <BgGlassmorphism />
 
       <div className="container relative space-y-8 mb-24 lg:space-y-28 lg:mb-28">
-        {/* SECTION HERO */}
         <div className="container pt-10 pb-0">
           <SectionHeroArchivePage settings={settings} />
         </div>
@@ -53,64 +42,11 @@ async function PageHome({ searchParams }: PageHomeProps) {
           </h2>
           <div className="w-full border-b border-neutral-200 dark:border-neutral-700"></div>
         </div>
-        {/* List Stays */}
         <SectionGridHasMap items={items} properties={properties} />
-        {/* SECTION 1 */}
-        {/* <SectionSliderNewCategories /> */}
 
         <SectionOurFeatures />
 
-        {/* 
-
-
-{/*
-        <SectionGridFeaturePlaces
-          properties={properties}
-          cardType="card1"
-        /> */}
-
-        {/* <SectionHowItWork /> */}
-
-        {/* <div className="relative py-16">
-          <BackgroundSection className="bg-orange-50 dark:bg-black/20" />
-          <SectionSliderNewCategories
-            categories={DEMO_CATS_2}
-            categoryCardType="card4"
-            itemPerRow={4}
-            heading="Suggestions for discovery"
-            subHeading="Popular places to stay that Chisfis recommends for you"
-            sliderStyle="style2"
-          />
-        </div> */}
-
         <SectionSubscribe2 />
-
-        {/* <div className="relative py-16">
-          <BackgroundSection className="bg-orange-50 dark:bg-black dark:bg-opacity-20 " />
-          <SectionGridAuthorBox />
-        </div> */}
-
-        {/* <SectionGridCategoryBox /> */}
-
-        {/* <div className="relative py-16">
-          <BackgroundSection />
-          <SectionBecomeAnAuthor />
-        </div> */}
-
-        {/* <SectionSliderNewCategories
-          heading="Explore by types of stays"
-          subHeading="Explore houses based on 10 types of stays"
-          categoryCardType="card5"
-          itemPerRow={5}
-        /> */}
-
-        {/* <SectionVideos /> */}
-
-        {/* <div className="relative py-16">
-          <BackgroundSection />
-          <SectionClientSay />
-        </div> */}
-        {/* <Verify /> */}
       </div>
     </main>
   );
