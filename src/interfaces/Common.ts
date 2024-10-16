@@ -42,3 +42,20 @@ export interface NavItem {
   };
   function?: () => void;
 }
+
+export interface OurUsers {
+  chain: string;
+  createdAt: string;
+  id: string;
+  main_wallet: string;
+  userId: string;
+}
+
+export interface EventCard {
+  name: string;
+  description: string;
+  image: string;
+  city: string;
+  date: string;
+  link: string;
+}

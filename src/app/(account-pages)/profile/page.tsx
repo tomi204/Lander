@@ -3,11 +3,7 @@ import Image from 'next/image';
 import { Calendar, MapPin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-
 import placeholderLarge from '/src/images/placeholder-large-h.png';
-import tokyo from '/src/images/tokyo.jpg';
-import nyc from '/src/images/nyc.jpg';
-import london from '/src/images/london.jpg';
 import techConf from '/src/images/devcon.png';
 import hackaThon from '/src/images/base-hackathon.jpg';
 import meetUp from '/src/images/local-meetup.jpg';
@@ -16,47 +12,47 @@ import { getTalentByWallet } from '@/services/talent';
 import { useBlockchain } from '@/contexts/BlockchainContext';
 import { GithubIcon } from '@/icons';
 import { Badge, Spinner } from '@chakra-ui/react';
-import { TalentSocials } from '@/interfaces/account.interface';
 import { useUser } from '@/contexts/UserContext';
-import { Avatar, Name } from '@coinbase/onchainkit/identity';
+import { Avatar } from '@coinbase/onchainkit/identity';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { base } from 'viem/chains';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
+import { EventsCards } from '@/components/Events/EventsCards';
+import { TalentSocials, TalentUser } from '@/interfaces/Talent';
+import { EventCard } from '@/interfaces/Common';
 
-export default function Component() {
+export default function Profile() {
   const { address } = useBlockchain();
-  const [talent, setTalent] = useState<any>(null);
+  const [talent, setTalent] = useState<TalentUser | null>(null);
 
   const { user } = useUser();
-  const favoriteCities = [
-    { name: 'New York', image: nyc, width: 300, height: 200 },
-    { name: 'Tokyo', image: tokyo, width: 300, height: 200 },
-    { name: 'London', image: london, width: 300, height: 200 },
-  ];
-
-  const upcomingEvents = [
+  const favoriteCities: EventCard[] = [
     {
-      name: 'DevCon 2024',
-      image: techConf,
-      width: 300,
-      height: 200,
+      name: 'Hackathon Next Month',
+      description: 'Join us for a hackathon in Buenos Aires',
+      image: '/images/nyc.jpg',
+      city: 'Buenos Aires',
+      date: '2024-11-12',
+      link: 'https://www.google.com',
+    },
+    {
+      name: 'Base Hackathon',
+      image: '/images/tokyo.jpg',
+      description: 'Join us for a hackathon in Tokyo',
+      link: 'https://www.google.com',
+      city: 'Tokyo',
       date: '2024-11-12',
     },
     {
-      name: 'Hackathon Next Month',
-      image: hackaThon,
-      width: 300,
-      height: 200,
-      date: '2023-10-01',
-    },
-    {
-      name: 'Local Meetup',
-      image: meetUp,
-      width: 300,
-      height: 200,
-      date: '2023-08-30',
+      name: 'Base Meetup',
+      image: '/images/london.jpg',
+      description: 'Join us for a hackathon in London',
+      link: 'https://www.google.com',
+      city: 'London',
+      date: '2024-11-12',
     },
   ];
+
   useEffect(() => {
     if (!address) return;
 
@@ -82,47 +78,9 @@ export default function Component() {
 
   return (
     <div className="flex flex-col md:flex-row min-h-screen text-black">
-      {/* Sidebar 
-      <div className="w-full md:w-64 p-4 border-b md:border-r border-gray-700">
-        <h1 className="text-2xl font-bold mb-8">t</h1>
-        <nav className="flex md:flex-col space-x-4 md:space-x-0 md:space-y-4">
-          <a href="#" className="flex items-center space-x-2 text-gray-300 hover:text-white">
-            <Search size={20} />
-            <span className="hidden md:inline">Search</span>
-          </a>
-          <a href="#" className="flex items-center space-x-2 text-white">
-            <User size={20} />
-            <span className="hidden md:inline">Profile</span>
-          </a>
-          <a href="#" className="flex items-center space-x-2 text-gray-300 hover:text-white">
-            <Wallet size={20} />
-            <span className="hidden md:inline">Wallet</span>
-          </a>
-          <a href="#" className="flex items-center space-x-2 text-gray-300 hover:text-white">
-            <Bell size={20} />
-            <span className="hidden md:inline">Notifications</span>
-          </a>
-          <a href="#" className="flex items-center space-x-2 text-gray-300 hover:text-white">
-            <Briefcase size={20} />
-            <span className="hidden md:inline">Jobs</span>
-          </a>
-        </nav>
-      </div>*/}
-
-      {/* Main content */}
       <div className="flex-1 p-4 md:p-8 space-y-8">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center space-y-4 md:space-y-0">
           <div className="flex items-center space-x-4">
-            {/* {user?.avatar_url ? (
-              <Image
-                src={user?.avatar_url}
-                alt="Profile picture"
-                width={80}
-                height={80}
-                className="rounded-full"
-              />
-            ) : ( */}
-
             <Avatar
               chain={base}
               className="w-44 h-44"
@@ -185,24 +143,21 @@ export default function Component() {
           </Button>
         </div>
         <div className="flex items-center space-x-4">
-          {talent?.passport_profile?.tags.map((tag: string) => (
+          {talent?.passport_profile?.tags?.map((tag: string) => (
             <Badge key={tag}>{tag}</Badge>
           ))}
         </div>
-        <div>
-          <a href="#" className="text-blue-500 hover:underline">
-            Builder Score {talent?.score}
-          </a>
-          <a href="#" className="text-blue-500 hover:underline pl-8">
+        <div className="flex flex-row">
+          <p className="text-blue-500 ">Builder Score {talent?.score}</p>
+          <p className="text-blue-500 pl-8">
             Identity Score {talent?.identity_score}
-          </a>
+          </p>
         </div>
 
-        {/* Social */}
         <div>
           <h3 className="text-xl font-semibold mb-4">Social Media</h3>
           <div className="flex space-x-4">
-            {talent?.passport_socials.map((social: TalentSocials) => (
+            {talent?.passport_socials?.map((social: TalentSocials) => (
               <a
                 key={social.source}
                 href={social.profile_url}
@@ -216,33 +171,14 @@ export default function Component() {
 
         <div className="space-y-8">
           <div>
-            <h3 className="text-xl font-semibold mb-4">Favorite Cities</h3>
+            <h3 className="text-xl font-semibold mb-4">Events</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {favoriteCities.map((city) => (
-                <Card
-                  key={city.name}
-                  className="bg-gray-200 overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-105"
-                >
-                  <CardHeader className="p-0">
-                    <Image
-                      src={city.image}
-                      alt={city.name}
-                      width={300}
-                      height={200}
-                      className="w-full h-48 object-cover"
-                    />
-                  </CardHeader>
-                  <CardContent className="p-4">
-                    <CardTitle className="flex items-center text-lg font-semibold">
-                      <MapPin size={18} className="mr-2 text-blue-400" />
-                      {city.name}
-                    </CardTitle>
-                  </CardContent>
-                </Card>
+              {favoriteCities.map((event) => (
+                <EventsCards key={event.name} {...event} />
               ))}
             </div>
           </div>
-          <div>
+          {/* <div>
             <h3 className="text-xl font-semibold mb-4">Upcoming Events</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {upcomingEvents.map((event) => (
@@ -275,7 +211,7 @@ export default function Component() {
                 </Card>
               ))}
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

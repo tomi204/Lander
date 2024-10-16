@@ -3,21 +3,15 @@ import UserCard from '@/components/UserCard';
 import { getAllTalent, getTalentByWallet } from '@/services/talent';
 import { useEffect, useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Spinner } from '@chakra-ui/react';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
-interface OurUsers {
-  chain: string;
-  createdAt: string;
-  id: string;
-  main_wallet: string;
-  userId: string;
-}
+import { OurUsers } from '@/interfaces/Common';
+import { TalentUser } from '@/interfaces/Talent';
 
 function Explore() {
-  const [passports, setPassports] = useState([]);
+  const [passports, setPassports] = useState<TalentUser[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [ourUsers, setOurUsers] = useState<any[]>([]);
+  const [ourUsers, setOurUsers] = useState<TalentUser[]>([]);
   const loadPassports = async (page: number) => {
     const talent = await getAllTalent(page);
     setPassports(talent.passports);
@@ -47,24 +41,25 @@ function Explore() {
       const usersWithPassports = await Promise.all(
         users.map(async (user: OurUsers) => {
           const passport = await getTalentByWallet(user.main_wallet);
-
-          return { ...user, passport };
+          console.log(passport.passport, 'passport');
+          return { passport: passport.passport };
         })
       );
 
-      const ourUsers = usersWithPassports.filter(
-        (user) => user.passport?.passport
-      );
-      setOurUsers(ourUsers);
+      const ourUsers = usersWithPassports.filter((user) => user.passport);
+      setOurUsers(ourUsers.map((user) => user.passport));
     } catch (error) {
       console.error('Error loading users:', error);
     }
   };
+  console.log(ourUsers, 'ourUsers');
 
   useEffect(() => {
     loadOurUsers();
   }, []);
   if (!passports || passports.length === 0) return <LoadingSpinner />;
+
+  console.log(ourUsers, 'passportsssss');
 
   return (
     <section className=" w-11/12 m-auto mt-10">
@@ -103,7 +98,7 @@ function Explore() {
           {ourUsers.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {ourUsers.map((user, index) => (
-                <UserCard key={index} passport={user?.passport?.passport} />
+                <UserCard key={index} passport={user} />
               ))}
             </div>
           ) : (

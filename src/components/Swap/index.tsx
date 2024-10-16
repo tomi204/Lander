@@ -13,6 +13,7 @@ import { getTokens } from '@coinbase/onchainkit/api';
 import type { Token } from '@coinbase/onchainkit/token';
 import { useCallback } from 'react';
 import { useAppKit } from '@reown/appkit/react';
+import { ConnectButton } from '@rainbow-me/rainbowkit';
 export const Swap = () => {
   const [tokens, setTokens] = useState<Token[]>([]);
   const [selectedToken, setSelectedToken] = useState<Token | null>(null);
@@ -21,7 +22,7 @@ export const Swap = () => {
   const { open } = useAppKit();
   const config = {
     appearance: 'light',
-    toChain: 56,
+    toChain: 8453,
     hiddenUI: ['poweredBy', 'walletMenu', 'drawerCloseButton'],
     theme: {},
   } as Partial<WidgetConfig>;
@@ -85,7 +86,7 @@ export const Swap = () => {
               <React.Suspense fallback={<WidgetSkeleton config={config} />}>
                 <LiFiWidget
                   config={config}
-                  toChain={56}
+                  toChain={8453}
                   integrator="nextjs-example"
                 />
               </React.Suspense>
@@ -93,7 +94,13 @@ export const Swap = () => {
           </Tabs>
         </section>
       ) : (
-        <ConnectModal />
+        <div className="flex items-center justify-center w-full h-full">
+          <ConnectButton
+            accountStatus={'full'}
+            chainStatus={'none'}
+            showBalance={false}
+          />
+        </div>
       )}
     </>
   );
