@@ -37,11 +37,10 @@ function Explore() {
     try {
       const data = await fetch('/api/wallets');
       const users = await data.json();
-
       const usersWithPassports = await Promise.all(
         users.map(async (user: OurUsers) => {
           const passport = await getTalentByWallet(user.main_wallet);
-          console.log(passport.passport, 'passport');
+
           return { passport: passport.passport };
         })
       );
@@ -59,10 +58,8 @@ function Explore() {
   }, []);
   if (!passports || passports.length === 0) return <LoadingSpinner />;
 
-  console.log(ourUsers, 'passportsssss');
-
   return (
-    <section className=" w-11/12 m-auto mt-10">
+    <section className=" w-11/12 m-auto mt-10 mb-10">
       <Tabs defaultValue="Top" className="w-full">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="Top">Top Talent</TabsTrigger>

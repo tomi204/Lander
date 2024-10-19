@@ -159,6 +159,14 @@ const nextConfig = {
         port: '',
         pathname: '/**',
       },
+      ///talentprotocol-mvp.s3.eu-west-2.amazonaws.com
+
+      {
+        protocol: 'https',
+        hostname: 'talentprotocol-mvp.s3.eu-west-2.amazonaws.com',
+        port: '',
+        pathname: '/**',
+      },
     ],
   },
 };
