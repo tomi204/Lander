@@ -4,15 +4,12 @@ import { Spinner } from '@chakra-ui/react';
 import { Button } from '@/components/ui/button';
 import Avatar from '@/shared/Avatar';
 
-import Image from 'next/image';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import placeholderLarge from '/src/images/placeholder-large-h.png';
 import { GithubIcon } from '@/icons';
 import { Badge } from '@chakra-ui/react';
 import { Avatar as AvatarCoinBaseComponent } from '@coinbase/onchainkit/identity';
-import { base } from 'viem/chains';
-import { EventsCards } from '@/components/Events/EventsCards';
+import { base } from '@/constants/Chain';
 import { TalentSocials, TalentUser } from '@/interfaces/Talent';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
 export default function ProfileByIdPage() {
@@ -25,8 +22,6 @@ export default function ProfileByIdPage() {
     };
     getTalent();
   }, []);
-
-  console.log(id);
 
   return (
     <>
