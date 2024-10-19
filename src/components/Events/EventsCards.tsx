@@ -17,7 +17,7 @@ export const EventsCards = (event: EventCard) => {
     <Card
       key={event.name}
       onClick={() => {
-        window.open(event.link, '_blank');
+        window.open(`/events/${event.id}`, '_blank');
       }}
       className="bg-gray-100 overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-105"
     >

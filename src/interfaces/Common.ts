@@ -52,6 +52,7 @@ export interface OurUsers {
 }
 
 export interface EventCard {
+  id?: string;
   name: string;
   description: string;
   image: string;
