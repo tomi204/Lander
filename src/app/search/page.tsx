@@ -9,6 +9,7 @@ import { useSearchParams } from 'next/navigation';
 import supabase from '@/utils/supabase/client';
 import SearchCard from '@/components/SearchCard';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export default function BookingPage() {
   const [priceRange, setPriceRange] = useState([0, 5000]);
@@ -41,37 +42,84 @@ export default function BookingPage() {
     fetchProperties();
   }, [location]);
 
+  const handleSearch = () => {
+    // Implement search functionality here
+    console.log('Searching with filters:', { priceRange });
+  };
+
   const FilterContent = () => (
-    <div className="space-y-6">
+    <ScrollArea className="h-[calc(100vh-2rem)] pr-4">
+    <div className="space-y-6 bg-white overflow-hidden">
       <h2 className="text-lg font-semibold">Filter by:</h2>
 
+      {/* Google Maps iframe */}
+      <div className="mb-4 w-full h-[250px]">
+          <iframe 
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d105073.45340566235!2d-58.515699825304004!3d-34.61565476740269!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95bcca3b4ef90cbd%3A0xa0b3812e88e88e87!2sBuenos%20Aires%2C%20Cdad.%20Aut%C3%B3noma%20de%20Buenos%20Aires!5e0!3m2!1ses-419!2sar!4v1729008251246!5m2!1ses-419!2sar" 
+            width="100%" 
+            height="100%" 
+            style={{ border: 0 }} 
+            allowFullScreen 
+            loading="lazy" 
+            referrerPolicy="no-referrer-when-downgrade"
+          ></iframe>
+        </div>
+
       {/* Price range filter */}
-      <div>
+      {/*<div>
         <h3 className="font-medium mb-2">Your budget (per night)</h3>
         <Slider
           min={0}
           max={5000}
-          step={100}
+          step={10}
           value={priceRange}
           onValueChange={setPriceRange}
+          className="bg-gray-100"
         />
         <div className="flex justify-between mt-2">
           <span>${priceRange[0]}</span>
           <span>${priceRange[1]}</span>
         </div>
-      </div>
+      </div>*/}
 
-      {/* Popular filters */}
       <div>
-        <h3 className="font-medium mb-2">Popular filters</h3>
+          <h3 className="font-medium mb-2">Your budget (per night)</h3>
+          <div className="flex items-center space-x-2">
+            <div className="flex flex-col">
+              <label htmlFor="priceFrom" className="text-sm">From</label>
+              <Input
+                id="priceFrom"
+                type="number"
+                value={priceRange[0]} // Accessing the first element of the array
+                onChange={(e) => setPriceRange([Number(e.target.value), priceRange[1]])} // Updating the first element
+                className="w-full"
+              />
+            </div>
+            <div className="flex flex-col">
+              <label htmlFor="priceTo" className="text-sm">To</label>
+              <Input
+                id="priceTo"
+                type="number"
+                value={priceRange[1]}
+                onChange={(e) => setPriceRange([priceRange[0], Number(e.target.value)])}
+                className="w-full"
+              />
+            </div>
+          </div>
+        </div>
+
+      {/* Type filters */}
+      <div>
+        <h3 className="font-medium mb-2">Type</h3>
         <div className="space-y-2">
-          {['cancellation', 'excellent', 'apartments'].map((filter) => (
+          {['apartment', 'house', 'cabin', 'office'].map((filter) => (
             <div key={filter} className="flex items-center space-x-2">
               <Checkbox id={filter} />
               <label htmlFor={filter}>
-                {filter === 'cancellation' && 'Free cancellation'}
-                {filter === 'excellent' && 'Excellent: 9 or more'}
-                {filter === 'apartments' && 'Entire homes and apartments'}
+                {filter === 'apartment' && 'Apartment'}
+                {filter === 'house' && 'House'}
+                {filter === 'cabin' && 'Cabin'}
+                {filter === 'office' && 'Office'}
               </label>
             </div>
           ))}
@@ -81,27 +129,42 @@ export default function BookingPage() {
       {/* Room and bathroom count */}
       <div>
         <h3 className="font-medium mb-2">Bedrooms and bathrooms</h3>
-        {['Bedrooms', 'Bathrooms'].map((item) => (
+        {['Bedrooms', 'Bathrooms', 'Beds'].map((item) => (
           <div key={item} className="flex items-center justify-between mb-2">
             <span>{item}</span>
-            <Input type="number" className="w-16" min={0} />
+            <select className="w-16" defaultValue={1}>
+              {[1, 2, 3, 4, 5].map((num) => ( 
+                <option key={num} value={num}>{num}</option>
+              ))}
+            </select>
           </div>
         ))}
       </div>
 
-      {/* Property type filter */}
+      {/* Popular filters */}
       <div>
-        <h3 className="font-medium mb-2">Brands</h3>
+        <h3 className="font-medium mb-2">Popular Places</h3>
         <div className="space-y-2">
-          {['YourRentals', 'NH Hotels', 'Dazzler by Wyndham'].map((brand) => (
-            <div key={brand} className="flex items-center space-x-2">
-              <Checkbox id={brand} />
-              <label htmlFor={brand}>{brand}</label>
+          {['recoleta', 'palermo', 'tigre'].map((filter) => (
+            <div key={filter} className="flex items-center space-x-2">
+              <Checkbox id={filter} />
+              <label htmlFor={filter}>
+                {filter === 'recoleta' && 'Recoleta'}
+                {filter === 'palermo' && 'Palermo'}
+                {filter === 'tigre' && 'Tigre'}
+              </label>
             </div>
           ))}
         </div>
       </div>
+      <Button 
+        onClick={handleSearch} 
+        className="w-full border border-gray-300 hover:bg-black hover:border-gray-400 hover:text-white transition duration-200"
+      >
+        Search
+      </Button>
     </div>
+    </ScrollArea>
   );
 
   return (
@@ -126,7 +189,7 @@ export default function BookingPage() {
                 Filters
               </Button>
             </SheetTrigger>
-            <SheetContent>
+            <SheetContent className="bg-white">
               <FilterContent />
             </SheetContent>
           </Sheet>
