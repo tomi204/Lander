@@ -41,7 +41,6 @@ const Footer: React.FC = () => {
           </Link>
         </div>
 
-        {/* Uso de componente LinkList para cada sección */}
         <LinkList title="Follow Us" links={footerLinks.socials} />
         <LinkList title="Legal Terms" links={footerLinks.legal} />
         <LinkList title="About" links={footerLinks.about} />
