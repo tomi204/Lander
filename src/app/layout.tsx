@@ -43,8 +43,8 @@ export default function RootLayout({
                   <ClientCommons />
                   <SiteHeader />
                   <TransactionProvider>{children}</TransactionProvider>
-                  <FooterNav />
-                  <Footer />
+                  {/* <FooterNav />
+                  <Footer /> */}
                 </AuthProvider>
               </UserProvider>
             </BlockchainProvider>

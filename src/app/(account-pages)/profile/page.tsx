@@ -1,12 +1,8 @@
 'use client';
+
 import Image from 'next/image';
-import { Calendar, MapPin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import placeholderLarge from '/src/images/placeholder-large-h.png';
-import techConf from '/src/images/devcon.png';
-import hackaThon from '/src/images/base-hackathon.jpg';
-import meetUp from '/src/images/local-meetup.jpg';
 import { useEffect, useState } from 'react';
 import { getTalentByWallet } from '@/services/talent';
 import { useBlockchain } from '@/contexts/BlockchainContext';
@@ -15,15 +11,19 @@ import { Badge, Spinner } from '@chakra-ui/react';
 import { useUser } from '@/contexts/UserContext';
 import { Avatar } from '@coinbase/onchainkit/identity';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
-import { base } from 'viem/chains';
+import { base } from '@/constants/Chain';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
 import { EventsCards } from '@/components/Events/EventsCards';
 import { TalentSocials, TalentUser } from '@/interfaces/Talent';
 import { EventCard } from '@/interfaces/Common';
+import TripCard from '@/components/TripCard';
 
 export default function Profile() {
   const { address } = useBlockchain();
   const [talent, setTalent] = useState<TalentUser | null>(null);
+  const [reservations, setReservations] = useState<any>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   const { user } = useUser();
   const favoriteCities: EventCard[] = [
@@ -63,6 +63,30 @@ export default function Profile() {
     getTalent();
   }, [address]);
 
+  useEffect(() => {
+    const fetchReservations = async () => {
+      try {
+        const response = await fetch(`/api/getTrips`);
+        const result = await response.json();
+
+        if (response.ok) {
+          setReservations(result);
+          setError(null);
+        } else {
+          setError(result.error);
+          setReservations([]);
+        }
+      } catch (err) {
+        setError('An unexpected error occurred');
+        setReservations([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchReservations();
+  }, []);
+
   if (!address)
     return (
       <section className="flex justify-center items-center h-6/12">
@@ -98,27 +122,11 @@ export default function Profile() {
               }
             />
 
-            {/* )} */}
             <div>
               <h2 className="text-2xl font-bold">
                 {talent?.passport_profile.display_name}
               </h2>
-              {/* TODO: Add rating IN BACKEND
-              
-              <div className="flex items-center mt-1">
-                {[1, 2, 3, 4, 5].map((star) => (
-                  <Star
-                    key={star}
-                    size={16}
-                    className={
-                      star <= 4
-                        ? 'text-yellow-400 fill-yellow-400'
-                        : 'text-gray-400'
-                    }
-                  />
-                ))}
-                <span className="ml-2 text-sm text-neutral-500">(4.0)</span>
-              </div> */}
+
               <p className="text-neutral-500 mt-1">
                 Talent Passport ID {talent?.passport_id}
               </p>
@@ -178,40 +186,19 @@ export default function Profile() {
               ))}
             </div>
           </div>
-          {/* <div>
-            <h3 className="text-xl font-semibold mb-4">Upcoming Events</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {upcomingEvents.map((event) => (
-                <Card
-                  key={event.name}
-                  className="bg-gray-200 overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-105"
-                >
-                  <CardHeader className="p-0">
-                    <Image
-                      src={event.image}
-                      alt={event.name}
-                      width={300}
-                      height={200}
-                      className="w-full h-48 object-cover"
-                    />
-                  </CardHeader>
-                  <CardContent className="p-4">
-                    <CardTitle className="text-lg font-semibold mb-2">
-                      {event.name}
-                    </CardTitle>
-                    <p className="text-sm text-gray-400 flex items-center">
-                      <Calendar size={14} className="mr-2" />
-                      {new Date(event.date).toLocaleDateString('en-US', {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric',
-                      })}
-                    </p>
-                  </CardContent>
-                </Card>
+        </div>
+        <div className="space-y-8">
+          <h3 className="text-xl font-semibold mb-4">Your Trips</h3>
+          {reservations.length && (
+            <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 gap-6">
+              {reservations?.map((reservation: any) => (
+                <TripCard
+                  key={reservation.property.id}
+                  reservation={reservation}
+                />
               ))}
             </div>
-          </div> */}
+          )}
         </div>
       </div>
     </div>

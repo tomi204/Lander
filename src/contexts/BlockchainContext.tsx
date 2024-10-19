@@ -9,12 +9,7 @@ import React, {
 import { Address } from 'viem';
 import { updateUserWallet } from '@/services/users';
 
-import { useWallet } from '@solana/wallet-adapter-react';
-import {
-  useAppKit,
-  useAppKitAccount,
-  useAppKitProvider,
-} from '@reown/appkit/react';
+import { useAppKitAccount } from '@reown/appkit/react';
 import { useAccount } from 'wagmi';
 
 interface BlockchainContextProps {
@@ -43,7 +38,6 @@ export const BlockchainProvider = ({ children }: { children: ReactNode }) => {
   const [chain, setChain] = useState<string | null | undefined>();
 
   const { isConnected: connectedEVM, address: addressEVM } = useAppKitAccount();
-  // const { publicKey: addressSOL, connected: connectedSOL } = useWallet();
 
   const { address: addressFromWagmi, isConnected: isConnectedWagmi } =
     useAccount();
@@ -58,17 +52,14 @@ export const BlockchainProvider = ({ children }: { children: ReactNode }) => {
     setChainId(137);
   }
   useEffect(() => {
-  
-    setAddress(addressEVM || null);
-    setIsConnected(connectedEVM);
+    setAddress(addressEVM || addressFromWagmi || null);
+    setIsConnected(connectedEVM || isConnectedWagmi);
     setChain('evm');
     getChainId();
 
-
-    if (addressEVM) {
-      updateUserWallet(addressEVM, 'evm');
-
-      
+    if (addressEVM || addressFromWagmi) {
+      if (address)
+        updateUserWallet(addressEVM || addressFromWagmi || '', 'evm');
     }
   }, [connectedEVM, addressEVM, isConnectedWagmi, addressFromWagmi]);
 

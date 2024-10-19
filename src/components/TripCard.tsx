@@ -9,7 +9,6 @@ const TripCard = ({ reservation }: any) => {
     router.push(`/p2p/${txId}`);
   };
 
-  console.log(reservation, 'reservation');
   return (
     <div className="border rounded-lg overflow-hidden shadow-md">
       <Image
@@ -34,7 +33,7 @@ const TripCard = ({ reservation }: any) => {
         <p>Total: ${reservation?.tx?.amount?.toFixed(2)}</p>{' '}
         <button
           onClick={() => joinRoom(reservation?.tx?.id)}
-          className=" w-full  px-8 py-2 rounded-full relative bg-purple-900 text-white text-sm hover:shadow-2xl hover:shadow-white/[0.1] transition duration-200 border border-purple-600"
+          className=" w-full  px-8 py-2 rounded-xl relative bg-purple-900 text-white text-sm hover:shadow-2xl hover:shadow-white/[0.1] transition duration-200 border border-purple-600"
         >
           <span className="relative z-20">Contact</span>
         </button>
