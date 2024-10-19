@@ -1,6 +1,7 @@
 // components/ReserveCard.tsx
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { Card } from './ui/card';
 
 const TripCard = ({ reservation }: any) => {
   const router = useRouter();
@@ -10,7 +11,7 @@ const TripCard = ({ reservation }: any) => {
   };
 
   return (
-    <div className="border rounded-lg overflow-hidden shadow-md">
+    <Card className="bg-gray-100 overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-105">
       <Image
         src={reservation?.property?.main_image}
         alt={reservation?.property?.title}
@@ -38,7 +39,7 @@ const TripCard = ({ reservation }: any) => {
           <span className="relative z-20">Contact</span>
         </button>
       </div>
-    </div>
+    </Card>
   );
 };
 

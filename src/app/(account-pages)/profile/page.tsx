@@ -189,7 +189,7 @@ export default function Profile() {
         </div>
         <div className="space-y-8">
           <h3 className="text-xl font-semibold mb-4">Your Trips</h3>
-          {reservations.length && (
+          {reservations.length > 0 && (
             <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 gap-6">
               {reservations?.map((reservation: any) => (
                 <TripCard
