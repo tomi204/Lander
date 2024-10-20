@@ -67,7 +67,7 @@ export const EventsCards = (event: EventCard) => {
               {event.attendees?.length} attendees
             </div>
           )}
-          <div className="flex flex-wrap gap-2 r-0">
+          <div className="flex flex-wrap gap-2 r-0 cursor-pointer">
             {passport?.map((user) => (
               <>
                 {user.passport_profile.image_url !== 'talent_protocol' && (

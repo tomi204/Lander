@@ -93,7 +93,7 @@ function Events() {
                   Confirmed Attendees
                 </h3>
 
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-2 cursor-pointer">
                   {passport?.map((attende, index) => (
                     <Avatar
                       key={index}
