@@ -1,6 +1,6 @@
 # Tokenized Property Rental Platform
 
-Welcome to our **tokenized property rental platform** with blockchain technology. This project enables the tokenization of properties, offering more flexibility and security to users. Additionally, we've integrated a feature for travelers to find travel companions via **Talent Protocol**.
+Welcome to our **tokenized property rental platform** with blockchain technology. This project enables the tokenization of properties, offering more flexibility and security to users. Additionally, we've integrated a feature for travelers to find travel companions via **Talent Protocol**, We also integrate a Swap with a token finder across the blockchain, a bridge, real state fractionation, and a token search engine.
 
 ## Key Features
 
