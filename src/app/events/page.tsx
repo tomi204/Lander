@@ -10,6 +10,7 @@ import { EventsCards } from '@/components/Events/EventsCards';
 
 function Events() {
   const [events, setEvents] = useState<[]>([]);
+  const [attendees, setAttendees] = useState<[]>([]);
 
   const loadOurEvents = async () => {
     try {
@@ -17,6 +18,10 @@ function Events() {
       const events = await data.json();
       console.log(events, 'users');
       setEvents(events);
+      const attendeesData = await fetch(`/api/getEventsWithAttendees`);
+      const attendees = await attendeesData.json();
+
+      setAttendees(attendees[0].attendees);
     } catch (error) {
       console.error('Error loading users:', error);
     }
@@ -36,24 +41,16 @@ function Events() {
         <TabsContent value="Current">
           <div className="grid grid-cols-1 w-full sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {events.map((event, index) => (
-              <EventsCards key={index} {...(event as EventCard)} />
+              <EventsCards
+                key={index}
+                {...(event as EventCard)}
+                attendees={attendees}
+              />
             ))}
           </div>
           <div className="flex justify-center mb-4 text-white items-center"></div>
         </TabsContent>
-        <TabsContent value="New">
-          {/* {ourUsers.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-              {ourUsers.map((user, index) => (
-                <UserCard key={index} passport={user} />
-              ))} */}
-          {/* </div>
-          ) : (
-            <div className="flex justify-center items-center">
-              <LoadingSpinner />
-            </div>
-          )} */}
-        </TabsContent>
+        <TabsContent value="New"></TabsContent>
       </Tabs>
     </section>
   );

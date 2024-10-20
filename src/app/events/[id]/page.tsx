@@ -24,7 +24,6 @@ function Events() {
       console.error('Error loading users:', error);
     }
   };
-  console.log(attendees, 'attendees dadatatat');
 
   useEffect(() => {
     loadOurEvent();

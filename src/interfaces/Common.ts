@@ -60,4 +60,5 @@ export interface EventCard {
   city: string;
   date: string;
   link: string;
+  attendees?: [];
 }
