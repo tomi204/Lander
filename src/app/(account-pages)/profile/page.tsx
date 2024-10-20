@@ -139,7 +139,7 @@ export default function Profile() {
             </div>
           </div>
           <Button
-            className="ttnc-ButtonPrimary hover:bg-blue-700 hover:text-white w-full md:w-auto"
+            className="ttnc-ButtonPrimary hover:bg-blue-700 hover:text-white w-4/12 md:w-auto"
             onClick={() => {
               window.open(
                 `https://passport.talentprotocol.com/profile/${talent?.passport_id}`,
@@ -180,7 +180,7 @@ export default function Profile() {
         <div className="space-y-8">
           <div>
             <h3 className="text-xl font-semibold mb-4">Events</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 w-full md:grid-cols-2 lg:grid-cols-3 gap-6">
               {favoriteCities.map((event) => (
                 <EventsCards key={event.name} {...event} />
               ))}

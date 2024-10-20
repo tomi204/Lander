@@ -12,14 +12,14 @@ import { Button } from '../ui/button';
 import { EventCard } from '@/interfaces/Common';
 
 export const EventsCards = (event: EventCard) => {
-  console.log(event.image, event.name, event.city, event.date);
+  console.log(event, 'event');
   return (
     <Card
       key={event.name}
       onClick={() => {
         window.open(`/events/${event.id}`, '_blank');
       }}
-      className="bg-gray-100 overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-105"
+      className="bg-gray-100 overflow-hidden transition-all duration-300 hover:shadow-lg w-full hover:scale-105"
     >
       <CardHeader className="p-0">
         <Image
@@ -40,7 +40,8 @@ export const EventsCards = (event: EventCard) => {
         </div>
         <div className="flex items-center mt-2 text-sm text-muted-foreground">
           <MapPinIcon className="mr-2 h-4 w-4" />
-          <span>{event.city}</span>
+          {event.location && <span>{event.location}</span>}
+          {event.city && !event.location && <span>{event.city}</span>}
         </div>
         <CardDescription className="mt-4">{event.description}</CardDescription>
         <CardFooter className="flex justify-around gap-3 mt-5">

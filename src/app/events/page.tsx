@@ -25,7 +25,7 @@ function Events() {
   useEffect(() => {
     loadOurEvents();
   }, []);
-
+  console.log(events);
   return (
     <section className=" w-11/12 m-auto mt-10 mb-10">
       <Tabs defaultValue="Current" className="w-full">
@@ -34,7 +34,7 @@ function Events() {
           <TabsTrigger value="New">Future</TabsTrigger>
         </TabsList>
         <TabsContent value="Current">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 w-full sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {events.map((event, index) => (
               <EventsCards key={index} {...(event as EventCard)} />
             ))}

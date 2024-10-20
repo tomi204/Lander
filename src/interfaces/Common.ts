@@ -56,6 +56,7 @@ export interface EventCard {
   name: string;
   description: string;
   image: string;
+  location?: string;
   city: string;
   date: string;
   link: string;
