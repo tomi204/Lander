@@ -14,10 +14,10 @@ Welcome to our **tokenized property rental platform** with blockchain technology
 ## Technologies Used
 
 - **Blockchain**: Base
-- **Frontend**: Next.js, Reown, Tailwind, 
+- **Frontend**: Next.js, Reown, Tailwind
 - **Smart Contracts**: Solidity, ERC20, ERC721 for tokenization
 - **Talent Protocol**: To connect travelers
-- **OnchainKit**: For swap, and onramp functionality, token chip
+- **OnchainKit**: For swap, and onramp functionality, token chip, Ens Name, Identity, Coin Base Wallet
 
 ## Roadmap
 
