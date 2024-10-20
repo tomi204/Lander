@@ -8,7 +8,7 @@ import {
 import { MapPin } from 'lucide-react';
 import Image from 'next/image';
 import { Avatar, Identity } from '@coinbase/onchainkit/identity';
-import { base } from 'viem/chains';
+import { base } from '@/constants/Chain';
 import { Button } from './ui/button';
 import { TalentUser } from '@/interfaces/Talent';
 

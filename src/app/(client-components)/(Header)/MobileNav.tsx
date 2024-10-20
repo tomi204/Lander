@@ -43,6 +43,7 @@ export default function MobileNav() {
     { name: 'Bookings', icon: Calendar, href: { pathname: '/my-bookings' } },
     { name: 'Explore', icon: Compass, href: { pathname: '/explore' } },
     { name: 'Invest', icon: TrendingUp, href: { pathname: '/real-state' } },
+    { name: 'Events', icon: Calendar, href: { pathname: '/events' } },
   ];
 
   return (

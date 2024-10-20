@@ -29,4 +29,9 @@ export const NAVIGATION: NavItemType[] = [
     href: '/explore',
     name: 'Explore',
   },
+  {
+    id: ncNanoId(),
+    href: '/events',
+    name: 'Events',
+  },
 ];

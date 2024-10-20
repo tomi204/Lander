@@ -52,10 +52,17 @@ export interface OurUsers {
 }
 
 export interface EventCard {
+  id?: string;
   name: string;
   description: string;
   image: string;
+  location?: string;
   city: string;
   date: string;
   link: string;
+  attendees?: [];
+}
+
+export interface attendees {
+  user_wallet: string;
 }
