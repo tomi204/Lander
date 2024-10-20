@@ -59,7 +59,7 @@ function Events() {
   return (
     <>
       {events.map((event) => (
-        <Card className="w-full max-w-3xl mx-auto">
+        <Card className="w-full max-w-3xl mx-auto" key={event.id}>
           <CardHeader>
             <Image
               src={'/base-hackathon.jpg'}
@@ -97,20 +97,22 @@ function Events() {
                   {passport?.map((attende, index) => (
                     <Avatar
                       key={index}
-                      title={attende.passport_profile.display_name}
+                      title={attende?.passport_profile?.display_name ?? ''}
                       onClick={() => {
                         window.open(
-                          `/profile/${attende.main_wallet}`,
+                          `/profile/${attende?.main_wallet}`,
                           '_blank'
                         );
                       }}
                     >
-                      <AvatarImage src={attende.passport_profile.image_url} />
+                      <AvatarImage
+                        src={attende?.passport_profile?.image_url ?? ''}
+                      />
                       <AvatarFallback>
-                        {attende?.passport_profile.display_name?.substring(
+                        {attende?.passport_profile?.display_name?.substring(
                           0,
                           2
-                        )}
+                        ) ?? ''}
                       </AvatarFallback>
                     </Avatar>
                   ))}
