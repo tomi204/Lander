@@ -158,7 +158,7 @@ const ReservationComponent: any = ({ stay }: ReservationComponentProps) => {
   };
 
   const errorMessage = useMemo(() => {
-    if (!isConnected) {
+    if (!addressBlockchain) {
       return 'Please connect to wallet first.';
     }
 
@@ -188,13 +188,6 @@ const ReservationComponent: any = ({ stay }: ReservationComponentProps) => {
       <div className="hidden lg:block flex-grow mt-14 lg:mt-0">
         <div className="sticky top-28">
           <div className="listingSectionSidebar__wrap shadow-xl ">
-            {/* <ReservationPrice
-              price={stay?.price}
-              nights={nights}
-              depositAmount={stay.depositAmount}
-              cleaningServiceFee={stay.cleaningServiceFee}
-            /> */}
-
             <div className="flex flex-col space-y-6 lg:space-y-7">
               <div className="flex justify-between">
                 <span className="text-3xl font-semibold">
