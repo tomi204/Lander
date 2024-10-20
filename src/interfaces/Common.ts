@@ -62,3 +62,7 @@ export interface EventCard {
   link: string;
   attendees?: [];
 }
+
+export interface attendees {
+  user_wallet: string;
+}

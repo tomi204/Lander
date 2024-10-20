@@ -9,15 +9,10 @@ import {
 import { CalendarIcon, MapPinIcon } from 'lucide-react';
 import Image from 'next/image';
 import { Button } from '../ui/button';
-import { EventCard, OurUsers } from '@/interfaces/Common';
+import { attendees, EventCard, OurUsers } from '@/interfaces/Common';
 import { getTalentByWallet } from '@/services/talent';
 import { TalentUser } from '@/interfaces/Talent';
 import { useEffect, useState } from 'react';
-import Link from 'next/link';
-import { UrlObject } from 'url';
-interface attendees {
-  user_wallet: string;
-}
 
 export const EventsCards = (event: EventCard) => {
   const attendees = event.attendees?.map(

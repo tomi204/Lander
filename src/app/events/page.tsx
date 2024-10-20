@@ -7,6 +7,7 @@ import { LoadingSpinner } from '@/components/LoadingSpinner';
 import { EventCard, OurUsers } from '@/interfaces/Common';
 import { TalentUser } from '@/interfaces/Talent';
 import { EventsCards } from '@/components/Events/EventsCards';
+import UnderConstruction from '@/components/UnderConstruction';
 
 function Events() {
   const [events, setEvents] = useState<[]>([]);
@@ -50,7 +51,9 @@ function Events() {
           </div>
           <div className="flex justify-center mb-4 text-white items-center"></div>
         </TabsContent>
-        <TabsContent value="New"></TabsContent>
+        <TabsContent value="New">
+          <UnderConstruction />
+        </TabsContent>
       </Tabs>
     </section>
   );
