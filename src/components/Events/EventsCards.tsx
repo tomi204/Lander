@@ -67,9 +67,11 @@ export const EventsCards = (event: EventCard) => {
         </div>
         <CardDescription className="mt-4">{event.description}</CardDescription>
         <div className="flex-row  items-center  w-11/12 m-auto flex justify-between">
-          <div className="flex items-center mt-2 text-sm text-muted-foreground">
-            {event.attendees?.length} attendees
-          </div>
+          {passport && passport?.length > 0 && (
+            <div className="flex items-center mt-2 text-sm text-muted-foreground">
+              {event.attendees?.length} attendees
+            </div>
+          )}
           <div className="flex flex-wrap gap-2 r-0">
             {passport?.map((user) => (
               <>
