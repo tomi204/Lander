@@ -12,7 +12,7 @@ export default function CoinBaseIdentity({
 
   return (
     <div
-      className="m-auto w-7/12 rounded-3xl mr-20"
+      className="m-auto w-[150px] text-nowrap rounded-3xl mr-20"
       onClick={() => {
         open({ view: 'Account' });
       }}
